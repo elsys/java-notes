@@ -1,0 +1,597 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[ignorenonframetext, hyperref=unicode,compress,pdflatex]{beamer}
+%\documentclass[ignorenonframetext, hyperref=unicode,pdftex]{beamer}
+
+\input{notes.tex}
+
+\title{Интерфейси, абстрактни класове, изключения и вътрешни класове}
+\lubo
+\date{\today}
+
+\usetikzlibrary{shapes}
+
+\bibstyle{plain}
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\begin{frame}
+\small
+{\bf Забележка:} Тази лекция е адаптация на:
+\begin{itemize}
+  \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/13D676CC-7269-4406-A215-53245A12B235/0/lecture4.pdf}{Lucy Mendel: {\em Interfaces, Abstract classes, Exceptions, Inner classes}} from
+\href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
+{\em 6.092: Java for 6.170} (MIT OpenCourseWare:
+Massachusetts Institute of Technology)}\\
+{\bf Лиценз:}
+\href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
+BY-NC-SA}
+\end{itemize}
+
+\vfill
+
+\begin{columns}
+\column{0.3\textwidth}
+\begin{figure}[h]
+\center
+\scalebox{1}{\includegraphics{eu-logos}}
+\end{figure}
+\column{0.7\textwidth}
+
+Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
+\end{columns}
+
+
+\end{frame}
+
+\begin{frame}
+
+{\bf Допълнителна литература}
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{learning-java}
+
+\end{frame}
+\begin{frame}
+\frametitle{Съдържание}
+\tableofcontents %[hideallsubsections]
+\end{frame}
+
+
+\section{Абстрактни класове}
+
+\begin{frame}[containsverbatim]\frametitle{Абстракни класове}
+\begin{itemize}
+\item Дефинират се с ключовата дума abstract
+\item Не могат да се създават обекти от абстрактен клас
+\item Използват се, когато част от кода на два класа съвпада
+\end{itemize}
+\begin{lstlisting}
+public abstract class Person {
+ 	private String name = "";
+
+ 	public String getName() {
+ 		return name;
+	}
+ 	public void setName(String n) {
+ 		name = n;
+	}
+ 	abstract public String sayGreeting();
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Абстракни класове}
+\begin{lstlisting}
+class EnglishPerson extends Person { 
+ 	public String sayGreeting() {
+ 		return "Hello!";
+	}
+}
+
+class SpanishPerson extends Person { 
+ 	public String sayGreeting() {
+ 		return "Hola!";
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+
+\section{Интерфейси}
+
+\begin{frame}[containsverbatim]\frametitle{Интрефейси}
+\begin{itemize}
+\item Интерфейсът дава списък на достъпните методи
+\item Дефинират се с ключовата дума \lstinline{interface}
+\item Реализират се с ключовата дума \lstinline{implements}
+\item Използват се за описание на начина на взаимодействие между различни или неизвестни компоненти
+\end{itemize}
+\begin{lstlisting}
+public interface Dragable { 
+ 	public void drag();
+}
+public class Icon implements Dragable { 
+ 	public void drag() { ... }
+}
+public class Chair implements Dragable {
+ 	public void drag() { ... }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Реализация на множество интерфейси}
+\begin{itemize}
+\item Всеки един клас може да реализира произволен брой (множество) интерфейси
+\end{itemize}
+\begin{lstlisting}
+interface Drawable {
+ 	public void draw();
+}
+
+interface Clickable {
+ 	public void click();
+}
+
+interface Draggable {
+ 	public void drag();
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Реализация на множество интерфейси}
+\begin{lstlisting}
+class Icon implements Drawable, Clickable, Draggable {
+ 	public void draw() {
+ 		System.out.println("drawing...");
+	}
+ 	public void click() {
+ 		System.out.println("clicking...");
+	}
+ 	public void drag() {
+ 		System.out.println("dragging...");
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\section{Наследяване}
+
+\begin{frame}[containsverbatim]\frametitle{Единично наследяване}
+\begin{itemize}
+\item Всеки един клас може да наследява само един клас
+\item Ако той не е указан непосредствено, то родител е \lstinline{java.lang.Object}
+\item Възможно е предефиниране на методи
+\end{itemize}
+\begin{lstlisting}
+class Parent { 
+ 	public String doSomething() {
+ 		return "Hello (Parent)";
+	}
+}
+class Child extends Parent { 
+ 	public String doSomething() {
+ 		return "Hello (Child)";
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Подтипове}
+\begin{lstlisting}
+class Square{ 
+	public int width;
+}
+class Rectangle{ 
+	public int width, height;
+}
+
+int calculateArea (Square x) {
+    return (x.width)*(x.width); 
+}
+int calculateCircumference (Rectangle x) {
+    return 2*(x.width+x.height); 
+}
+\end{lstlisting}
+\begin{itemize}
+\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Подтипове: \lstinline{Rectangle} наследява \lstinline{Square}}
+\begin{itemize}
+\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\end{itemize}
+\begin{lstlisting}
+class Square {
+   public int width;
+   Square( int x ) { width = x; }
+}
+
+class Rectangle extends Square {
+   public int height;
+   Rectangle( int width, int height ) {
+        super(width);
+        this.height = height; }
+}
+...
+Rectangle rect = new Rectangle( 2, 3 );
+calculateArea( rect ) ;     // returns 4, not 6 !
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Подтипове: \lstinline{Square} наследява \lstinline{Rectangle}}
+\begin{itemize}
+\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\end{itemize}
+\begin{lstlisting}
+class Rectangle { 
+   public int width, height;
+}
+class Square extends Rectangle {
+    public int side;
+}
+...
+Square square = new Square( 3 );
+calculateCircumference( sq ) ; // w.t.f. no height!
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Подтипове: отново \lstinline{Square} наследява \lstinline{Rectangle}}
+\begin{itemize}
+\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\end{itemize}
+\begin{lstlisting}
+class Rectangle {
+   public int width, height;
+   Rectangle( int width, int height ) {
+      this.width = width; this.height = height; }
+}
+class Square extends Rectangle {
+    Square( int x ) { super( x, x ); }
+}
+...
+Square square = new Square( 3 );
+calculateCircumference( sq ) ; // 12, ok
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Подтипове}
+\begin{itemize}
+\item Наследяването позволява повторно изплозване на кода на родителския клас в класа-наследник
+\item Класът наследник се превръща в подтип на базовия клас. За да бъде истински подтип наследникът трябва да се държи коректно, когато се използва от методи, които очакват екземпляр на базовия клас.
+\item При наследяване винаги трябва да се осигури правилно функциониране на наследника, когато той замества екземпляр на базовия клас
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Наследяване срещу композиция}
+\begin{lstlisting}
+public class ListSet extends ArrayList { 
+...
+} 
+\end{lstlisting}
+
+\begin{lstlisting}
+public class ListSet { // might want to implement Set
+  private List myList = new ArrayList();
+  public void add(Object o) {
+      if (!myList.contains(o)) myList.add(o);
+  }
+...
+}
+\end{lstlisting}
+\end{frame}
+
+
+\section{Изключения}
+
+\begin{frame}[containsverbatim]\frametitle{Изключения}
+\begin{itemize}
+\item Помагат за обработката на възникнали изключителни ситуации
+\item Изключението не може просто да бъде изпуснато
+\item При възникване на изключения се прекъсва нормалното изпълнение на програмата и се търси код, който е предназначен за обработка на възникналото изключение
+\end{itemize}
+\begin{lstlisting}
+	try {
+		// statement(s) that might throw exception
+	} catch (ExceptiontypeA name) {
+		// handle or report exceptiontypeA
+	} catch (ExceptiontypeB name) {
+		// handle or report exceptiontypeB
+	} finally {
+		// clean-up statement(s)
+	}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Обработка на изключения}
+\begin{lstlisting}
+class Editor {
+	boolean fileOpen = false;
+ 	public boolean openFile(String filename) {
+ 		try {
+			fileOpen = true;
+ 			File f = new File(filename);
+ 			// действия с f
+			...
+ 			return true;
+ 		} catch (FileNotFoundException e) {
+ 			// изпълнява се само при генериране на изключение
+			e.printStackTrace();
+ 			return false;
+ 		} finally { // изпълнява се винаги:
+ 			fileOpen = false;
+		}
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Генериране на изключения}
+\begin{itemize}
+\item Използва се ключовата дума \lstinline{throw}, следвана от обект, който да съхранява информация за причината за възникване
+\item При дефиницията на конструктор или метод се описват изключенията, които могат да възникнат при изпълнение посредством ключовата дума \lstinline{throws}
+\end{itemize}
+\begin{lstlisting}
+public class File {
+ 	public File(String filename) 
+				throws FileNotFoundException {
+		...
+ 		// файлът не съществува
+ 		if ( /*  file not found */ ) {
+ 			throw new FileNotFoundException();
+		}
+		...
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+
+\section{Вложени класове}
+
+\begin{frame}[containsverbatim]\frametitle{Вложени класове}
+\begin{lstlisting}
+public class EnclosingClass {
+	...
+	public class ANestedClass {
+		...
+	}
+	...
+}
+\end{lstlisting}
+\begin{itemize}
+\item Кога и защо се използват вложени класове?
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Вложени класове}
+\begin{itemize}
+\item Имат достъп до всички полета на външния клас (дори \lstinline{private} полетата)
+\item Могат да бъдат статични (също така \lstinline{final}, \lstinline{abstract}). Когато вътрешният клас е статичен, той има достъп само до статичните полета на външният клас
+\item Не-статичните вложени класове се наричат още и вътрешни класове (inner classes)
+\end{itemize}
+\begin{lstlisting}
+class  EnclosingClass {
+ 	static class StaticNestedClass {
+		// ...
+	}
+ 	class InnerClass {
+		// ...
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Вътрешни класове}
+\begin{itemize}
+\item Има достъп до всичките полета на съдържащия го клас
+\item Не могат да имат статични полета
+\item Не може да съществува без екземпляр на съдържащия го клас
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Локални вътрешни класове}
+\begin{lstlisting}
+import  java.util.ArrayList;
+import  java.util.Iterator;
+public class Stack {
+ 	private ArrayList items;
+ 	public Iterator iterator() {
+		// клас дефиниран в тялото на метода
+ 		class StackIterator implements Iterator {
+ 			int currentItem = items.size() - 1;
+ 			public boolean hasNext() { /* ... */ }
+ 			public ArrayList<Object> next() { /* ... */ }
+ 			public void remove() { /* ... */ }
+		}
+		// видим е само в границите на самата функция
+ 		return new StackIterator();
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Анонимни вътрешни класове}
+\begin{lstlisting}
+import  java.util.ArrayList;
+import  java.util.Iterator;
+public class Stack {
+ 	private ArrayList items;
+
+ 	public Iterator iterator() {
+ 		return new Iterator() {//реализира интерфейса Iterator
+ 			int currentItem = items.size() - 1;
+ 			public boolean hasNext() { /* ... */ }
+ 			public ArrayList<Object> next() { /* ... */ }
+ 			public void remove() { /* ... */ }
+		};
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\section{Вътрешни класове}
+
+\begin{frame}[containsverbatim]\frametitle{Вътрешни класове}
+\begin{lstlisting}
+public class Animal {
+	class Brain {
+		// ...
+	}
+	void performBehavior() {
+		Brain brain=new Brain();
+		// ...
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+Animal monkey = new Animal( );
+Animal.Brain monkeyBrain = monkey.new Brain( );
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Вътрешни класове като адаптери}
+\begin{lstlisting}
+public class EmployeeList {
+	private Employee[] employees = new Employee[0];
+	// ...
+	void add(Employee e) {...}
+	void remove(int index) {...}
+	//...
+}
+\end{lstlisting}
+\begin{lstlisting}
+public interface Iterator {
+	boolean hasNext();
+	Object next();
+	void remove();
+}
+class EmployeeListIterator implements Iterator {
+	// Трябва да познава вътрешното устройство на EmployeeList
+	//...
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Вътрешни класове като адаптери}
+\begin{lstlisting}
+public class EmployeeList {
+    private Employee[] employees = new Employee[0];
+    //...
+    class Iterator implements java.util.Iterator {
+        private int element = 0;
+        public boolean hasNext( ) {
+            return  element < employees.length ;
+        }
+        public Object next( ) {
+            if ( hasNext( ) )
+                return employees[ element++ ];
+            else
+                throw new NoSuchElementException( );
+        }
+        //...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Вътрешни класове като адаптери}
+\begin{lstlisting}
+        public void remove( ) {
+             throw new UnsupportedOperationException( );
+        }
+    }
+    //...
+
+    Iterator getIterator() {
+        return new Iterator();
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Локални класове}
+\begin{lstlisting}
+public class Animal {
+	public void performBehavior() {
+		class Brain {
+			// ...
+		}
+		//...
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Специфики на локалните класове}
+\begin{lstlisting}
+public class Animal {
+	public void performBehavior(final boolean nocturnal){
+		class Brain {
+			...
+			void sleep(){
+				if(nocturnal) {
+					...
+				} else {
+					...
+				}
+			}
+		}
+		...
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Анонимни класове}
+\begin{lstlisting}
+Iterator getIterator() {
+	return new Iterator() {
+		int element = 0;
+		public boolean hasNext() {
+			return element < employees.length;
+		}
+		public Object next() {
+			if (hasNext())
+				return employees[element++];
+			else
+				throw new NoSuchElementException();
+		}
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+	};
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Област на видимост на \lstinline{this}}
+\begin{lstlisting}
+class Animal {
+	int size;
+	class Brain {
+		int size;
+	}
+}
+\end{lstlisting}
+\begin{lstlisting}
+class Brain {
+	Animal ourAnimal = Animal.this;
+	int animalSize = Animal.this.size;
+}
+\end{lstlisting}
+\end{frame}
+
+
+\end{document}

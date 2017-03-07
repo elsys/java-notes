@@ -1,0 +1,226 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
+
+\input{notes.tex}
+
+\title{Полиморфизъм}
+\lubo
+\date{25 април 2009}
+
+%\usetikzlibrary{shapes}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\small
+{\bf Забележка:} Тази лекция е адаптация на:
+\begin{itemize}
+  \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/66BAC837-433E-48A5-BA15-B766E0B7CDEA/0/lecture2a.pdf}{Robert Toscano: {\em Polymorphism}} from
+\href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
+{\em 6.092: Java for 6.170} (MIT OpenCourseWare:
+Massachusetts Institute of Technology)}\\
+{\bf Лиценз:}
+\href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
+BY-NC-SA}  
+
+\end{itemize}
+
+\vfill
+
+\begin{columns}
+\column{0.3\textwidth}
+\begin{figure}[h]
+\center
+\scalebox{1}{\includegraphics{eu-logos}}
+\end{figure}
+\column{0.7\textwidth}
+
+Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
+\end{columns}
+
+\end{frame}
+\begin{frame}
+\frametitle{Съдържание}
+\tableofcontents %[hideallsubsections]
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Полиморфизъм}
+\begin{itemize}
+ \item Способността на обектите да реагират по собствен начин на един и същ метод в зависимост от действителния си тип
+ \item Способността на обекти от различен тип да реагират на методи с едно и също име
+ \item Възможността да се предефинира функционалност на наследения клас
+ \item Java управлява коя предефинирана версия на даден метод трябва да бъде извикана.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Клас \lstinline{Object}}
+\begin{itemize}
+ \item Всеки базов клас (т.е. клас, който не наслядява друг клас) по подразбиране наследява класа \lstinline{java.lang.Object}.
+ \item Класът \lstinline{java.lang.Object} съдържа методи, които се наследяват от всички други класове.
+ \item Методите на класа \lstinline{java.lang.Object} включват: \lstinline{clone}, \lstinline{equals}, \lstinline{finalize}, \lstinline{getClass}, \lstinline{hashCode}, \lstinline{notify}, \lstinline{notifyAll}, \lstinline{wait}, \lstinline{toString}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Предефиниране (override) на методи (заместване на методи)}
+\begin{itemize}
+ \item Предефинирането (override) на методи се различава от предефинирането (overloading) на методи.
+ \item Родителски клас (супер клас)
+ \begin{itemize}
+ \item Ако класът \lstinline{D} наследява класа \lstinline{B}, то класът \lstinline{B} е родителски клас (базов клас, супер клас) на класа \lstinline{D}
+ \item Класът \lstinline{D} е наследник (подклас, производен клас) на класа \lstinline{B}.
+ \end{itemize}
+ \item Ако класът \lstinline{B} съдържа метод, който е достъпен в класа \lstinline{D}:
+\begin{lstlisting}
+ public void foo(int arg) {...}
+\end{lstlisting}
+ то класът \lstinline{D} може да предефинира (замести, override) този метод, като дефинира метод със същата сигнатура.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Методът \lstinline{equals}}
+\begin{itemize}
+ \item Методът \lstinline{equals} е дефиниран в базовият клас \lstinline{java.lang.Object}:
+\begin{lstlisting}
+ public boolean equals(Object o);
+\end{lstlisting}
+ \item Всички класове наследяват този метод от класа \lstinline{java.lang.Object}.
+ \item Дефиницията на този метод в базовия клас \lstinline{java.lang.Object} проверява равенството на препратките -- т.е. проверяв дали две препратки сочат към един и същ обект в паметта.
+ \item В случай, че класът трябва да поддържа идеята за сравняване на различни инстанции, то класът трябва да предефинира (замести, override) този метод.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: използване на \lstinline{equals}}
+\begin{lstlisting}
+CheckingAccount c1 = new CheckingAccount(100);
+CheckingAccount c2 = new CheckingAccount(100);
+c1.equals(c1); //== true
+c2.equals(c2); //== true
+c1.equals(c2); //== false
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Предефиниране (заместване) на \lstinline{equals}}
+\begin{lstlisting}
+public class CheckingAccount extends BankAccount {
+        ...
+        public boolean equals (Object o) {
+           if (o instanceof CheckingAccount) {
+                  CheckingAccount c = (CheckingAccount)o;
+                  return balance == c.balance;
+           } else {
+                  return false;
+           }
+        }
+        ...
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Използване на \lstinline{equals}}
+\begin{lstlisting}
+CheckingAccount c1 = new CheckingAccount(100);
+CheckingAccount c2 = new CheckingAccount(100);
+c1.equals(c1); //== true
+c2.equals(c2); //== true
+c1.equals(c2); //== true
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Полиморфно поведение на \lstinline{equals}}
+\begin{lstlisting}
+Object o1 = new CheckingAccount(100);
+Object o2 = new CheckingAccount(100);
+o1.equals(o1); //== true
+o2.equals(o2); //== true
+o1.equals(o2); //== true
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Тип по време на компилация и тип по време на изпълнение}
+\begin{itemize}
+ \item Тип по време на компилация
+\begin{itemize}
+ \item Тип на обекта, който е известен предварително --- по време на писане и компилиране на приложението.
+ \item Този тип на обекта не се променя по време на изпълнение на приложението
+\end{itemize}
+ \item Тип по време на изпълнение
+\begin{itemize}
+ \item Компилаторът не може да знае какъв ще бъде действителния тип на обекта по време на изпълнение на приложението -- той може да бъде произволен подтип на типа по време на компилация.
+\end{itemize}
+\end{itemize}
+\begin{lstlisting}
+Object o1 = new CheckingAccount(100);
+Object o2 = new CheckingAccount(100);
+o1.equals(o1); //== true
+o2.equals(o2); //== true
+o1.equals(o2); //== true
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Полиморфно поведение на метод}
+\begin{itemize}
+ \item Типът по време на компилация на обектите \lstinline{o1} и \lstinline{o2} е \lstinline{java.lang.Object}.
+ \item При изпълнение на кода се извиква метода \lstinline{equals} на класа \lstinline{CheckingAccount}.
+ \item Изборът на метод се прави на базата на типа по време на изпълнение
+ \item Изборът на метод в зависимост от типа по време на изпълнение се нарича динамично свързване на методи.
+\end{itemize}
+\begin{lstlisting}
+Object o1 = new CheckingAccount(100);
+Object o2 = new CheckingAccount(100);
+o1.equals(o1); //== true
+o2.equals(o2); //== true
+o1.equals(o2); //== true
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: базов абстрактен клас}
+\begin{lstlisting}
+public abstract class BankAccount {
+      ...
+      public abstract void withdraw (int amount);
+      ...
+}
+\end{lstlisting}
+\begin{itemize}
+ \item Класовете наследници --- \lstinline{CheckingAccount} и \lstinline{SavingsAccount} наследяват \lstinline{BankAccount} и предефинират (заместват, override) метода \lstinline{withdraw()}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: полиморфно поведение на метод}
+\begin{lstlisting}
+BankAccount b1 = new CheckingAccount(10);
+BankAccount b2 = new SavingsAccount(10);
+
+b1.withdraw(5);
+//calls CheckingAccount.withdraw(int)
+
+b2.withdraw(5);
+//calls SavingsAccount.withdraw(int)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: предаване на аргументи}
+\begin{lstlisting}
+public void chargeAccount (BankAccount account) {
+	...
+	account.withdraw(5);
+	...
+}
+\end{lstlisting}
+\begin{itemize}
+ \item При дефиниране на методи се предпочита използването на типа на възможно най-базовият клас
+ \item Като действителен аргумент на метода може да се предаде обект от типа \lstinline{CheckingAccount} и типа \lstinline{SavingsAccount}.
+\end{itemize}
+\end{frame}
+
+% \begin{frame}[containsverbatim]\frametitle{Предимстма на използването на базови класове}
+% \begin{itemize}
+%  \item Позволява ни промяна на имплементацията
+%  \item При смяна имплементацията не се налага да се променя код
+%  \item Например: ако даден метод трябва да използва списък, то при дефиницята на метода трябва да се използва типа \lstinline{List}. При използването на метода можете да използвате всяка колекция, която имплементира интерфейса \lstinline{List} -- \lstinline{LinkedList}, \lstinline{ArrayList}  и т.н.
+% \end{itemize}
+% \end{frame}
+
+\end{document}

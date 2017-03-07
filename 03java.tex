@@ -1,0 +1,449 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
+
+\input{notes.tex}
+
+\title{Класове и интерфейси}
+\lubo
+\date{15 април 2009}
+
+\usetikzlibrary{shapes}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\small
+{\bf Забележка:} Тази лекция е адаптация на:
+\begin{itemize}
+  \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/66BAC837-433E-48A5-BA15-B766E0B7CDEA/0/lecture2a.pdf}{Justin Mazzola Paluska: {\em Classes and Interfaces}} from
+\href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
+{\em 6.092: Java for 6.170} (MIT OpenCourseWare:
+Massachusetts Institute of Technology)}\\
+{\bf Лиценз:}
+\href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
+BY-NC-SA}  
+
+\end{itemize}
+
+\vfill
+
+\begin{columns}
+\column{0.3\textwidth}
+\begin{figure}[h]
+\center
+\scalebox{1}{\includegraphics{eu-logos}}
+\end{figure}
+\column{0.7\textwidth}
+
+Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
+\end{columns}
+
+\end{frame}
+\begin{frame}
+\frametitle{Съдържание}
+\tableofcontents %[hideallsubsections]
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]\frametitle{Терминология}
+\begin{itemize}
+ \item \lstinline{class} --- класовете могат да се разглеждат като описание, спецификация на обектите от дадения клас.
+ \item \lstinline{interface} --- интерфейсът дефинира списъкът на достъпните методи
+ \item {\bfseries instance} --- физическото представяне на даден клас или интерфейс в паметта
+\end{itemize}
+
+\begin{itemize}
+ \item {\bfseries метод} --- функция, която е дефинирана в рамките на класа
+ \item {\bfseries поле} --- променлива, която е част от класа
+ \item {\bfseries статично поле} --- променлива, която е една и съща за всички инстанции на класа
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Типове данни в Java}
+В Java има два основни класа от типове данни:
+\begin{itemize}
+ \item примитивни типове
+ \item обекти
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Обекти}
+\begin{itemize}
+ \item Обектът е инстанция (екземпляр) на даден клас. Всеки обект принадлежи на даден клас.
+ \item За създаване на инстанция на клас се използва операторът \lstinline{new}
+ \item Операторът \lstinline{new}:
+ \begin{itemize}
+  \item Заделя място в паметта за новия обект
+  \item Извиква съответния конструктор и инициализира обекта
+  \item Връща препратка към новосъздадения обект
+ \end{itemize}
+\end{itemize}
+
+\begin{lstlisting}
+ Bean bean=new Bean();
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Използване на обекти}
+\begin{itemize}
+ \item 
+Обектите позволяват извикване на техните методи:
+\begin{lstlisting}
+public static void main(String[] args) {
+	Bean bean = new Bean();
+	bean.plantBean(); // Invoked on instance
+}
+\end{lstlisting}
+\item
+Обектите позволяват достъп до техните полета:
+\begin{lstlisting}
+public static void main(String[] args) {
+		Point myPoint = new Point ();
+		myPoint.x = 10;
+		myPoint.y = 15;
+}
+\end{lstlisting}
+\item Когато даден обект повече не ни трябва просто спираме да го използваме. Паметта заемана от него ще бъде освободена, когато няма повече препратки към него.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Дефиниране на клас}
+\begin{itemize}
+ \item 
+Структурата на кода, необходим за дефиниране на клас, е следната:
+\begin{lstlisting}
+[<access>] [abstract/final] class <class_name>
+		[extends <class_name>]
+		[implements <interface_name>, ...]{
+	//полета
+	//конструктор
+	//методи
+}
+\end{lstlisting}
+\item Пример:
+\begin{lstlisting}
+public class Point {
+	...
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Членове на класа}
+В рамаките на класа могат да се дефинират следните видове членове на класа:
+\begin{itemize}
+ \item конструктори
+ \item полета (нестатични и статични)
+ \item методи (нестатични и статични)
+ \item вложени класове
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Конструктор}
+\begin{itemize}
+ \item Конструкторът трябва да има същото име, като това на класа
+ \item Един клас може да има няколко конструктора
+ \item В конструктора се извършва инициализация на конструирания обект
+\end{itemize}
+\begin{lstlisting}
+[<access>] class_name ([<argument list>]){
+	//тяло на конструктора
+}
+
+public class Point {
+	public Point () {
+		...
+	}
+	...
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Конструктори}
+\begin{lstlisting}
+public  class HelloWorld {
+	
+ 	public HelloWorld (String helloMessage) {
+ 		myString = helloMessage;
+	}
+	
+ 	public HelloWorld () {
+ 		myString = "Hello, World";
+	}
+	
+	public static void main(String[] args) {
+ 		HelloWorld myHelloWorld=new HelloWorld();
+		HelloWorld myHelloWorld2=new HelloWorld("Hello!!!");
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Методи}
+\begin{itemize}
+ \item Методите описват поведението на класа. 
+Те описват реакцията на обектите от класа на външни въздействия (съобщения). 
+Методите извършват операции
+ \item Методите работят върху състоянието (полетата) на класа
+ \item Методите могат да имат произволен брой агрументи и могат връщат не повече от една стойност
+ \item Ако даден метод не връща стойност, то неговият тип е void
+ \item Един клас може да има произволен брой методи
+\end{itemize}
+\begin{lstlisting}
+[<access>] <result type> method_name ([<argument list>]){
+	//тяло на метода
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Методи}
+\begin{lstlisting}
+class Box {
+	public boolean isEmpty() {
+		...
+	}
+
+	public int numberOfBooks() {
+		...
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Предефениране на методи (overloading)}
+\begin{itemize}
+ \item В един клас може да има два (или повече) метода с еднакво име стига аргументите да са им различни
+ \item При извикване методът се избира на основата на името и списъка от реално предадените аргументи
+\end{itemize}
+\begin{lstlisting}
+void  foo () {
+	...
+}
+void  foo (int a) {
+	...
+}
+public  static void main (String[] args) {
+ 	obj.foo(); //извиква първия метод
+ 	obj.foo(7); //извиква втория метод
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Полета}
+\begin{itemize}
+ \item Полето е част от клас
+ \item Полето е променлива – съдържа данни
+ \item Всяко поле има тип, който определя какъв вид данни ще се записват в него
+\end{itemize}
+\begin{lstlisting}
+public  class Bean {
+ 	public int beanCounter = 0;
+ 	public Date date;
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример}
+\begin{lstlisting}
+public class BankAccount {
+ 	private int balance;
+
+ 	public BankAccount() {
+ 		balance = 0;
+	}
+
+ 	public void withdraw(int amount) {
+ 		balance = balance - amount;
+	}
+
+ 	public void deposit(int amount) {
+ 		balance = balance + amount;
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Достъп до членовете на класа}
+Достъпът до член на класа се дефинира с една от следните ключови думи:
+\begin{itemize}
+ \item \lstinline{public} -- всеки клас от всеки пакет има достъп
+ \item \lstinline{protected} -- всеки подклас (наследник) има достъп
+ \item \lstinline{(default)} -- само класове от същия пакет имат достъп
+ \item \lstinline{private} -- само съответния клас има достъп
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Наследяване}
+\begin{itemize}
+ \item Чрез наследяване даден клас може да придобие функционалност от друг клас
+ \item Чрез наследяване може да се постигне абстракция на функционалността и данните
+ \item Наследяването позволява да се намали сложността на големи софтуерни системи
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Наследяване}
+\begin{center}
+\begin{tikzpicture}[grow=down,
+    level 1/.style={sibling distance=4.5cm,level distance=3cm},
+    level 2/.style={sibling distance=4.5cm, level distance=3cm},
+    edge from parent/.style={very thick,draw=blue!40!black!60,
+        shorten >=5pt, shorten <=5pt,arrows=triangle 90-},
+    edge from parent path={(\tikzparentnode.south) -- (\tikzchildnode.north)},
+    every node/.style={text ragged, inner sep=2mm},
+    punkt/.style={rectangle, rounded corners, shade, top color=white,
+    bottom color=blue!50!black!20, draw=blue!40!black!60, very thick}
+    ]
+
+\node[punkt, rectangle split, rectangle split parts=2] {BankAccount\nodepart{second}}
+    %Lower part lv1
+    child {
+        node[punkt, rectangle split, rectangle split parts=2] {CheckingAccount
+                  \nodepart{second}}
+        edge from parent
+            node {}
+    }
+    %Upper part, lv1
+    child {
+        node[punkt, rectangle split, rectangle split, rectangle split parts=2] {SavingsAccount
+                  \nodepart{second}}
+    };
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+ \item Две отделни идеи с различно поведение, но имат базова функционалност която е обща
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Интерфейси}
+\begin{itemize}
+ \item Интерфейсът дефинира списък на достъпните методи
+ \item В интерефейс се декларират методи, но не се дефинират
+ \item Интерфейсите нямат конструктори
+\end{itemize}
+\begin{lstlisting}
+interface BankAccount {
+ 	public void withdraw(int amount);
+ 	public void deposit(int amount);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Използване на интерфейси}
+\begin{itemize}
+ \item Един клас може да имплементира един или няколко интерфейса
+ \item Един интерфейс може да разшири друг интерфейс
+ \item Ако един клас имплементира даден интерфейс, то този клас трябва да 
+предостави реализация на всеки метод от интерфейса
+ \item Ако един клас имплементира няколко интерфейса то този клас трябва да 
+предостави реализация на всеки метод от всеки интерфейс
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Употреба на интерфейси}
+\begin{lstlisting}
+public  class CheckingAccount implements BankAccount {
+	private int balance;
+
+ 	public CheckingAccount(int initial) {
+ 		balance = initial;
+	} 
+ 	// implemented methods from BankAccount
+ 	public void withdraw(int amount) {
+ 		balance = balance - amount;
+	}
+ 	public void deposit(int amount) {
+ 		balance = balance + amount;
+	}
+ 	public int getBalance() {
+ 		return balance;
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Абстрактни класове}
+\begin{itemize}
+ \item Абстрактният клас е нещо средно между интерфейс и клас
+\begin{itemize}
+ \item може да има дефинирани методи
+ \item може да има полета
+ \item не могат да се създават обекти
+\end{itemize}
+ \item Помага да се дефинира една идея както като функционалност така и като данни
+ \item В един абстрактен клас може да се разположат методи, които имат обща функционалност за всички подкласове
+ \item Абстрактен клас се дефинира с ключовата дума abstract
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Употреба на абстрактни класове}
+\begin{lstlisting}
+public  abstract class BankAccount {
+ 	protected int balance;
+
+ 	public int getBalance() {
+ 		return balance;
+	}
+
+ 	public void deposit(int amount) {
+ 		balance = balance + amount;
+	}
+
+ 	public abstract void withdraw(int amount);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Наследяване на абстрактни класове}
+\begin{lstlisting}
+public  class CheckingAccount extends BankAccount {
+ 	public CheckingAccount () {
+ 		balance = 0;
+	}
+
+ 	public void withdraw (int amount) {
+ 		balance = balance - amount;
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: Наследяване на абстрактни класове}
+\begin{lstlisting}
+public  class SavingsAccount extends BankAccount {
+ 	private int numberOfWithdrawals;
+ 	public SavingsAccount() {
+ 		balance = 0;
+ 		numberOfWithdrawals = 0;
+	}
+ 	public void withdraw(int amount) {
+ 		if (numberOfWithdrawals > 5) {
+ 			throw new RuntimeException(
+				"Cannot make >5 withdrawals a month");
+ 		} else {
+ 			balance = balance - amount;
+ 			numberOfWithdrawals++;
+		}
+	}
+ 	public void resetNumOfWithdrawals() {
+		numberOfWithdrawals=0;
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\end{document}

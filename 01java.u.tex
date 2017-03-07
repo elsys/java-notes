@@ -1,0 +1,358 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\PassOptionsToPackage{unicode}{hyperref}
+\documentclass[ignorenonframetext, hyperref=unicode,unicode]{beamer}
+
+\input{jnotes.tex}
+\title{Въведение в Java}
+\lubo
+\date{\today}
+
+\pdfinfo{
+	/Title Introduction to Java
+}
+
+\begin{document}
+
+
+
+\frame{\titlepage}
+
+\begin{frame}
+\small
+{\bf Забележка:} Тази лекция е адаптация на:
+\begin{itemize}
+  \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/2C5A832A-E1BA-4104-A129-CC998C7B95FC/0/lecture1a.pdf}{Lucy Mendel: {\em Introduction and Java Programming}} from
+\href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
+{\em 6.092: Java for 6.170} (MIT OpenCourseWare:
+Massachusetts Institute of Technology)}\\
+{\bf Лиценз:}
+\href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
+BY-NC-SA}  
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Съдържание}
+\tableofcontents %[hideallsubsections]
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Литература}
+\begin{itemize}
+\item
+\href{http://computing.open.ac.uk/m254/}{Java Everyware}
+\item
+\href{http://java.sun.com/docs/books/tutorial/index.html}{The
+Java Tutorials.}
+\item
+\href{http://java.sun.com/developer/onlineTraining/Programming/BasicJava1/}{Essentials of the Java Programming Language, Part 1}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Какво е Java}
+\begin{itemize}
+\item Java е обектно–ориентиран език за програмиране
+\item В Java всичко (или по-точно -- почти всичко) е обект -- обектът има данни и операции, които може да извършва над тях
+\item Обектът е инстанция на клас -- всеки обект има тип
+\item В Java има и примитивни типове -- \lstinline{int},  \lstinline{double}, \lstinline{long},...
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+\frametitle{Hello Java World!}
+ \begin{lstlisting}
+package  hello;
+
+public  class HelloWorld {
+
+ 	String myString;
+
+ 	void shout() {
+ 		myString = "Hello Java World!";
+ 		System.out.println(myString);
+	}
+
+ 	public static void main(String[] args) {
+ 		HelloWorld myHelloWorld = new HelloWorld();
+		myHelloWorld.shout();
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+\frametitle{Класове}
+ \begin{itemize}
+ \item Класовете могат да се разглеждат като спецификация, описание на обектите
+\item Структурата и поведението на всеки обект се описва от неговия клас
+\end{itemize}
+\begin{lstlisting}
+ class Point{
+	private double x;
+	private double y;
+	...
+	public void add(Point p);
+	...
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+\frametitle{Полете (член-променливи)}
+ \begin{itemize}
+ \item Полетата (атрибути, член-променливи) определят състоянието на класа
+\end{itemize}
+\begin{lstlisting}
+class HelloWorld {
+	private String myString;
+	...
+}
+\end{lstlisting}
+\begin{lstlisting}
+class Point {
+	public double x;
+	public double y;
+	...
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+\frametitle{Обекти}
+ \begin{itemize}
+ \item Обектът са инстанция на клас
+ \item Всеки обект има състояние, поведение и идентичност.
+ \item За създаването на обект трябва да се използва операторът \lstinline{new}.
+\end{itemize}
+\begin{lstlisting}
+class HelloWorld {
+	String myString;
+	...
+
+	public static void main(String[] args) {
+ 		HelloWorld myHelloWorld = new HelloWorld();
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Използване на обекти}
+\begin{lstlisting}
+class ShowPoint {
+
+	public static void main(String[] args) {
+		Point myPoint = new Point ();
+		myPoint.x = 10.0;
+		myPoint.y = 15.0;
+	
+		System.out.println(myPoint.x);
+		System.out.println(myPoint.y);
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Примитивни типове}
+\begin{itemize}
+\item В Java освен обекти има и примитивни типове: \lstinline{boolean}, \lstinline{byte},\lstinline{short},\lstinline{int},\lstinline{long},\lstinline{double},\lstinline{float}, \lstinline{char}.
+\item За създаване на екземпляр (инстанция) на примитивен тип не е необходимо използването на оператора \lstinline{new}.
+\end{itemize}
+
+\begin{lstlisting}
+class ShowPoint {
+
+	public static void main(String[] args) {
+		Point myPoint = new Point ();
+		myPoint.x = 10.0;
+		myPoint.y = 15.0;
+	
+		System.out.println(myPoint.x);
+		System.out.println(myPoint.y);
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Методи}
+\begin{itemize}
+\item Методите дефинират поведението на обектите.
+\end{itemize}
+
+\begin{lstlisting}
+public  class HelloWorld {
+ 	String myString;
+
+ 	void shout() {
+ 		myString = "Hello, World!";
+ 		System.out.println(myString);
+	}
+
+ 	public static void main(String[] args) {
+ 		HelloWorld myHelloWorld = new HelloWorld();
+		myHelloWorld.shout();
+	}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Тяло на метод}
+\begin{itemize}
+\item Методите могат да получават произволен брой аргументи
+\item В тялото на метода могат да се дефинират локални променливи
+\item Методите могат да връщат резултат (или да не връщата, 
+ако типа на резултата е \lstinline{void}). Като резултат може да се върне 
+само един обект.
+\end{itemize}
+
+\begin{lstlisting}
+String firstname(String fullname) {
+	int  space = fullname.indexOf(" ");
+	String word = fullname.substring(0, space);
+	return word;
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]\frametitle{Конструктори}
+Конструкторите са специални методи
+\begin{itemize}
+ \item Не връщат стойност
+ \item Използват се за първоначална инициализация
+ \item Могат да имат параметри, както и нормално тяло, но оператора \lstinline{return}
+ не може да се използва за връщане на стойност
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Конструктори}
+\begin{lstlisting}
+public  class HelloWorld {
+ 	private String myString;
+	
+ 	public HelloWorld (String helloMessage) {
+ 		myString = helloMessage;
+	}
+	
+ 	public HelloWorld () {
+ 		myString = "Hello, Java World";
+	}
+	
+ 	public void shout() {
+ 		System.out.println(myString);
+	}
+}\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Управление на хода на програмата}
+\begin{columns}
+ \column{0.45\textwidth}
+\begin{lstlisting}
+if(lucy.age < 18){
+	// направи нещо
+} else if(lucy.hasCar()){
+ 	// направи нещо друго
+} else {
+	// направи нещо трето
+}
+\end{lstlisting}
+\column{0.45\textwidth}
+\begin{lstlisting}
+if ( cond1 ) {
+	...
+} else if ( cond2 ) {
+ 	...
+} else if ( condN ) {
+ 	...
+}
+else {
+	...
+} 
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Условия и условни изрази}
+\begin{itemize}
+ \item Условие – израз, чиито резултат е истина или лъжа (\lstinline{true}, \lstinline{false})
+\item Условни оператори: \lstinline{<}, \lstinline{>}, \lstinline{<=}, \lstinline{>=}, \lstinline{==}, \lstinline{!=}
+\item Логически оператори: \lstinline{&&}, \lstinline{||}, \lstinline{!}
+\end{itemize}
+\begin{lstlisting}
+box.isEmpty()
+box.numberOfBooks()==0
+!(box.numberOfBooks() > 1)
+box.numberOfBooks() != MAX_NUMBER_OF_BOOKS 
+
+lucy.age>= 21 && lucy.hasCar()
+!someone.name.equals("Lucy"))
+(!true || false) && true
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Масиви}
+\begin{itemize}
+ \item Масивите са специални обекти
+ \item Всеки масив има поле length, в което е записана големината на масива
+\end{itemize}
+\begin{lstlisting}
+String[] pets = new String[2]; 
+pets[0] = "Fluffy"; 
+pets[1] = "Muffy"; 
+		
+String[]  otherPets = new String[] {"Fluffy", "Muffy"}; 
+System.out.println(otherPets.length);
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Цикъл \lstinline{for}}
+\begin{itemize}
+ \item Инициализация -- изпълнява се само веднъж
+ \item Условие -- цикъла се изпълнява докато условието се изчислява като \lstinline{true}
+ \item Стъпка -- изпълнява се всеки път
+\end{itemize}
+\begin{lstlisting}
+for  (int i = 0; i<3; i++) {
+	System.out.println(i);
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Цикъл \lstinline{for} -- обхождане на колекция}
+\begin{lstlisting}
+String strArray[]=new String[10];
+for(int i=0;i<strArray.length;i++){
+	strArray[i]="Hello!"+i;
+}
+
+for(String str:strArray) {
+	System.out.println(str);			
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Цикъл \lstinline{while}}
+\begin{itemize}
+ \item Инициализация -- изпълнява се само веднъж
+ \item Условие -- цикъла се изпълнява докато условието се изчислява като \lstinline{true}
+ \item Стъпка -- изпълнява се всеки път
+\end{itemize}
+\begin{lstlisting}
+for  (int i = 0; i<3; i++) {
+	System.out.println(i);
+}
+\end{lstlisting}
+\end{frame}
+
+
+\end{document}

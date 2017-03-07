@@ -1,0 +1,512 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
+
+\input{jnotes.tex}
+
+\title{Нишки в Java}
+\lubo
+\date{10 юли 2009}
+
+
+\begin{document}
+
+
+
+\frame{\titlepage}
+
+\begin{frame}
+\small
+{\bf Забележка:} Тази лекция е адаптация на лекции от следните
+курсове:
+\begin{itemize}
+  \item 
+Prof. Judson Harward, Prof. Steven Lerman:
+\href{http://ocw.mit.edu/OcwWeb/Civil-and-Environmental-Engineering/1-00Fall-2005/CourseHome/index.htm}{
+{\em 1.00 / 1.001 Introduction to Computers and Engineering Problem Solving  Fall 2005} (MIT OpenCourseWare:
+Massachusetts Institute of Technology)}\\
+{\bf Лиценз:}
+\href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
+BY-NC-SA}  
+\item Dr. George Kocur: 
+\href{http://ocw.mit.edu/OcwWeb/Civil-and-Environmental-Engineering/1-00Spring-2005/CourseHome/index.htm}{
+{\em 1.00 Introduction to Computers and Engineering Problem
+Solving  Spring 2005} (MIT OpenCourseWare: Massachusetts Institute of
+Technology)} \\
+{\bf Лиценз:}
+\href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
+BY-NC-SA}
+\end{itemize}
+
+
+
+\vfill
+
+\begin{columns}
+\column{0.3\textwidth}
+\begin{figure}[h]
+\center
+\scalebox{1}{\includegraphics{eu-logos}}
+\end{figure}
+\column{0.7\textwidth}
+
+Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+{\bf Литература:} 
+\begin{itemize}
+\item
+\href{http://java.sun.com/docs/books/tutorial/essential/concurrency/index.html}{The
+Java Tutorials. Trail: Essential Classes; Lesson: Concurrency.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Съдържание}
+\tableofcontents %[hideallsubsections]
+\end{frame}
+
+
+\section{Процеси и нишки}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Процеси и нишки}
+\begin{itemize}
+\item Повечето операционни системи позволяват едновременно (конкурентно)
+изплънение на няколко процеса.
+\item Процесите са ресурсоемки.
+\item Процесите са толкова добре изолирани един от друг, че това прави
+комуникацията между тях трудна и  сложна.
+\item За разлика от процесите нишките са значително по-леки и по-малко
+ресурсоемки. Нишките работят в рамките на едни процес, и между тях на практика
+няма изолация.
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+\selection{Нишки в Java}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Нишки в Java}
+\begin{itemize}
+\item Java е един от малкото езици за програмиране, които имат вградена
+в езика поддръжка за многонишково програмиране.
+\item Един от първите масови езици за програмиране,  които разполагат с
+вградена поддръжка за многонишково програмиране е Ada.
+\item C\# също притежва вградена поддръжка за многонишково програмиране.
+\item Езиците {\CC} и {\Cpp} нямат вградена поддръжка за многонишково
+програмиране. Вместо това те разчитат на външни библиотеки, които да
+предоставят такава поддръжка.
+\item Очакваният \href{http://en.wikipedia.org/wiki/C\%2B\%2B0x}{нов стандарт за
+\Cpp} предвижда въвеждане в стандартната \Cpp\ библиотека на средства за
+многонишково програмиране (%\url{http://www.open-std.org/jtc1/sc22/wg21/},
+\url{http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2497.html}).
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Нишки в Java}
+\begin{itemize}
+\item В Java сибирането на ``боклука'' от обекти, които не са нужни, се
+изпълнява от виртуалната машина в отделна нишка.
+\item Библиотеките за създаване на графични интерфейси използват отделна нишка
+за обработка и разпределение на събитията, генерирани от графичния интерфейс.
+Това позволява на графичния интерфейс на приложението да остава отзивчив дори
+когато приложението е заето с дълги пресмятания или входно/изходни операции.
+\item Всичко това показва, че на езика Java му е вътрешно присъща
+могонишковост. Дори когато дадена програма е написана така, че да не използва
+повече от една нишки, средата в която се изпълнява тази програма използва много
+нишки.
+\item Java предоставя средства, чрез които програмистите могат лесно да създават
+многонишкови приложения.
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+\section{Класът \lstinline{Thread}}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Класът \lstinline{Thread}}
+\begin{itemize}
+\item Класът \lstinline{Thread} предоставя поддръжка за създаване на
+нишки в Java.
+\item Има два начина, по които можете да кажете на нишката какво да прави:
+\begin{itemize}
+  \item Като наследим класа \lstinline{Thread} и заместим метода
+  \lstinline{run()}.
+  \item Като предадем на конструктора на класа \lstinline{Thread} обект, който
+  реализира интерфейса \lstinline{Runnable}.
+\end{itemize}
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Класът \lstinline{Thread}: заместване на метода \lstinline{run()}}
+\begin{itemize}
+\item Наследяваме класа \lstinline{Thread} и предефинираме метода
+\lstinline{void run()}:
+\begin{lstlisting}
+class MyThread extends Thread {
+	...
+	void run() {
+		// код, който се изпълнява от нишката
+	}
+}
+\end{lstlisting}
+
+\item За да създадем нишка трябва да създадем обект от класа
+\lstinline{MyThread} и да извикаме метода \lstinline{start()}.
+\begin{lstlisting}
+MyThread myThread=new MyThread();
+myThread.start();
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Класът \lstinline{Thread}: използване на \lstinline{Runnable} }
+\begin{itemize}
+\item Друг възможен вариант за описание на поведението на нишка е да се
+използва отделен клас, който наследява интерфейсът \lstinline{Runnable}:
+\begin{lstlisting}
+interface Runnable {
+	public void run();
+}
+\end{lstlisting}
+\item За тази цел трябва де дефинирате клас, който реализира интерфейса
+\lstinline{Runnable}:
+\begin{lstlisting}
+class MyRunnable implements Runnable {
+	public void run{
+		//  код, който се изпълнява в нишка
+	}
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Класът \lstinline{Thread}: използване на \lstinline{Runnable} }
+\begin{itemize}
+\item При създаването на нишка в конструктора на класа \lstinline{Thread} се
+предава обект от класа \lstinline{MyRunnable}:
+\begin{lstlisting}
+Thread myThread=new Thread(new MyRunnable());
+myThread.start();
+\end{lstlisting}
+\item Една от причините да се използва този подход при дефиниране на
+поведението на нишки е, че в Java класовете могат да наследяват само един клас.
+При това положение, ако класът в който трябва да се опише поведение на нишка,
+вече е наследил друг клас, то използването на предходната стратегия става
+невъзможна.
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+\section{Пускане и спиране на нишки}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Пускане и спиране на нишки}
+\begin{itemize}
+\item За да се пусне нишка е необходимо да се създаде обект от класа
+\lstinline{Thread} или негов наследник и да се извика метода
+\lstinline{start()}.
+\begin{lstlisting}
+Thread t1=new MyThread();
+t1.start();
+Thread t2=new Thread(new MyRunnable());
+t2.start();
+\end{lstlisting}
+\item Класът \lstinline{Thread} по принцип притежва метод
+\href{http://java.sun.com/javase/6/docs/api/java/lang/Thread.html#stop()}{\lstinline{stop()}}.
+Целта на този метод е била той да се използва за спиране не нишки. Този метод
+обаче е несигурен от гледна точка на конкурентното програмиране. Поради това
+изпозването на този метод не се препоръчва и предстои 
+\href{http://java.sun.com/javase/6/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html}{махането}
+на този метод от класа \lstinline{Thread}.
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Пускане и спиране на нишки}
+\begin{itemize}
+\item Начинът за спиране на една нишка е нейният метод \lstinline{run()} да
+завърши работа. Не използвайте метода \lstinline{stop()} за да спрете нишка.
+\item Класът \lstinline{Thread} притежава метод \lstinline{isAlive()}, с който
+можете да проверите дали нишката все още работи или е завършила работа:
+\begin{lstlisting}
+Thread t=new MyThread();
+t.start();
+...
+if(t.isAlive()) {
+	// нишката все още работи
+} else {
+	// нишката е завършила
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Пускане и спиране на нишки}
+\begin{itemize}
+\item Класът \lstinline{Thread} притежава метод \lstinline{join()}, с чиято
+помощ можете да изчакате завършването на работата на дадена нишка:
+\begin{lstlisting}
+Thread t=new MyThread();
+t.start();
+...
+t.join(); // спира и изчаква докато нишката t завърши
+...
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+\section{Пример за използване на нишки}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Пример за използване на нишки}
+\begin{itemize}
+\item 
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+\frametitle{Пример за използване на нишки}
+\lstinputlisting[firstline=1,lastline=14]{src/labs/threads/URLCopyMain.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+\frametitle{Пример за използване на нишки}
+\lstinputlisting[firstline=16,lastline=130,firstnumber=last]{src/labs/threads/URLCopyMain.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+\frametitle{Пример за използване на нишки}
+\lstinputlisting[firstline=1,lastline=14]{src/labs/threads/URLCopyThread.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+%\frametitle{Пример за използване на нишки}
+\lstinputlisting[firstline=16,lastline=32,firstnumber=last]{src/labs/threads/URLCopyThread.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+%\frametitle{Пример за използване на нишки}
+\lstinputlisting[firstline=33,firstnumber=last]{src/labs/threads/URLCopyThread.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+\section{Необходимост от синхронизация на нишки}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+\frametitle{Необходимост от синхронизация на нишки}
+\lstinputlisting[firstline=1,lastline=19]{src/labs/threads/UnsynchornizedExample.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+%\frametitle{Пример за използване на нишки}
+\lstinputlisting[firstline=21,lastline=150,firstnumber=last]{src/labs/threads/UnsynchornizedExample.java}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim,shrink=5]
+\frametitle{Необходимост от синхронизация на нишки}
+\begin{itemize}
+\item Дадени са 50 нишки, които инкрементират една и съща променлива 1000000
+пъти. Очакването е след като нишките прюключат работа, стойността на
+променливата \lstinline{value} да бъде равна на \lstinline{50*1000000=50000000}.
+\item Резултата от няколко последователни пускания на програмата е следния:
+\begin{verbatim}
+value=47643339
+value=47822482
+value=50000000
+value=48498127
+\end{verbatim}
+\item Проблемът е липсата на синхронизация на нишките при едновременен достъп
+до общ ресурс --- променливата \lstinline{value}.
+\end{itemize}
+\end{frame}
+%------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Атомарност}
+\begin{itemize}
+\item За да бъде коректно предходната програма
+\lstinline{UnsynchronizedExample.java}, е необходимо операцията:
+\begin{lstlisting}[numbers=none] 
+value++;
+\end{lstlisting}
+да бъде атомарна.
+\item {\em Атомарна} се нарича операция, която се изпълнява изцяло, без да бъде
+прекъсвана от виртуалната машина.
+\end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Атомарност}
+\begin{itemize}
+  \item Операцията
+  \begin{lstlisting}[numbers=none]
+	value++;
+  \end{lstlisting}
+  типично не е атомарна.
+  \item Изпълнението на операцията \lstinline{value++} може да се представи по
+  следния начин:
+\begin{lstlisting}
+	local1=value;
+	local1=local1+1;
+	value=local1;
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\section{Състояние на надпревара}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Състояние на надпревара}
+\begin{itemize}
+  \item Когато две нишки или повече нишки се опитат конкурентно да променят
+  състоянието на общ ресурс, инструкциите им могат да се преплетат.
+  \item Преплитането на инструкциите на две или повече нишки зависи от
+  начина, по който нишките се планират върху процесора.
+\end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Състояние на надпревара}
+\begin{itemize}
+\item Да предположим, че първоначално \lstinline{value=5}. Един вариант за
+преплитане на инструкциите на две нишки е следния:
+\begin{lstlisting}
+thread[0]: local0=value       /*local1 = 5*/
+thread[0]: local0=local0+1    /*local1 = 6*/
+thread[1]: local1=value       /*local2 = 5*/
+thread[1]: local1=local1+1    /*local2 = 6*/
+thread[1]: value=local1       /*value = 6 */
+thread[0]: value=local0       /*value = 6 */
+\end{lstlisting}
+\item Стойността на \lstinline{value} става 6, докато правилния
+резултат трябва да бъде 7.
+\end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Състояние на надпревара}
+\begin{itemize}
+  \item {\em Състояние на надпревара (race condition)} се нарича ситуацията, при която
+  няколко
+  процеса или нишки конкурентно манипулират данни, които са общи, поделени между
+  конкурентните процеси (нишки).
+  \item Крайната стойност на поделените (общите) данни зависи от начина, по
+  който процесите се планират върху процесора.
+  \item За да се предотврати състоянието на надпревара (race condition),
+  манипулацията на общите ресурси от конкурентните процеси (нишки) трябва да
+  бъде синхронизирана.
+\end{itemize}
+\end{frame}
+
+%-------------------------------------------------------------------- SECTION -
+\section{Критичен участък (critical section)}
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Критичен участък (critical section)}
+\begin{itemize}
+  \item Няколко процеса или нишки се състезават за достъп до общи (поделени)
+  данни.
+  \item Всеки процес или нишка има участък от кода, в който работи с общите
+  данни. Такъв участък от кода се нарича {\em критичен участък}. 
+  \item Трябва да се изгради механизъм, чрез който да се гарантира, че когато
+  един процес се намира в критична секция, никой друг процес не може да
+  влезе в своя критичен участък.
+\end{itemize}
+\end{frame}
+
+
+\section{Критичен участък в Java: \lstinline{sychronized}}
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Критичен участък в Java: \lstinline{sychronized}}
+\begin{itemize}
+\item За дефиниране на критични участъци от
+кода Java предоставя ключовата дума \lstinline{synchronized}.
+\item Ключовата дума \lstinline{synchronized} може да се използва по няколко
+начина. Една от възможните употреби е методи да се дефинират като
+\lstinline{synchronized}.
+\begin{lstlisting}
+class Foo {
+...
+	public synchronized void bar() {
+		...
+	} 
+...
+}
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Критичен участък в Java: \lstinline{sychronized}}
+\begin{itemize}
+\item Дефинирането на метода \lstinline{bar()} като \lstinline{synchronized}
+означава, че този метод не може да бъде прекъснат (не може да се преплете) с
+други \lstinline{synchronized} методи, работещи върху същия обект.
+\item Ако друга нишка се опита да изпълни \lstinline{synchronized} метод
+върху същия обект, то тя ще бъде блокирана, докато първия
+\lstinline{synchronized} метод не завърши работа.
+\item Обърнете внимание, че \lstinline{synchronized} методи се блокират само от 
+други \lstinline{synchronized} методи. Методите, които не са синхронизирани,
+работят независимо.
+\item Синхронизират се методите, работещи върху един и същи обект. Докато
+работи \lstinline{synchronized} метод върху даден обект, друга нишка може да
+изпълнява \lstinline{synchronized} метод на друг обект.
+\end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------- SLIDE -
+\begin{frame}[containsverbatim]
+\frametitle{Критичен участък в Java: \lstinline{sychronized}}
+\begin{itemize}
+\item 
+\end{itemize}
+\end{frame}
+
+
+\end{document}
