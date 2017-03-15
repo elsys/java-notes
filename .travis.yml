@@ -1,0 +1,20 @@
+before_install:
+- sudo apt-get update && sudo apt-get install --no-install-recommends texlive-fonts-recommended
+  texlive-latex-extra texlive-science texlive-fonts-extra texlive-latex-recommended
+  dvipng texlive-lang-cyrillic latex-beamer
+script:
+- make
+- rm -rf */*.pdf
+- make
+before_deploy:
+- mkdir build
+- cp */*.pdf build/
+deploy:
+  provider: releases
+  api_key:
+    secure: A
+  file_glob: true
+  file: '*/*.pdf'
+  on:
+    repo: elsys/java-notes
+    tags: true
