@@ -1,11 +1,11 @@
 \PassOptionsToPackage{dvipsnames}{xcolor}
 \documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
 
-\input{notes.tex}
+\input{jnotes.tex}
 
-\title{Полиморфизъм}
-\lubo
-\date{25 април 2009}
+\title{РџРѕР»РёРјРѕСЂС„РёР·СЉРј}
+\authors
+\date{\today}
 
 %\usetikzlibrary{shapes}
 
@@ -15,83 +15,70 @@
 
 \begin{frame}
 \small
-{\bf Забележка:} Тази лекция е адаптация на:
+{\bf Р—Р°Р±РµР»РµР¶РєР°:} РўР°Р·Рё Р»РµРєС†РёСЏ Рµ Р°РґР°РїС‚Р°С†РёСЏ РЅР°:
 \begin{itemize}
   \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/66BAC837-433E-48A5-BA15-B766E0B7CDEA/0/lecture2a.pdf}{Robert Toscano: {\em Polymorphism}} from
 \href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
 {\em 6.092: Java for 6.170} (MIT OpenCourseWare:
 Massachusetts Institute of Technology)}\\
-{\bf Лиценз:}
+{\bf Р›РёС†РµРЅР·:}
 \href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
 BY-NC-SA}  
 
 \end{itemize}
 
-\vfill
-
-\begin{columns}
-\column{0.3\textwidth}
-\begin{figure}[h]
-\center
-\scalebox{1}{\includegraphics{eu-logos}}
-\end{figure}
-\column{0.7\textwidth}
-
-Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
-\end{columns}
-
 \end{frame}
 \begin{frame}
-\frametitle{Съдържание}
+\frametitle{РЎСЉРґСЉСЂР¶Р°РЅРёРµ}
 \tableofcontents %[hideallsubsections]
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Полиморфизъм}
+\begin{frame}[containsverbatim]\frametitle{РџРѕР»РёРјРѕСЂС„РёР·СЉРј}
 \begin{itemize}
- \item Способността на обектите да реагират по собствен начин на един и същ метод в зависимост от действителния си тип
- \item Способността на обекти от различен тип да реагират на методи с едно и също име
- \item Възможността да се предефинира функционалност на наследения клас
- \item Java управлява коя предефинирана версия на даден метод трябва да бъде извикана.
+ \item РЎРїРѕСЃРѕР±РЅРѕСЃС‚С‚Р° РЅР° РѕР±РµРєС‚РёС‚Рµ РґР° СЂРµР°РіРёСЂР°С‚ РїРѕ СЃРѕР±СЃС‚РІРµРЅ РЅР°С‡РёРЅ РЅР° РµРґРёРЅ Рё СЃСЉС‰ РјРµС‚РѕРґ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚ РѕС‚ РґРµР№СЃС‚РІРёС‚РµР»РЅРёСЏ СЃРё С‚РёРї
+ \item РЎРїРѕСЃРѕР±РЅРѕСЃС‚С‚Р° РЅР° РѕР±РµРєС‚Рё РѕС‚ СЂР°Р·Р»РёС‡РµРЅ С‚РёРї РґР° СЂРµР°РіРёСЂР°С‚ РЅР° РјРµС‚РѕРґРё СЃ РµРґРЅРѕ Рё СЃСЉС‰Рѕ РёРјРµ
+ \item Р’СЉР·РјРѕР¶РЅРѕСЃС‚С‚Р° РґР° СЃРµ РїСЂРµРґРµС„РёРЅРёСЂР° С„СѓРЅРєС†РёРѕРЅР°Р»РЅРѕСЃС‚ РЅР° РЅР°СЃР»РµРґРµРЅРёСЏ РєР»Р°СЃ
+ \item Java СѓРїСЂР°РІР»СЏРІР° РєРѕСЏ РїСЂРµРґРµС„РёРЅРёСЂР°РЅР° РІРµСЂСЃРёСЏ РЅР° РґР°РґРµРЅ РјРµС‚РѕРґ С‚СЂСЏР±РІР° РґР° Р±СЉРґРµ РёР·РІРёРєР°РЅР°.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Клас \lstinline{Object}}
+\begin{frame}[containsverbatim]\frametitle{РљР»Р°СЃ \lstinline{Object}}
 \begin{itemize}
- \item Всеки базов клас (т.е. клас, който не наслядява друг клас) по подразбиране наследява класа \lstinline{java.lang.Object}.
- \item Класът \lstinline{java.lang.Object} съдържа методи, които се наследяват от всички други класове.
- \item Методите на класа \lstinline{java.lang.Object} включват: \lstinline{clone}, \lstinline{equals}, \lstinline{finalize}, \lstinline{getClass}, \lstinline{hashCode}, \lstinline{notify}, \lstinline{notifyAll}, \lstinline{wait}, \lstinline{toString}
+ \item Р’СЃРµРєРё Р±Р°Р·РѕРІ РєР»Р°СЃ (С‚.Рµ. РєР»Р°СЃ, РєРѕР№С‚Рѕ РЅРµ РЅР°СЃР»СЏРґСЏРІР° РґСЂСѓРі РєР»Р°СЃ) РїРѕ РїРѕРґСЂР°Р·Р±РёСЂР°РЅРµ РЅР°СЃР»РµРґСЏРІР° РєР»Р°СЃР° \lstinline{java.lang.Object}.
+ \item РљР»Р°СЃСЉС‚ \lstinline{java.lang.Object} СЃСЉРґСЉСЂР¶Р° РјРµС‚РѕРґРё, РєРѕРёС‚Рѕ СЃРµ РЅР°СЃР»РµРґСЏРІР°С‚ РѕС‚ РІСЃРёС‡РєРё РґСЂСѓРіРё РєР»Р°СЃРѕРІРµ.
+ \item РњРµС‚РѕРґРёС‚Рµ РЅР° РєР»Р°СЃР° \lstinline{java.lang.Object} РІРєР»СЋС‡РІР°С‚: \lstinline{clone}, \lstinline{equals}, \lstinline{finalize}, \lstinline{getClass}, \lstinline{hashCode}, \lstinline{notify}, \lstinline{notifyAll}, \lstinline{wait}, \lstinline{toString}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Предефиниране (override) на методи (заместване на методи)}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРµРґРµС„РёРЅРёСЂР°РЅРµ (override) РЅР° РјРµС‚РѕРґРё (Р·Р°РјРµСЃС‚РІР°РЅРµ РЅР° РјРµС‚РѕРґРё)}
 \begin{itemize}
- \item Предефинирането (override) на методи се различава от предефинирането (overloading) на методи.
- \item Родителски клас (супер клас)
+ \item РџСЂРµРґРµС„РёРЅРёСЂР°РЅРµС‚Рѕ (override) РЅР° РјРµС‚РѕРґРё СЃРµ СЂР°Р·Р»РёС‡Р°РІР° РѕС‚ РїСЂРµРґРµС„РёРЅРёСЂР°РЅРµС‚Рѕ (overloading) РЅР° РјРµС‚РѕРґРё.
+ \item Р РѕРґРёС‚РµР»СЃРєРё РєР»Р°СЃ (СЃСѓРїРµСЂ РєР»Р°СЃ)
  \begin{itemize}
- \item Ако класът \lstinline{D} наследява класа \lstinline{B}, то класът \lstinline{B} е родителски клас (базов клас, супер клас) на класа \lstinline{D}
- \item Класът \lstinline{D} е наследник (подклас, производен клас) на класа \lstinline{B}.
+ \item РђРєРѕ РєР»Р°СЃСЉС‚ \lstinline{D} РЅР°СЃР»РµРґСЏРІР° РєР»Р°СЃР° \lstinline{B}, С‚Рѕ РєР»Р°СЃСЉС‚ \lstinline{B} Рµ СЂРѕРґРёС‚РµР»СЃРєРё РєР»Р°СЃ (Р±Р°Р·РѕРІ РєР»Р°СЃ, СЃСѓРїРµСЂ РєР»Р°СЃ) РЅР° РєР»Р°СЃР° \lstinline{D}
+ \item РљР»Р°СЃСЉС‚ \lstinline{D} Рµ РЅР°СЃР»РµРґРЅРёРє (РїРѕРґРєР»Р°СЃ, РїСЂРѕРёР·РІРѕРґРµРЅ РєР»Р°СЃ) РЅР° РєР»Р°СЃР° \lstinline{B}.
  \end{itemize}
- \item Ако класът \lstinline{B} съдържа метод, който е достъпен в класа \lstinline{D}:
+ \item РђРєРѕ РєР»Р°СЃСЉС‚ \lstinline{B} СЃСЉРґСЉСЂР¶Р° РјРµС‚РѕРґ, РєРѕР№С‚Рѕ Рµ РґРѕСЃС‚СЉРїРµРЅ РІ РєР»Р°СЃР° \lstinline{D}:
 \begin{lstlisting}
  public void foo(int arg) {...}
 \end{lstlisting}
- то класът \lstinline{D} може да предефинира (замести, override) този метод, като дефинира метод със същата сигнатура.
+ С‚Рѕ РєР»Р°СЃСЉС‚ \lstinline{D} РјРѕР¶Рµ РґР° РїСЂРµРґРµС„РёРЅРёСЂР° (Р·Р°РјРµСЃС‚Рё, override) С‚РѕР·Рё РјРµС‚РѕРґ, РєР°С‚Рѕ РґРµС„РёРЅРёСЂР° РјРµС‚РѕРґ СЃСЉСЃ СЃСЉС‰Р°С‚Р° СЃРёРіРЅР°С‚СѓСЂР°.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Методът \lstinline{equals}}
+\begin{frame}[containsverbatim]\frametitle{РњРµС‚РѕРґСЉС‚ \lstinline{equals}}
 \begin{itemize}
- \item Методът \lstinline{equals} е дефиниран в базовият клас \lstinline{java.lang.Object}:
+ \item РњРµС‚РѕРґСЉС‚ \lstinline{equals} Рµ РґРµС„РёРЅРёСЂР°РЅ РІ Р±Р°Р·РѕРІРёСЏС‚ РєР»Р°СЃ \lstinline{java.lang.Object}:
 \begin{lstlisting}
  public boolean equals(Object o);
 \end{lstlisting}
- \item Всички класове наследяват този метод от класа \lstinline{java.lang.Object}.
- \item Дефиницията на този метод в базовия клас \lstinline{java.lang.Object} проверява равенството на препратките -- т.е. проверяв дали две препратки сочат към един и същ обект в паметта.
- \item В случай, че класът трябва да поддържа идеята за сравняване на различни инстанции, то класът трябва да предефинира (замести, override) този метод.
+ \item Р’СЃРёС‡РєРё РєР»Р°СЃРѕРІРµ РЅР°СЃР»РµРґСЏРІР°С‚ С‚РѕР·Рё РјРµС‚РѕРґ РѕС‚ РєР»Р°СЃР° \lstinline{java.lang.Object}.
+ \item Р”РµС„РёРЅРёС†РёСЏС‚Р° РЅР° С‚РѕР·Рё РјРµС‚РѕРґ РІ Р±Р°Р·РѕРІРёСЏ РєР»Р°СЃ \lstinline{java.lang.Object} РїСЂРѕРІРµСЂСЏРІР° СЂР°РІРµРЅСЃС‚РІРѕС‚Рѕ РЅР° РїСЂРµРїСЂР°С‚РєРёС‚Рµ -- С‚.Рµ. РїСЂРѕРІРµСЂСЏРІ РґР°Р»Рё РґРІРµ РїСЂРµРїСЂР°С‚РєРё СЃРѕС‡Р°С‚ РєСЉРј РµРґРёРЅ Рё СЃСЉС‰ РѕР±РµРєС‚ РІ РїР°РјРµС‚С‚Р°.
+ \item Р’ СЃР»СѓС‡Р°Р№, С‡Рµ РєР»Р°СЃСЉС‚ С‚СЂСЏР±РІР° РґР° РїРѕРґРґСЉСЂР¶Р° РёРґРµСЏС‚Р° Р·Р° СЃСЂР°РІРЅСЏРІР°РЅРµ РЅР° СЂР°Р·Р»РёС‡РЅРё РёРЅСЃС‚Р°РЅС†РёРё, С‚Рѕ РєР»Р°СЃСЉС‚ С‚СЂСЏР±РІР° РґР° РїСЂРµРґРµС„РёРЅРёСЂР° (Р·Р°РјРµСЃС‚Рё, override) С‚РѕР·Рё РјРµС‚РѕРґ.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: използване на \lstinline{equals}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РёР·РїРѕР»Р·РІР°РЅРµ РЅР° \lstinline{equals}}
 \begin{lstlisting}
 CheckingAccount c1 = new CheckingAccount(100);
 CheckingAccount c2 = new CheckingAccount(100);
@@ -101,7 +88,7 @@ c1.equals(c2); //== false
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Предефиниране (заместване) на \lstinline{equals}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРµРґРµС„РёРЅРёСЂР°РЅРµ (Р·Р°РјРµСЃС‚РІР°РЅРµ) РЅР° \lstinline{equals}}
 \begin{lstlisting}
 public class CheckingAccount extends BankAccount {
         ...
@@ -118,7 +105,7 @@ public class CheckingAccount extends BankAccount {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Използване на \lstinline{equals}}
+\begin{frame}[containsverbatim]\frametitle{РР·РїРѕР»Р·РІР°РЅРµ РЅР° \lstinline{equals}}
 \begin{lstlisting}
 CheckingAccount c1 = new CheckingAccount(100);
 CheckingAccount c2 = new CheckingAccount(100);
@@ -128,7 +115,7 @@ c1.equals(c2); //== true
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Полиморфно поведение на \lstinline{equals}}
+\begin{frame}[containsverbatim]\frametitle{РџРѕР»РёРјРѕСЂС„РЅРѕ РїРѕРІРµРґРµРЅРёРµ РЅР° \lstinline{equals}}
 \begin{lstlisting}
 Object o1 = new CheckingAccount(100);
 Object o2 = new CheckingAccount(100);
@@ -138,33 +125,17 @@ o1.equals(o2); //== true
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Тип по време на компилация и тип по време на изпълнение}
+\begin{frame}[containsverbatim]\frametitle{РўРёРї РїРѕ РІСЂРµРјРµ РЅР° РєРѕРјРїРёР»Р°С†РёСЏ Рё С‚РёРї РїРѕ РІСЂРµРјРµ РЅР° РёР·РїСЉР»РЅРµРЅРёРµ}
 \begin{itemize}
- \item Тип по време на компилация
+ \item РўРёРї РїРѕ РІСЂРµРјРµ РЅР° РєРѕРјРїРёР»Р°С†РёСЏ
 \begin{itemize}
- \item Тип на обекта, който е известен предварително --- по време на писане и компилиране на приложението.
- \item Този тип на обекта не се променя по време на изпълнение на приложението
+ \item РўРёРї РЅР° РѕР±РµРєС‚Р°, РєРѕР№С‚Рѕ Рµ РёР·РІРµСЃС‚РµРЅ РїСЂРµРґРІР°СЂРёС‚РµР»РЅРѕ --- РїРѕ РІСЂРµРјРµ РЅР° РїРёСЃР°РЅРµ Рё РєРѕРјРїРёР»РёСЂР°РЅРµ РЅР° РїСЂРёР»РѕР¶РµРЅРёРµС‚Рѕ.
+ \item РўРѕР·Рё С‚РёРї РЅР° РѕР±РµРєС‚Р° РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏ РїРѕ РІСЂРµРјРµ РЅР° РёР·РїСЉР»РЅРµРЅРёРµ РЅР° РїСЂРёР»РѕР¶РµРЅРёРµС‚Рѕ
 \end{itemize}
- \item Тип по време на изпълнение
+ \item РўРёРї РїРѕ РІСЂРµРјРµ РЅР° РёР·РїСЉР»РЅРµРЅРёРµ
 \begin{itemize}
- \item Компилаторът не може да знае какъв ще бъде действителния тип на обекта по време на изпълнение на приложението -- той може да бъде произволен подтип на типа по време на компилация.
+ \item РљРѕРјРїРёР»Р°С‚РѕСЂСЉС‚ РЅРµ РјРѕР¶Рµ РґР° Р·РЅР°Рµ РєР°РєСЉРІ С‰Рµ Р±СЉРґРµ РґРµР№СЃС‚РІРёС‚РµР»РЅРёСЏ С‚РёРї РЅР° РѕР±РµРєС‚Р° РїРѕ РІСЂРµРјРµ РЅР° РёР·РїСЉР»РЅРµРЅРёРµ РЅР° РїСЂРёР»РѕР¶РµРЅРёРµС‚Рѕ -- С‚РѕР№ РјРѕР¶Рµ РґР° Р±СЉРґРµ РїСЂРѕРёР·РІРѕР»РµРЅ РїРѕРґС‚РёРї РЅР° С‚РёРїР° РїРѕ РІСЂРµРјРµ РЅР° РєРѕРјРїРёР»Р°С†РёСЏ.
 \end{itemize}
-\end{itemize}
-\begin{lstlisting}
-Object o1 = new CheckingAccount(100);
-Object o2 = new CheckingAccount(100);
-o1.equals(o1); //== true
-o2.equals(o2); //== true
-o1.equals(o2); //== true
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[containsverbatim]\frametitle{Полиморфно поведение на метод}
-\begin{itemize}
- \item Типът по време на компилация на обектите \lstinline{o1} и \lstinline{o2} е \lstinline{java.lang.Object}.
- \item При изпълнение на кода се извиква метода \lstinline{equals} на класа \lstinline{CheckingAccount}.
- \item Изборът на метод се прави на базата на типа по време на изпълнение
- \item Изборът на метод в зависимост от типа по време на изпълнение се нарича динамично свързване на методи.
 \end{itemize}
 \begin{lstlisting}
 Object o1 = new CheckingAccount(100);
@@ -175,7 +146,23 @@ o1.equals(o2); //== true
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: базов абстрактен клас}
+\begin{frame}[containsverbatim]\frametitle{РџРѕР»РёРјРѕСЂС„РЅРѕ РїРѕРІРµРґРµРЅРёРµ РЅР° РјРµС‚РѕРґ}
+\begin{itemize}
+ \item РўРёРїСЉС‚ РїРѕ РІСЂРµРјРµ РЅР° РєРѕРјРїРёР»Р°С†РёСЏ РЅР° РѕР±РµРєС‚РёС‚Рµ \lstinline{o1} Рё \lstinline{o2} Рµ \lstinline{java.lang.Object}.
+ \item РџСЂРё РёР·РїСЉР»РЅРµРЅРёРµ РЅР° РєРѕРґР° СЃРµ РёР·РІРёРєРІР° РјРµС‚РѕРґР° \lstinline{equals} РЅР° РєР»Р°СЃР° \lstinline{CheckingAccount}.
+ \item РР·Р±РѕСЂСЉС‚ РЅР° РјРµС‚РѕРґ СЃРµ РїСЂР°РІРё РЅР° Р±Р°Р·Р°С‚Р° РЅР° С‚РёРїР° РїРѕ РІСЂРµРјРµ РЅР° РёР·РїСЉР»РЅРµРЅРёРµ
+ \item РР·Р±РѕСЂСЉС‚ РЅР° РјРµС‚РѕРґ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚ РѕС‚ С‚РёРїР° РїРѕ РІСЂРµРјРµ РЅР° РёР·РїСЉР»РЅРµРЅРёРµ СЃРµ РЅР°СЂРёС‡Р° РґРёРЅР°РјРёС‡РЅРѕ СЃРІСЉСЂР·РІР°РЅРµ РЅР° РјРµС‚РѕРґРё.
+\end{itemize}
+\begin{lstlisting}
+Object o1 = new CheckingAccount(100);
+Object o2 = new CheckingAccount(100);
+o1.equals(o1); //== true
+o2.equals(o2); //== true
+o1.equals(o2); //== true
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: Р±Р°Р·РѕРІ Р°Р±СЃС‚СЂР°РєС‚РµРЅ РєР»Р°СЃ}
 \begin{lstlisting}
 public abstract class BankAccount {
       ...
@@ -184,11 +171,11 @@ public abstract class BankAccount {
 }
 \end{lstlisting}
 \begin{itemize}
- \item Класовете наследници --- \lstinline{CheckingAccount} и \lstinline{SavingsAccount} наследяват \lstinline{BankAccount} и предефинират (заместват, override) метода \lstinline{withdraw()}.
+ \item РљР»Р°СЃРѕРІРµС‚Рµ РЅР°СЃР»РµРґРЅРёС†Рё --- \lstinline{CheckingAccount} Рё \lstinline{SavingsAccount} РЅР°СЃР»РµРґСЏРІР°С‚ \lstinline{BankAccount} Рё РїСЂРµРґРµС„РёРЅРёСЂР°С‚ (Р·Р°РјРµСЃС‚РІР°С‚, override) РјРµС‚РѕРґР° \lstinline{withdraw()}.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: полиморфно поведение на метод}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РїРѕР»РёРјРѕСЂС„РЅРѕ РїРѕРІРµРґРµРЅРёРµ РЅР° РјРµС‚РѕРґ}
 \begin{lstlisting}
 BankAccount b1 = new CheckingAccount(10);
 BankAccount b2 = new SavingsAccount(10);
@@ -201,7 +188,7 @@ b2.withdraw(5);
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: предаване на аргументи}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РїСЂРµРґР°РІР°РЅРµ РЅР° Р°СЂРіСѓРјРµРЅС‚Рё}
 \begin{lstlisting}
 public void chargeAccount (BankAccount account) {
 	...
@@ -210,16 +197,16 @@ public void chargeAccount (BankAccount account) {
 }
 \end{lstlisting}
 \begin{itemize}
- \item При дефиниране на методи се предпочита използването на типа на възможно най-базовият клас
- \item Като действителен аргумент на метода може да се предаде обект от типа \lstinline{CheckingAccount} и типа \lstinline{SavingsAccount}.
+ \item РџСЂРё РґРµС„РёРЅРёСЂР°РЅРµ РЅР° РјРµС‚РѕРґРё СЃРµ РїСЂРµРґРїРѕС‡РёС‚Р° РёР·РїРѕР»Р·РІР°РЅРµС‚Рѕ РЅР° С‚РёРїР° РЅР° РІСЉР·РјРѕР¶РЅРѕ РЅР°Р№-Р±Р°Р·РѕРІРёСЏС‚ РєР»Р°СЃ
+ \item РљР°С‚Рѕ РґРµР№СЃС‚РІРёС‚РµР»РµРЅ Р°СЂРіСѓРјРµРЅС‚ РЅР° РјРµС‚РѕРґР° РјРѕР¶Рµ РґР° СЃРµ РїСЂРµРґР°РґРµ РѕР±РµРєС‚ РѕС‚ С‚РёРїР° \lstinline{CheckingAccount} Рё С‚РёРїР° \lstinline{SavingsAccount}.
 \end{itemize}
 \end{frame}
 
-% \begin{frame}[containsverbatim]\frametitle{Предимстма на използването на базови класове}
+% \begin{frame}[containsverbatim]\frametitle{РџСЂРµРґРёРјСЃС‚РјР° РЅР° РёР·РїРѕР»Р·РІР°РЅРµС‚Рѕ РЅР° Р±Р°Р·РѕРІРё РєР»Р°СЃРѕРІРµ}
 % \begin{itemize}
-%  \item Позволява ни промяна на имплементацията
-%  \item При смяна имплементацията не се налага да се променя код
-%  \item Например: ако даден метод трябва да използва списък, то при дефиницята на метода трябва да се използва типа \lstinline{List}. При използването на метода можете да използвате всяка колекция, която имплементира интерфейса \lstinline{List} -- \lstinline{LinkedList}, \lstinline{ArrayList}  и т.н.
+%  \item РџРѕР·РІРѕР»СЏРІР° РЅРё РїСЂРѕРјСЏРЅР° РЅР° РёРјРїР»РµРјРµРЅС‚Р°С†РёСЏС‚Р°
+%  \item РџСЂРё СЃРјСЏРЅР° РёРјРїР»РµРјРµРЅС‚Р°С†РёСЏС‚Р° РЅРµ СЃРµ РЅР°Р»Р°РіР° РґР° СЃРµ РїСЂРѕРјРµРЅСЏ РєРѕРґ
+%  \item РќР°РїСЂРёРјРµСЂ: Р°РєРѕ РґР°РґРµРЅ РјРµС‚РѕРґ С‚СЂСЏР±РІР° РґР° РёР·РїРѕР»Р·РІР° СЃРїРёСЃСЉРє, С‚Рѕ РїСЂРё РґРµС„РёРЅРёС†СЏС‚Р° РЅР° РјРµС‚РѕРґР° С‚СЂСЏР±РІР° РґР° СЃРµ РёР·РїРѕР»Р·РІР° С‚РёРїР° \lstinline{List}. РџСЂРё РёР·РїРѕР»Р·РІР°РЅРµС‚Рѕ РЅР° РјРµС‚РѕРґР° РјРѕР¶РµС‚Рµ РґР° РёР·РїРѕР»Р·РІР°С‚Рµ РІСЃСЏРєР° РєРѕР»РµРєС†РёСЏ, РєРѕСЏС‚Рѕ РёРјРїР»РµРјРµРЅС‚РёСЂР° РёРЅС‚РµСЂС„РµР№СЃР° \lstinline{List} -- \lstinline{LinkedList}, \lstinline{ArrayList}  Рё С‚.РЅ.
 % \end{itemize}
 % \end{frame}
 

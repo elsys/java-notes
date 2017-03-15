@@ -2,14 +2,14 @@
 \PassOptionsToPackage{unicode}{hyperref}
 \documentclass[ignorenonframetext, hyperref=unicode,unicode]{beamer}
 
-\input{notes.tex}
-\title{Въведение в Java}
-\lubo
-\date{20 март 2009}
+\input{jnotes.tex}
+\title{Р’СЉРІРµРґРµРЅРёРµ РІ Java}
+\authors
+\date{\today}
 
-% \pdfinfo{
-% 	/Title Introduction to Java
-% }
+\pdfinfo{
+	/Title Introduction to Java
+}
 
 \begin{document}
 
@@ -21,42 +21,29 @@
 
 
 \small
-{\bf Забележка:} Тази лекция е адаптация на:
+{\bf Р—Р°Р±РµР»РµР¶РєР°:} РўР°Р·Рё Р»РµРєС†РёСЏ Рµ Р°РґР°РїС‚Р°С†РёСЏ РЅР°:
 \begin{itemize}
   \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/2C5A832A-E1BA-4104-A129-CC998C7B95FC/0/lecture1a.pdf}{Lucy Mendel: {\em Introduction and Java Programming}} from
 \href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
 {\em 6.092: Java for 6.170} (MIT OpenCourseWare:
 Massachusetts Institute of Technology)}\\
-{\bf Лиценз:}
+{\bf Р›РёС†РµРЅР·:}
 \href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
 BY-NC-SA}  
 
 \end{itemize}
 
-\vfill
-
-\begin{columns}
-\column{0.3\textwidth}
-\begin{figure}[h]
-\center
-\scalebox{1}{\includegraphics{eu-logos}}
-\end{figure}
-\column{0.7\textwidth}
-
-Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
-\end{columns}
-
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Съдържание}
+\frametitle{РЎСЉРґСЉСЂР¶Р°РЅРёРµ}
 \tableofcontents %[hideallsubsections]
 \end{frame}
 
 
 \begin{frame}
- \frametitle{Литература}
+ \frametitle{Р›РёС‚РµСЂР°С‚СѓСЂР°}
 \begin{itemize}
 \item
 \href{http://computing.open.ac.uk/m254/}{Java Everyware}
@@ -70,12 +57,12 @@ Java Tutorials.}
 \end{frame}
 
 \begin{frame}
- \frametitle{Какво е Java}
+ \frametitle{РљР°РєРІРѕ Рµ Java}
 \begin{itemize}
-\item Java е обектно–ориентиран език за програмиране
-\item В Java всичко (или по-точно -- почти всичко) е обект -- обектът има данни и операции, които може да извършва над тях
-\item Обектът е инстанция на клас -- всеки обект има тип
-\item В Java има и примитивни типове -- \lstinline{int},  \lstinline{double}, \lstinline{long},...
+\item Java Рµ РѕР±РµРєС‚РЅРѕвЂ“РѕСЂРёРµРЅС‚РёСЂР°РЅ РµР·РёРє Р·Р° РїСЂРѕРіСЂР°РјРёСЂР°РЅРµ
+\item Р’ Java РІСЃРёС‡РєРѕ (РёР»Рё РїРѕ-С‚РѕС‡РЅРѕ -- РїРѕС‡С‚Рё РІСЃРёС‡РєРѕ) Рµ РѕР±РµРєС‚ -- РѕР±РµРєС‚СЉС‚ РёРјР° РґР°РЅРЅРё Рё РѕРїРµСЂР°С†РёРё, РєРѕРёС‚Рѕ РјРѕР¶Рµ РґР° РёР·РІСЉСЂС€РІР° РЅР°Рґ С‚СЏС…
+\item РћР±РµРєС‚СЉС‚ Рµ РёРЅСЃС‚Р°РЅС†РёСЏ РЅР° РєР»Р°СЃ -- РІСЃРµРєРё РѕР±РµРєС‚ РёРјР° С‚РёРї
+\item Р’ Java РёРјР° Рё РїСЂРёРјРёС‚РёРІРЅРё С‚РёРїРѕРІРµ -- \lstinline{int},  \lstinline{double}, \lstinline{long},...
 \end{itemize}
 \end{frame}
 
@@ -103,10 +90,10 @@ public  class HelloWorld {
 \end{frame}
 
 \begin{frame}[containsverbatim]
-\frametitle{Класове}
+\frametitle{РљР»Р°СЃРѕРІРµ}
  \begin{itemize}
- \item Класовете могат да се разглеждат като спецификация, описание на обектите
-\item Структурата и поведението на всеки обект се описва от неговия клас
+ \item РљР»Р°СЃРѕРІРµС‚Рµ РјРѕРіР°С‚ РґР° СЃРµ СЂР°Р·РіР»РµР¶РґР°С‚ РєР°С‚Рѕ СЃРїРµС†РёС„РёРєР°С†РёСЏ, РѕРїРёСЃР°РЅРёРµ РЅР° РѕР±РµРєС‚РёС‚Рµ
+\item РЎС‚СЂСѓРєС‚СѓСЂР°С‚Р° Рё РїРѕРІРµРґРµРЅРёРµС‚Рѕ РЅР° РІСЃРµРєРё РѕР±РµРєС‚ СЃРµ РѕРїРёСЃРІР° РѕС‚ РЅРµРіРѕРІРёСЏ РєР»Р°СЃ
 \end{itemize}
 \begin{lstlisting}
  class Point{
@@ -121,9 +108,9 @@ public  class HelloWorld {
 
 
 \begin{frame}[containsverbatim]
-\frametitle{Полете (член-променливи)}
+\frametitle{РџРѕР»РµС‚Рµ (С‡Р»РµРЅ-РїСЂРѕРјРµРЅР»РёРІРё)}
  \begin{itemize}
- \item Полетата (атрибути, член-променливи) определят състоянието на класа
+ \item РџРѕР»РµС‚Р°С‚Р° (Р°С‚СЂРёР±СѓС‚Рё, С‡Р»РµРЅ-РїСЂРѕРјРµРЅР»РёРІРё) РѕРїСЂРµРґРµР»СЏС‚ СЃСЉСЃС‚РѕСЏРЅРёРµС‚Рѕ РЅР° РєР»Р°СЃР°
 \end{itemize}
 \begin{lstlisting}
 class HelloWorld {
@@ -142,11 +129,11 @@ class Point {
 
 
 \begin{frame}[containsverbatim]
-\frametitle{Обекти}
+\frametitle{РћР±РµРєС‚Рё}
  \begin{itemize}
- \item Обектът са инстанция на клас
- \item Всеки обект има състояние, поведение и идентичност.
- \item За създаването на обект трябва да се използва операторът \lstinline{new}.
+ \item РћР±РµРєС‚СЉС‚ СЃР° РёРЅСЃС‚Р°РЅС†РёСЏ РЅР° РєР»Р°СЃ
+ \item Р’СЃРµРєРё РѕР±РµРєС‚ РёРјР° СЃСЉСЃС‚РѕСЏРЅРёРµ, РїРѕРІРµРґРµРЅРёРµ Рё РёРґРµРЅС‚РёС‡РЅРѕСЃС‚.
+ \item Р—Р° СЃСЉР·РґР°РІР°РЅРµС‚Рѕ РЅР° РѕР±РµРєС‚ С‚СЂСЏР±РІР° РґР° СЃРµ РёР·РїРѕР»Р·РІР° РѕРїРµСЂР°С‚РѕСЂСЉС‚ \lstinline{new}.
 \end{itemize}
 \begin{lstlisting}
 class HelloWorld {
@@ -160,7 +147,7 @@ class HelloWorld {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Използване на обекти}
+\begin{frame}[containsverbatim]\frametitle{РР·РїРѕР»Р·РІР°РЅРµ РЅР° РѕР±РµРєС‚Рё}
 \begin{lstlisting}
 class ShowPoint {
 
@@ -176,10 +163,10 @@ class ShowPoint {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Примитивни типове}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРёС‚РёРІРЅРё С‚РёРїРѕРІРµ}
 \begin{itemize}
-\item В Java освен обекти има и примитивни типове: \lstinline{boolean}, \lstinline{byte},\lstinline{short},\lstinline{int},\lstinline{long},\lstinline{double},\lstinline{float}, \lstinline{char}.
-\item За създаване на екземпляр (инстанция) на примитивен тип не е необходимо използването на оператора \lstinline{new}.
+\item Р’ Java РѕСЃРІРµРЅ РѕР±РµРєС‚Рё РёРјР° Рё РїСЂРёРјРёС‚РёРІРЅРё С‚РёРїРѕРІРµ: \lstinline{boolean}, \lstinline{byte},\lstinline{short},\lstinline{int},\lstinline{long},\lstinline{double},\lstinline{float}, \lstinline{char}.
+\item Р—Р° СЃСЉР·РґР°РІР°РЅРµ РЅР° РµРєР·РµРјРїР»СЏСЂ (РёРЅСЃС‚Р°РЅС†РёСЏ) РЅР° РїСЂРёРјРёС‚РёРІРµРЅ С‚РёРї РЅРµ Рµ РЅРµРѕР±С…РѕРґРёРјРѕ РёР·РїРѕР»Р·РІР°РЅРµС‚Рѕ РЅР° РѕРїРµСЂР°С‚РѕСЂР° \lstinline{new}.
 \end{itemize}
 
 \begin{lstlisting}
@@ -197,9 +184,9 @@ class ShowPoint {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Методи}
+\begin{frame}[containsverbatim]\frametitle{РњРµС‚РѕРґРё}
 \begin{itemize}
-\item Методите дефинират поведението на обектите.
+\item РњРµС‚РѕРґРёС‚Рµ РґРµС„РёРЅРёСЂР°С‚ РїРѕРІРµРґРµРЅРёРµС‚Рѕ РЅР° РѕР±РµРєС‚РёС‚Рµ.
 \end{itemize}
 
 \begin{lstlisting}
@@ -219,13 +206,13 @@ public  class HelloWorld {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Тяло на метод}
+\begin{frame}[containsverbatim]\frametitle{РўСЏР»Рѕ РЅР° РјРµС‚РѕРґ}
 \begin{itemize}
-\item Методите могат да получават произволен брой аргументи
-\item В тялото на метода могат да се дефинират локални променливи
-\item Методите могат да връщат резултат (или да не връщата, 
-ако типа на резултата е \lstinline{void}). Като резултат може да се върне 
-само един обект.
+\item РњРµС‚РѕРґРёС‚Рµ РјРѕРіР°С‚ РґР° РїРѕР»СѓС‡Р°РІР°С‚ РїСЂРѕРёР·РІРѕР»РµРЅ Р±СЂРѕР№ Р°СЂРіСѓРјРµРЅС‚Рё
+\item Р’ С‚СЏР»РѕС‚Рѕ РЅР° РјРµС‚РѕРґР° РјРѕРіР°С‚ РґР° СЃРµ РґРµС„РёРЅРёСЂР°С‚ Р»РѕРєР°Р»РЅРё РїСЂРѕРјРµРЅР»РёРІРё
+\item РњРµС‚РѕРґРёС‚Рµ РјРѕРіР°С‚ РґР° РІСЂСЉС‰Р°С‚ СЂРµР·СѓР»С‚Р°С‚ (РёР»Рё РґР° РЅРµ РІСЂСЉС‰Р°С‚Р°, 
+Р°РєРѕ С‚РёРїР° РЅР° СЂРµР·СѓР»С‚Р°С‚Р° Рµ \lstinline{void}). РљР°С‚Рѕ СЂРµР·СѓР»С‚Р°С‚ РјРѕР¶Рµ РґР° СЃРµ РІСЉСЂРЅРµ 
+СЃР°РјРѕ РµРґРёРЅ РѕР±РµРєС‚.
 \end{itemize}
 
 \begin{lstlisting}
@@ -239,17 +226,17 @@ String firstname(String fullname) {
 
 
 
-\begin{frame}[containsverbatim]\frametitle{Конструктори}
-Конструкторите са специални методи
+\begin{frame}[containsverbatim]\frametitle{РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРё}
+РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРёС‚Рµ СЃР° СЃРїРµС†РёР°Р»РЅРё РјРµС‚РѕРґРё
 \begin{itemize}
- \item Не връщат стойност
- \item Използват се за първоначална инициализация
- \item Могат да имат параметри, както и нормално тяло, но оператора \lstinline{return}
- не може да се използва за връщане на стойност
+ \item РќРµ РІСЂСЉС‰Р°С‚ СЃС‚РѕР№РЅРѕСЃС‚
+ \item РР·РїРѕР»Р·РІР°С‚ СЃРµ Р·Р° РїСЉСЂРІРѕРЅР°С‡Р°Р»РЅР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
+ \item РњРѕРіР°С‚ РґР° РёРјР°С‚ РїР°СЂР°РјРµС‚СЂРё, РєР°РєС‚Рѕ Рё РЅРѕСЂРјР°Р»РЅРѕ С‚СЏР»Рѕ, РЅРѕ РѕРїРµСЂР°С‚РѕСЂР° \lstinline{return}
+ РЅРµ РјРѕР¶Рµ РґР° СЃРµ РёР·РїРѕР»Р·РІР° Р·Р° РІСЂСЉС‰Р°РЅРµ РЅР° СЃС‚РѕР№РЅРѕСЃС‚
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Конструктори}
+\begin{frame}[containsverbatim]\frametitle{РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРё}
 \begin{lstlisting}
 public  class HelloWorld {
  	private String myString;
@@ -268,16 +255,16 @@ public  class HelloWorld {
 }\end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Управление на хода на програмата}
+\begin{frame}[containsverbatim]\frametitle{РЈРїСЂР°РІР»РµРЅРёРµ РЅР° С…РѕРґР° РЅР° РїСЂРѕРіСЂР°РјР°С‚Р°}
 \begin{columns}
  \column{0.45\textwidth}
 \begin{lstlisting}
 if(lucy.age < 18){
-	// направи нещо
+	// РЅР°РїСЂР°РІРё РЅРµС‰Рѕ
 } else if(lucy.hasCar()){
- 	// направи нещо друго
+ 	// РЅР°РїСЂР°РІРё РЅРµС‰Рѕ РґСЂСѓРіРѕ
 } else {
-	// направи нещо трето
+	// РЅР°РїСЂР°РІРё РЅРµС‰Рѕ С‚СЂРµС‚Рѕ
 }
 \end{lstlisting}
 \column{0.45\textwidth}
@@ -296,11 +283,11 @@ else {
 \end{columns}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Условия и условни изрази}
+\begin{frame}[containsverbatim]\frametitle{РЈСЃР»РѕРІРёСЏ Рё СѓСЃР»РѕРІРЅРё РёР·СЂР°Р·Рё}
 \begin{itemize}
- \item Условие – израз, чиито резултат е истина или лъжа (\lstinline{true}, \lstinline{false})
-\item Условни оператори: \lstinline{<}, \lstinline{>}, \lstinline{<=}, \lstinline{>=}, \lstinline{==}, \lstinline{!=}
-\item Логически оператори: \lstinline{&&}, \lstinline{||}, \lstinline{!}
+ \item РЈСЃР»РѕРІРёРµ вЂ“ РёР·СЂР°Р·, С‡РёРёС‚Рѕ СЂРµР·СѓР»С‚Р°С‚ Рµ РёСЃС‚РёРЅР° РёР»Рё Р»СЉР¶Р° (\lstinline{true}, \lstinline{false})
+\item РЈСЃР»РѕРІРЅРё РѕРїРµСЂР°С‚РѕСЂРё: \lstinline{<}, \lstinline{>}, \lstinline{<=}, \lstinline{>=}, \lstinline{==}, \lstinline{!=}
+\item Р›РѕРіРёС‡РµСЃРєРё РѕРїРµСЂР°С‚РѕСЂРё: \lstinline{&&}, \lstinline{||}, \lstinline{!}
 \end{itemize}
 \begin{lstlisting}
 box.isEmpty()
@@ -314,10 +301,10 @@ lucy.age>= 21 && lucy.hasCar()
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Масиви}
+\begin{frame}[containsverbatim]\frametitle{РњР°СЃРёРІРё}
 \begin{itemize}
- \item Масивите са специални обекти
- \item Всеки масив има поле length, в което е записана големината на масива
+ \item РњР°СЃРёРІРёС‚Рµ СЃР° СЃРїРµС†РёР°Р»РЅРё РѕР±РµРєС‚Рё
+ \item Р’СЃРµРєРё РјР°СЃРёРІ РёРјР° РїРѕР»Рµ length, РІ РєРѕРµС‚Рѕ Рµ Р·Р°РїРёСЃР°РЅР° РіРѕР»РµРјРёРЅР°С‚Р° РЅР° РјР°СЃРёРІР°
 \end{itemize}
 \begin{lstlisting}
 String[] pets = new String[2]; 
@@ -330,11 +317,11 @@ System.out.println(otherPets.length);
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Цикъл \lstinline{for}}
+\begin{frame}[containsverbatim]\frametitle{Р¦РёРєСЉР» \lstinline{for}}
 \begin{itemize}
- \item Инициализация -- изпълнява се само веднъж
- \item Условие -- цикъла се изпълнява докато условието се изчислява като \lstinline{true}
- \item Стъпка -- изпълнява се всеки път
+ \item РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ -- РёР·РїСЉР»РЅСЏРІР° СЃРµ СЃР°РјРѕ РІРµРґРЅСЉР¶
+ \item РЈСЃР»РѕРІРёРµ -- С†РёРєСЉР»Р° СЃРµ РёР·РїСЉР»РЅСЏРІР° РґРѕРєР°С‚Рѕ СѓСЃР»РѕРІРёРµС‚Рѕ СЃРµ РёР·С‡РёСЃР»СЏРІР° РєР°С‚Рѕ \lstinline{true}
+ \item РЎС‚СЉРїРєР° -- РёР·РїСЉР»РЅСЏРІР° СЃРµ РІСЃРµРєРё РїСЉС‚
 \end{itemize}
 \begin{lstlisting}
 for  (int i = 0; i<3; i++) {
@@ -344,7 +331,7 @@ for  (int i = 0; i<3; i++) {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Цикъл \lstinline{for} -- обхождане на колекция}
+\begin{frame}[containsverbatim]\frametitle{Р¦РёРєСЉР» \lstinline{for} -- РѕР±С…РѕР¶РґР°РЅРµ РЅР° РєРѕР»РµРєС†РёСЏ}
 \begin{lstlisting}
 String strArray[]=new String[10];
 for(int i=0;i<strArray.length;i++){
@@ -357,11 +344,11 @@ for(String str:strArray) {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Цикъл \lstinline{while}}
+\begin{frame}[containsverbatim]\frametitle{Р¦РёРєСЉР» \lstinline{while}}
 \begin{itemize}
- \item Инициализация -- изпълнява се само веднъж
- \item Условие -- цикъла се изпълнява докато условието се изчислява като \lstinline{true}
- \item Стъпка -- изпълнява се всеки път
+ \item РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ -- РёР·РїСЉР»РЅСЏРІР° СЃРµ СЃР°РјРѕ РІРµРґРЅСЉР¶
+ \item РЈСЃР»РѕРІРёРµ -- С†РёРєСЉР»Р° СЃРµ РёР·РїСЉР»РЅСЏРІР° РґРѕРєР°С‚Рѕ СѓСЃР»РѕРІРёРµС‚Рѕ СЃРµ РёР·С‡РёСЃР»СЏРІР° РєР°С‚Рѕ \lstinline{true}
+ \item РЎС‚СЉРїРєР° -- РёР·РїСЉР»РЅСЏРІР° СЃРµ РІСЃРµРєРё РїСЉС‚
 \end{itemize}
 \begin{lstlisting}
 for  (int i = 0; i<3; i++) {

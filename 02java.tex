@@ -1,11 +1,11 @@
 \PassOptionsToPackage{dvipsnames}{xcolor}
 \documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
 
-\input{notes.tex}
+\input{jnotes.tex}
 
-\title{Обекти в Java}
-\lubo
-\date{1 април 2009}
+\title{РћР±РµРєС‚Рё РІ Java}
+\authors
+\date{\today}
 
 
 \begin{document}
@@ -14,44 +14,32 @@
 
 \begin{frame}
 \small
-{\bf Забележка:} Тази лекция е адаптация на:
+{\bf Р—Р°Р±РµР»РµР¶РєР°:} РўР°Р·Рё Р»РµРєС†РёСЏ Рµ Р°РґР°РїС‚Р°С†РёСЏ РЅР°:
 \begin{itemize}
   \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/97145060-6EC3-44D9-9B9B-35B412CCAE45/0/lecture1b.pdf}{Corey McCaffrey: {\em Java Objects}} from
 \href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
 {\em 6.092: Java for 6.170} (MIT OpenCourseWare:
 Massachusetts Institute of Technology)}\\
-{\bf Лиценз:}
+{\bf Р›РёС†РµРЅР·:}
 \href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
 BY-NC-SA}  
 
 \end{itemize}
-\vfill
-
-\begin{columns}
-\column{0.3\textwidth}
-\begin{figure}[h]
-\center
-\scalebox{1}{\includegraphics{eu-logos}}
-\end{figure}
-\column{0.7\textwidth}
-
-Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
-\end{columns}
 
 \end{frame}
 
 \begin{frame}
-\frametitle{Съдържание}
+\frametitle{РЎСЉРґСЉСЂР¶Р°РЅРёРµ}
 \tableofcontents %[hideallsubsections]
 \end{frame}
 
 
 
-\begin{frame}[containsverbatim]\frametitle{Препратки}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРµРїСЂР°С‚РєРё}
 \begin{itemize}
- \item Когато в Java дефинирате променлива от даден клас, то всъщност дефинирате препратка (reference). 
-Дефинирането на променлива не създава обект.
- \item Препратката или сочи към обект или е \lstinline{null}.
+ \item РљРѕРіР°С‚Рѕ РІ Java РґРµС„РёРЅРёСЂР°С‚Рµ РїСЂРѕРјРµРЅР»РёРІР° РѕС‚ РґР°РґРµРЅ РєР»Р°СЃ, С‚Рѕ РІСЃСЉС‰РЅРѕСЃС‚ РґРµС„РёРЅРёСЂР°С‚Рµ РїСЂРµРїСЂР°С‚РєР° (reference). 
+Р”РµС„РёРЅРёСЂР°РЅРµС‚Рѕ РЅР° РїСЂРѕРјРµРЅР»РёРІР° РЅРµ СЃСЉР·РґР°РІР° РѕР±РµРєС‚.
+ \item РџСЂРµРїСЂР°С‚РєР°С‚Р° РёР»Рё СЃРѕС‡Рё РєСЉРј РѕР±РµРєС‚ РёР»Рё Рµ \lstinline{null}.
 \end{itemize}
 
 \begin{lstlisting}
@@ -60,11 +48,11 @@ Integer i2=new Integer(3);
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Обекти}
+\begin{frame}[containsverbatim]\frametitle{РћР±РµРєС‚Рё}
 \begin{itemize}
- \item Обектът е инстанция (екземпляр) на даден клас.
- \item За да се създаде обект е необходимо да се използва оператора \lstinline{new}. 
-Този оператор извиква конструктор на обекта.
+ \item РћР±РµРєС‚СЉС‚ Рµ РёРЅСЃС‚Р°РЅС†РёСЏ (РµРєР·РµРјРїР»СЏСЂ) РЅР° РґР°РґРµРЅ РєР»Р°СЃ.
+ \item Р—Р° РґР° СЃРµ СЃСЉР·РґР°РґРµ РѕР±РµРєС‚ Рµ РЅРµРѕР±С…РѕРґРёРјРѕ РґР° СЃРµ РёР·РїРѕР»Р·РІР° РѕРїРµСЂР°С‚РѕСЂР° \lstinline{new}. 
+РўРѕР·Рё РѕРїРµСЂР°С‚РѕСЂ РёР·РІРёРєРІР° РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РЅР° РѕР±РµРєС‚Р°.
 \end{itemize}
 
 \begin{lstlisting}
@@ -74,7 +62,7 @@ Integer i2=new Integer(3);
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Пример}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ}
 \begin{lstlisting}
 public  class AssignmentReview {
  	public static void main(String[] args) {
@@ -111,27 +99,27 @@ public  class AssignmentReview {
 
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Препратки \lstinline{null}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРµРїСЂР°С‚РєРё \lstinline{null}}
 \begin{itemize}
- \item Ненасочените препратки сочат към \lstinline{null}
- \item \lstinline{null} не е обект (няма полета, нито методи)
+ \item РќРµРЅР°СЃРѕС‡РµРЅРёС‚Рµ РїСЂРµРїСЂР°С‚РєРё СЃРѕС‡Р°С‚ РєСЉРј \lstinline{null}
+ \item \lstinline{null} РЅРµ Рµ РѕР±РµРєС‚ (РЅСЏРјР° РїРѕР»РµС‚Р°, РЅРёС‚Рѕ РјРµС‚РѕРґРё)
 \end{itemize}
 
 \begin{lstlisting}
 Integer z;
-z.intValue(); //този ред ще генерира NullPointerException
+z.intValue(); //С‚РѕР·Рё СЂРµРґ С‰Рµ РіРµРЅРµСЂРёСЂР° NullPointerException
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Обекти и препратки}
+\begin{frame}[containsverbatim]\frametitle{РћР±РµРєС‚Рё Рё РїСЂРµРїСЂР°С‚РєРё}
 \begin{itemize}
- \item Операторът за присвояване (\lstinline{=}) насочва препратката към обект
- \item Методите са в състояние да променят вътрешното състояние на обекта
- \item Може да имате няколко препратки към един и същ обект, така че се пазете от странични ефекти
+ \item РћРїРµСЂР°С‚РѕСЂСЉС‚ Р·Р° РїСЂРёСЃРІРѕСЏРІР°РЅРµ (\lstinline{=}) РЅР°СЃРѕС‡РІР° РїСЂРµРїСЂР°С‚РєР°С‚Р° РєСЉРј РѕР±РµРєС‚
+ \item РњРµС‚РѕРґРёС‚Рµ СЃР° РІ СЃСЉСЃС‚РѕСЏРЅРёРµ РґР° РїСЂРѕРјРµРЅСЏС‚ РІСЉС‚СЂРµС€РЅРѕС‚Рѕ СЃСЉСЃС‚РѕСЏРЅРёРµ РЅР° РѕР±РµРєС‚Р°
+ \item РњРѕР¶Рµ РґР° РёРјР°С‚Рµ РЅСЏРєРѕР»РєРѕ РїСЂРµРїСЂР°С‚РєРё РєСЉРј РµРґРёРЅ Рё СЃСЉС‰ РѕР±РµРєС‚, С‚Р°РєР° С‡Рµ СЃРµ РїР°Р·РµС‚Рµ РѕС‚ СЃС‚СЂР°РЅРёС‡РЅРё РµС„РµРєС‚Рё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Обекти и препратки}
+\begin{frame}[containsverbatim]\frametitle{РћР±РµРєС‚Рё Рё РїСЂРµРїСЂР°С‚РєРё}
 \begin{lstlisting}
 public  class MutationExample {
  	public static void main(String[] args) {
@@ -158,15 +146,15 @@ public  class MutationExample {
 
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Статични и нестатични членове}
+\begin{frame}[containsverbatim]\frametitle{РЎС‚Р°С‚РёС‡РЅРё Рё РЅРµСЃС‚Р°С‚РёС‡РЅРё С‡Р»РµРЅРѕРІРµ}
 \begin{itemize}
- \item Методите и полетата могат да се декларират като статични
- \item Статичните методи/полета принадлежат на класа
- \item Нестатичните методи/полета принадлежат на обекта
+ \item РњРµС‚РѕРґРёС‚Рµ Рё РїРѕР»РµС‚Р°С‚Р° РјРѕРіР°С‚ РґР° СЃРµ РґРµРєР»Р°СЂРёСЂР°С‚ РєР°С‚Рѕ СЃС‚Р°С‚РёС‡РЅРё
+ \item РЎС‚Р°С‚РёС‡РЅРёС‚Рµ РјРµС‚РѕРґРё/РїРѕР»РµС‚Р° РїСЂРёРЅР°РґР»РµР¶Р°С‚ РЅР° РєР»Р°СЃР°
+ \item РќРµСЃС‚Р°С‚РёС‡РЅРёС‚Рµ РјРµС‚РѕРґРё/РїРѕР»РµС‚Р° РїСЂРёРЅР°РґР»РµР¶Р°С‚ РЅР° РѕР±РµРєС‚Р°
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Нестатично поле}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РќРµСЃС‚Р°С‚РёС‡РЅРѕ РїРѕР»Рµ}
 \begin{lstlisting}
 public  class Bean {
  	public int beanCounter = 0;
@@ -187,7 +175,7 @@ public  class Bean {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Статично поле}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎС‚Р°С‚РёС‡РЅРѕ РїРѕР»Рµ}
 \begin{lstlisting}
 public  class Bean {
  	public static int beanCounter = 0;
@@ -207,7 +195,7 @@ public  class Bean {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Нестатичен метод}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РќРµСЃС‚Р°С‚РёС‡РµРЅ РјРµС‚РѕРґ}
 \begin{lstlisting}
 public  class Bean {
  	private boolean planted = false;
@@ -224,7 +212,7 @@ public  class Bean {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Статичен метод}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎС‚Р°С‚РёС‡РµРЅ РјРµС‚РѕРґ}
 \begin{lstlisting}
 public  class Bean {
  	private boolean planted = false;
@@ -242,7 +230,7 @@ public  class Bean {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Обекти, предавани с препратки}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РћР±РµРєС‚Рё, РїСЂРµРґР°РІР°РЅРё СЃ РїСЂРµРїСЂР°С‚РєРё}
 \begin{lstlisting}
 public  static <T> void removeFirst(List<T> list) {
 		list.remove(0);
@@ -259,7 +247,7 @@ public  static void main(String[] args) {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Обекти и препратки}
+\begin{frame}[containsverbatim]\frametitle{РћР±РµРєС‚Рё Рё РїСЂРµРїСЂР°С‚РєРё}
 
 \begin{center}
 \begin{tikzpicture}
@@ -276,17 +264,17 @@ public  static void main(String[] args) {
 
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Блокове и видимост}
+\begin{frame}[containsverbatim]\frametitle{Р‘Р»РѕРєРѕРІРµ Рё РІРёРґРёРјРѕСЃС‚}
 \begin{itemize}
- \item Блокът (\{ \}) определя областта на видимост на препратките
- \item Препратките съществуват от момента на създаването им до момента, 
-в който излязат от областта на видимост
- \item Полетата могат да се използват в рамките на класа
- \item Параметрите на даден метод могат да се използват в рамките на метода
+ \item Р‘Р»РѕРєСЉС‚ (\{ \}) РѕРїСЂРµРґРµР»СЏ РѕР±Р»Р°СЃС‚С‚Р° РЅР° РІРёРґРёРјРѕСЃС‚ РЅР° РїСЂРµРїСЂР°С‚РєРёС‚Рµ
+ \item РџСЂРµРїСЂР°С‚РєРёС‚Рµ СЃСЉС‰РµСЃС‚РІСѓРІР°С‚ РѕС‚ РјРѕРјРµРЅС‚Р° РЅР° СЃСЉР·РґР°РІР°РЅРµС‚Рѕ РёРј РґРѕ РјРѕРјРµРЅС‚Р°, 
+РІ РєРѕР№С‚Рѕ РёР·Р»СЏР·Р°С‚ РѕС‚ РѕР±Р»Р°СЃС‚С‚Р° РЅР° РІРёРґРёРјРѕСЃС‚
+ \item РџРѕР»РµС‚Р°С‚Р° РјРѕРіР°С‚ РґР° СЃРµ РёР·РїРѕР»Р·РІР°С‚ РІ СЂР°РјРєРёС‚Рµ РЅР° РєР»Р°СЃР°
+ \item РџР°СЂР°РјРµС‚СЂРёС‚Рµ РЅР° РґР°РґРµРЅ РјРµС‚РѕРґ РјРѕРіР°С‚ РґР° СЃРµ РёР·РїРѕР»Р·РІР°С‚ РІ СЂР°РјРєРёС‚Рµ РЅР° РјРµС‚РѕРґР°
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Област на видимост}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РћР±Р»Р°СЃС‚ РЅР° РІРёРґРёРјРѕСЃС‚}
 \begin{lstlisting}
 public  class ScopeExample {
  	private int field;
@@ -302,7 +290,7 @@ public  class ScopeExample {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Област на видимост}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РћР±Р»Р°СЃС‚ РЅР° РІРёРґРёРјРѕСЃС‚}
 \begin{lstlisting}
 public  class ScopeExample {
  	private int field;
@@ -319,13 +307,13 @@ public  class ScopeExample {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изводи}
+\begin{frame}[containsverbatim]\frametitle{РР·РІРѕРґРё}
 \begin{itemize}
- \item Препратките сочат към обекти. Трябва да се прави разлика между препратка и обект.
- \item Пазете се от препратки, които са \lstinline{null}
- \item Не извиквайте статични методи чрез инстанции
- \item Ако не искате даден обект да се променя, то когато го предавате като аргумент трябва изрично да направите копие.
- \item Минимизирайте видимостта на променливите
+ \item РџСЂРµРїСЂР°С‚РєРёС‚Рµ СЃРѕС‡Р°С‚ РєСЉРј РѕР±РµРєС‚Рё. РўСЂСЏР±РІР° РґР° СЃРµ РїСЂР°РІРё СЂР°Р·Р»РёРєР° РјРµР¶РґСѓ РїСЂРµРїСЂР°С‚РєР° Рё РѕР±РµРєС‚.
+ \item РџР°Р·РµС‚Рµ СЃРµ РѕС‚ РїСЂРµРїСЂР°С‚РєРё, РєРѕРёС‚Рѕ СЃР° \lstinline{null}
+ \item РќРµ РёР·РІРёРєРІР°Р№С‚Рµ СЃС‚Р°С‚РёС‡РЅРё РјРµС‚РѕРґРё С‡СЂРµР· РёРЅСЃС‚Р°РЅС†РёРё
+ \item РђРєРѕ РЅРµ РёСЃРєР°С‚Рµ РґР°РґРµРЅ РѕР±РµРєС‚ РґР° СЃРµ РїСЂРѕРјРµРЅСЏ, С‚Рѕ РєРѕРіР°С‚Рѕ РіРѕ РїСЂРµРґР°РІР°С‚Рµ РєР°С‚Рѕ Р°СЂРіСѓРјРµРЅС‚ С‚СЂСЏР±РІР° РёР·СЂРёС‡РЅРѕ РґР° РЅР°РїСЂР°РІРёС‚Рµ РєРѕРїРёРµ.
+ \item РњРёРЅРёРјРёР·РёСЂР°Р№С‚Рµ РІРёРґРёРјРѕСЃС‚С‚Р° РЅР° РїСЂРѕРјРµРЅР»РёРІРёС‚Рµ
 \end{itemize}
 \end{frame}
 

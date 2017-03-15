@@ -5,3 +5,8 @@
 *.nav
 *.out
 *.snm
+*.bbl
+*.blg
+/tmp/
+/.project
+/.texlipse

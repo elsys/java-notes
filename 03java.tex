@@ -1,11 +1,11 @@
 \PassOptionsToPackage{dvipsnames}{xcolor}
 \documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
 
-\input{notes.tex}
+\input{jnotes.tex}
 
-\title{Класове и интерфейси}
-\lubo
-\date{15 април 2009}
+\title{РљР»Р°СЃРѕРІРµ Рё РёРЅС‚РµСЂС„РµР№СЃРё}
+\authors
+\date{\today}
 
 \usetikzlibrary{shapes}
 
@@ -15,74 +15,61 @@
 
 \begin{frame}
 \small
-{\bf Забележка:} Тази лекция е адаптация на:
+{\bf Р—Р°Р±РµР»РµР¶РєР°:} РўР°Р·Рё Р»РµРєС†РёСЏ Рµ Р°РґР°РїС‚Р°С†РёСЏ РЅР°:
 \begin{itemize}
   \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/66BAC837-433E-48A5-BA15-B766E0B7CDEA/0/lecture2a.pdf}{Justin Mazzola Paluska: {\em Classes and Interfaces}} from
 \href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
 {\em 6.092: Java for 6.170} (MIT OpenCourseWare:
 Massachusetts Institute of Technology)}\\
-{\bf Лиценз:}
+{\bf Р›РёС†РµРЅР·:}
 \href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
 BY-NC-SA}  
 
 \end{itemize}
 
-\vfill
-
-\begin{columns}
-\column{0.3\textwidth}
-\begin{figure}[h]
-\center
-\scalebox{1}{\includegraphics{eu-logos}}
-\end{figure}
-\column{0.7\textwidth}
-
-Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
-\end{columns}
-
 \end{frame}
 \begin{frame}
-\frametitle{Съдържание}
+\frametitle{РЎСЉРґСЉСЂР¶Р°РЅРёРµ}
 \tableofcontents %[hideallsubsections]
 \end{frame}
 
 
 
-\begin{frame}[containsverbatim]\frametitle{Терминология}
+\begin{frame}[containsverbatim]\frametitle{РўРµСЂРјРёРЅРѕР»РѕРіРёСЏ}
 \begin{itemize}
- \item \lstinline{class} --- класовете могат да се разглеждат като описание, спецификация на обектите от дадения клас.
- \item \lstinline{interface} --- интерфейсът дефинира списъкът на достъпните методи
- \item {\bfseries instance} --- физическото представяне на даден клас или интерфейс в паметта
+ \item \lstinline{class} --- РєР»Р°СЃРѕРІРµС‚Рµ РјРѕРіР°С‚ РґР° СЃРµ СЂР°Р·РіР»РµР¶РґР°С‚ РєР°С‚Рѕ РѕРїРёСЃР°РЅРёРµ, СЃРїРµС†РёС„РёРєР°С†РёСЏ РЅР° РѕР±РµРєС‚РёС‚Рµ РѕС‚ РґР°РґРµРЅРёСЏ РєР»Р°СЃ.
+ \item \lstinline{interface} --- РёРЅС‚РµСЂС„РµР№СЃСЉС‚ РґРµС„РёРЅРёСЂР° СЃРїРёСЃСЉРєСЉС‚ РЅР° РґРѕСЃС‚СЉРїРЅРёС‚Рµ РјРµС‚РѕРґРё
+ \item {\bfseries instance} --- С„РёР·РёС‡РµСЃРєРѕС‚Рѕ РїСЂРµРґСЃС‚Р°РІСЏРЅРµ РЅР° РґР°РґРµРЅ РєР»Р°СЃ РёР»Рё РёРЅС‚РµСЂС„РµР№СЃ РІ РїР°РјРµС‚С‚Р°
 \end{itemize}
 
 \begin{itemize}
- \item {\bfseries метод} --- функция, която е дефинирана в рамките на класа
- \item {\bfseries поле} --- променлива, която е част от класа
- \item {\bfseries статично поле} --- променлива, която е една и съща за всички инстанции на класа
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}[containsverbatim]\frametitle{Типове данни в Java}
-В Java има два основни класа от типове данни:
-\begin{itemize}
- \item примитивни типове
- \item обекти
+ \item {\bfseries РјРµС‚РѕРґ} --- С„СѓРЅРєС†РёСЏ, РєРѕСЏС‚Рѕ Рµ РґРµС„РёРЅРёСЂР°РЅР° РІ СЂР°РјРєРёС‚Рµ РЅР° РєР»Р°СЃР°
+ \item {\bfseries РїРѕР»Рµ} --- РїСЂРѕРјРµРЅР»РёРІР°, РєРѕСЏС‚Рѕ Рµ С‡Р°СЃС‚ РѕС‚ РєР»Р°СЃР°
+ \item {\bfseries СЃС‚Р°С‚РёС‡РЅРѕ РїРѕР»Рµ} --- РїСЂРѕРјРµРЅР»РёРІР°, РєРѕСЏС‚Рѕ Рµ РµРґРЅР° Рё СЃСЉС‰Р° Р·Р° РІСЃРёС‡РєРё РёРЅСЃС‚Р°РЅС†РёРё РЅР° РєР»Р°СЃР°
 \end{itemize}
 
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Обекти}
+\begin{frame}[containsverbatim]\frametitle{РўРёРїРѕРІРµ РґР°РЅРЅРё РІ Java}
+Р’ Java РёРјР° РґРІР° РѕСЃРЅРѕРІРЅРё РєР»Р°СЃР° РѕС‚ С‚РёРїРѕРІРµ РґР°РЅРЅРё:
 \begin{itemize}
- \item Обектът е инстанция (екземпляр) на даден клас. Всеки обект принадлежи на даден клас.
- \item За създаване на инстанция на клас се използва операторът \lstinline{new}
- \item Операторът \lstinline{new}:
+ \item РїСЂРёРјРёС‚РёРІРЅРё С‚РёРїРѕРІРµ
+ \item РѕР±РµРєС‚Рё
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{РћР±РµРєС‚Рё}
+\begin{itemize}
+ \item РћР±РµРєС‚СЉС‚ Рµ РёРЅСЃС‚Р°РЅС†РёСЏ (РµРєР·РµРјРїР»СЏСЂ) РЅР° РґР°РґРµРЅ РєР»Р°СЃ. Р’СЃРµРєРё РѕР±РµРєС‚ РїСЂРёРЅР°РґР»РµР¶Рё РЅР° РґР°РґРµРЅ РєР»Р°СЃ.
+ \item Р—Р° СЃСЉР·РґР°РІР°РЅРµ РЅР° РёРЅСЃС‚Р°РЅС†РёСЏ РЅР° РєР»Р°СЃ СЃРµ РёР·РїРѕР»Р·РІР° РѕРїРµСЂР°С‚РѕСЂСЉС‚ \lstinline{new}
+ \item РћРїРµСЂР°С‚РѕСЂСЉС‚ \lstinline{new}:
  \begin{itemize}
-  \item Заделя място в паметта за новия обект
-  \item Извиква съответния конструктор и инициализира обекта
-  \item Връща препратка към новосъздадения обект
+  \item Р—Р°РґРµР»СЏ РјСЏСЃС‚Рѕ РІ РїР°РјРµС‚С‚Р° Р·Р° РЅРѕРІРёСЏ РѕР±РµРєС‚
+  \item РР·РІРёРєРІР° СЃСЉРѕС‚РІРµС‚РЅРёСЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Рё РёРЅРёС†РёР°Р»РёР·РёСЂР° РѕР±РµРєС‚Р°
+  \item Р’СЂСЉС‰Р° РїСЂРµРїСЂР°С‚РєР° РєСЉРј РЅРѕРІРѕСЃСЉР·РґР°РґРµРЅРёСЏ РѕР±РµРєС‚
  \end{itemize}
 \end{itemize}
 
@@ -91,10 +78,10 @@ BY-NC-SA}
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Използване на обекти}
+\begin{frame}[containsverbatim]\frametitle{РР·РїРѕР»Р·РІР°РЅРµ РЅР° РѕР±РµРєС‚Рё}
 \begin{itemize}
  \item 
-Обектите позволяват извикване на техните методи:
+РћР±РµРєС‚РёС‚Рµ РїРѕР·РІРѕР»СЏРІР°С‚ РёР·РІРёРєРІР°РЅРµ РЅР° С‚РµС…РЅРёС‚Рµ РјРµС‚РѕРґРё:
 \begin{lstlisting}
 public static void main(String[] args) {
 	Bean bean = new Bean();
@@ -102,7 +89,7 @@ public static void main(String[] args) {
 }
 \end{lstlisting}
 \item
-Обектите позволяват достъп до техните полета:
+РћР±РµРєС‚РёС‚Рµ РїРѕР·РІРѕР»СЏРІР°С‚ РґРѕСЃС‚СЉРї РґРѕ С‚РµС…РЅРёС‚Рµ РїРѕР»РµС‚Р°:
 \begin{lstlisting}
 public static void main(String[] args) {
 		Point myPoint = new Point ();
@@ -110,26 +97,26 @@ public static void main(String[] args) {
 		myPoint.y = 15;
 }
 \end{lstlisting}
-\item Когато даден обект повече не ни трябва просто спираме да го използваме. Паметта заемана от него ще бъде освободена, когато няма повече препратки към него.
+\item РљРѕРіР°С‚Рѕ РґР°РґРµРЅ РѕР±РµРєС‚ РїРѕРІРµС‡Рµ РЅРµ РЅРё С‚СЂСЏР±РІР° РїСЂРѕСЃС‚Рѕ СЃРїРёСЂР°РјРµ РґР° РіРѕ РёР·РїРѕР»Р·РІР°РјРµ. РџР°РјРµС‚С‚Р° Р·Р°РµРјР°РЅР° РѕС‚ РЅРµРіРѕ С‰Рµ Р±СЉРґРµ РѕСЃРІРѕР±РѕРґРµРЅР°, РєРѕРіР°С‚Рѕ РЅСЏРјР° РїРѕРІРµС‡Рµ РїСЂРµРїСЂР°С‚РєРё РєСЉРј РЅРµРіРѕ.
 \end{itemize}
 
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Дефиниране на клас}
+\begin{frame}[containsverbatim]\frametitle{Р”РµС„РёРЅРёСЂР°РЅРµ РЅР° РєР»Р°СЃ}
 \begin{itemize}
  \item 
-Структурата на кода, необходим за дефиниране на клас, е следната:
+РЎС‚СЂСѓРєС‚СѓСЂР°С‚Р° РЅР° РєРѕРґР°, РЅРµРѕР±С…РѕРґРёРј Р·Р° РґРµС„РёРЅРёСЂР°РЅРµ РЅР° РєР»Р°СЃ, Рµ СЃР»РµРґРЅР°С‚Р°:
 \begin{lstlisting}
 [<access>] [abstract/final] class <class_name>
 		[extends <class_name>]
 		[implements <interface_name>, ...]{
-	//полета
-	//конструктор
-	//методи
+	//РїРѕР»РµС‚Р°
+	//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	//РјРµС‚РѕРґРё
 }
 \end{lstlisting}
-\item Пример:
+\item РџСЂРёРјРµСЂ:
 \begin{lstlisting}
 public class Point {
 	...
@@ -139,25 +126,25 @@ public class Point {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Членове на класа}
-В рамаките на класа могат да се дефинират следните видове членове на класа:
+\begin{frame}[containsverbatim]\frametitle{Р§Р»РµРЅРѕРІРµ РЅР° РєР»Р°СЃР°}
+Р’ СЂР°РјР°РєРёС‚Рµ РЅР° РєР»Р°СЃР° РјРѕРіР°С‚ РґР° СЃРµ РґРµС„РёРЅРёСЂР°С‚ СЃР»РµРґРЅРёС‚Рµ РІРёРґРѕРІРµ С‡Р»РµРЅРѕРІРµ РЅР° РєР»Р°СЃР°:
 \begin{itemize}
- \item конструктори
- \item полета (нестатични и статични)
- \item методи (нестатични и статични)
- \item вложени класове
+ \item РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРё
+ \item РїРѕР»РµС‚Р° (РЅРµСЃС‚Р°С‚РёС‡РЅРё Рё СЃС‚Р°С‚РёС‡РЅРё)
+ \item РјРµС‚РѕРґРё (РЅРµСЃС‚Р°С‚РёС‡РЅРё Рё СЃС‚Р°С‚РёС‡РЅРё)
+ \item РІР»РѕР¶РµРЅРё РєР»Р°СЃРѕРІРµ
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Конструктор}
+\begin{frame}[containsverbatim]\frametitle{РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ}
 \begin{itemize}
- \item Конструкторът трябва да има същото име, като това на класа
- \item Един клас може да има няколко конструктора
- \item В конструктора се извършва инициализация на конструирания обект
+ \item РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂСЉС‚ С‚СЂСЏР±РІР° РґР° РёРјР° СЃСЉС‰РѕС‚Рѕ РёРјРµ, РєР°С‚Рѕ С‚РѕРІР° РЅР° РєР»Р°СЃР°
+ \item Р•РґРёРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° РёРјР° РЅСЏРєРѕР»РєРѕ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
+ \item Р’ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° СЃРµ РёР·РІСЉСЂС€РІР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅР° РєРѕРЅСЃС‚СЂСѓРёСЂР°РЅРёСЏ РѕР±РµРєС‚
 \end{itemize}
 \begin{lstlisting}
 [<access>] class_name ([<argument list>]){
-	//тяло на конструктора
+	//С‚СЏР»Рѕ РЅР° РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР°
 }
 
 public class Point {
@@ -170,7 +157,7 @@ public class Point {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Конструктори}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРё}
 \begin{lstlisting}
 public  class HelloWorld {
 	
@@ -190,24 +177,24 @@ public  class HelloWorld {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Методи}
+\begin{frame}[containsverbatim]\frametitle{РњРµС‚РѕРґРё}
 \begin{itemize}
- \item Методите описват поведението на класа. 
-Те описват реакцията на обектите от класа на външни въздействия (съобщения). 
-Методите извършват операции
- \item Методите работят върху състоянието (полетата) на класа
- \item Методите могат да имат произволен брой агрументи и могат връщат не повече от една стойност
- \item Ако даден метод не връща стойност, то неговият тип е void
- \item Един клас може да има произволен брой методи
+ \item РњРµС‚РѕРґРёС‚Рµ РѕРїРёСЃРІР°С‚ РїРѕРІРµРґРµРЅРёРµС‚Рѕ РЅР° РєР»Р°СЃР°. 
+РўРµ РѕРїРёСЃРІР°С‚ СЂРµР°РєС†РёСЏС‚Р° РЅР° РѕР±РµРєС‚РёС‚Рµ РѕС‚ РєР»Р°СЃР° РЅР° РІСЉРЅС€РЅРё РІСЉР·РґРµР№СЃС‚РІРёСЏ (СЃСЉРѕР±С‰РµРЅРёСЏ). 
+РњРµС‚РѕРґРёС‚Рµ РёР·РІСЉСЂС€РІР°С‚ РѕРїРµСЂР°С†РёРё
+ \item РњРµС‚РѕРґРёС‚Рµ СЂР°Р±РѕС‚СЏС‚ РІСЉСЂС…Сѓ СЃСЉСЃС‚РѕСЏРЅРёРµС‚Рѕ (РїРѕР»РµС‚Р°С‚Р°) РЅР° РєР»Р°СЃР°
+ \item РњРµС‚РѕРґРёС‚Рµ РјРѕРіР°С‚ РґР° РёРјР°С‚ РїСЂРѕРёР·РІРѕР»РµРЅ Р±СЂРѕР№ Р°РіСЂСѓРјРµРЅС‚Рё Рё РјРѕРіР°С‚ РІСЂСЉС‰Р°С‚ РЅРµ РїРѕРІРµС‡Рµ РѕС‚ РµРґРЅР° СЃС‚РѕР№РЅРѕСЃС‚
+ \item РђРєРѕ РґР°РґРµРЅ РјРµС‚РѕРґ РЅРµ РІСЂСЉС‰Р° СЃС‚РѕР№РЅРѕСЃС‚, С‚Рѕ РЅРµРіРѕРІРёСЏС‚ С‚РёРї Рµ void
+ \item Р•РґРёРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° РёРјР° РїСЂРѕРёР·РІРѕР»РµРЅ Р±СЂРѕР№ РјРµС‚РѕРґРё
 \end{itemize}
 \begin{lstlisting}
 [<access>] <result type> method_name ([<argument list>]){
-	//тяло на метода
+	//С‚СЏР»Рѕ РЅР° РјРµС‚РѕРґР°
 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Методи}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РњРµС‚РѕРґРё}
 \begin{lstlisting}
 class Box {
 	public boolean isEmpty() {
@@ -222,10 +209,10 @@ class Box {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Предефениране на методи (overloading)}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРµРґРµС„РµРЅРёСЂР°РЅРµ РЅР° РјРµС‚РѕРґРё (overloading)}
 \begin{itemize}
- \item В един клас може да има два (или повече) метода с еднакво име стига аргументите да са им различни
- \item При извикване методът се избира на основата на името и списъка от реално предадените аргументи
+ \item Р’ РµРґРёРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° РёРјР° РґРІР° (РёР»Рё РїРѕРІРµС‡Рµ) РјРµС‚РѕРґР° СЃ РµРґРЅР°РєРІРѕ РёРјРµ СЃС‚РёРіР° Р°СЂРіСѓРјРµРЅС‚РёС‚Рµ РґР° СЃР° РёРј СЂР°Р·Р»РёС‡РЅРё
+ \item РџСЂРё РёР·РІРёРєРІР°РЅРµ РјРµС‚РѕРґСЉС‚ СЃРµ РёР·Р±РёСЂР° РЅР° РѕСЃРЅРѕРІР°С‚Р° РЅР° РёРјРµС‚Рѕ Рё СЃРїРёСЃСЉРєР° РѕС‚ СЂРµР°Р»РЅРѕ РїСЂРµРґР°РґРµРЅРёС‚Рµ Р°СЂРіСѓРјРµРЅС‚Рё
 \end{itemize}
 \begin{lstlisting}
 void  foo () {
@@ -235,18 +222,18 @@ void  foo (int a) {
 	...
 }
 public  static void main (String[] args) {
- 	obj.foo(); //извиква първия метод
- 	obj.foo(7); //извиква втория метод
+ 	obj.foo(); //РёР·РІРёРєРІР° РїСЉСЂРІРёСЏ РјРµС‚РѕРґ
+ 	obj.foo(7); //РёР·РІРёРєРІР° РІС‚РѕСЂРёСЏ РјРµС‚РѕРґ
 }
 \end{lstlisting}
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Полета}
+\begin{frame}[containsverbatim]\frametitle{РџРѕР»РµС‚Р°}
 \begin{itemize}
- \item Полето е част от клас
- \item Полето е променлива – съдържа данни
- \item Всяко поле има тип, който определя какъв вид данни ще се записват в него
+ \item РџРѕР»РµС‚Рѕ Рµ С‡Р°СЃС‚ РѕС‚ РєР»Р°СЃ
+ \item РџРѕР»РµС‚Рѕ Рµ РїСЂРѕРјРµРЅР»РёРІР° вЂ“ СЃСЉРґСЉСЂР¶Р° РґР°РЅРЅРё
+ \item Р’СЃСЏРєРѕ РїРѕР»Рµ РёРјР° С‚РёРї, РєРѕР№С‚Рѕ РѕРїСЂРµРґРµР»СЏ РєР°РєСЉРІ РІРёРґ РґР°РЅРЅРё С‰Рµ СЃРµ Р·Р°РїРёСЃРІР°С‚ РІ РЅРµРіРѕ
 \end{itemize}
 \begin{lstlisting}
 public  class Bean {
@@ -257,7 +244,7 @@ public  class Bean {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ}
 \begin{lstlisting}
 public class BankAccount {
  	private int balance;
@@ -277,25 +264,25 @@ public class BankAccount {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Достъп до членовете на класа}
-Достъпът до член на класа се дефинира с една от следните ключови думи:
+\begin{frame}[containsverbatim]\frametitle{Р”РѕСЃС‚СЉРї РґРѕ С‡Р»РµРЅРѕРІРµС‚Рµ РЅР° РєР»Р°СЃР°}
+Р”РѕСЃС‚СЉРїСЉС‚ РґРѕ С‡Р»РµРЅ РЅР° РєР»Р°СЃР° СЃРµ РґРµС„РёРЅРёСЂР° СЃ РµРґРЅР° РѕС‚ СЃР»РµРґРЅРёС‚Рµ РєР»СЋС‡РѕРІРё РґСѓРјРё:
 \begin{itemize}
- \item \lstinline{public} -- всеки клас от всеки пакет има достъп
- \item \lstinline{protected} -- всеки подклас (наследник) има достъп
- \item \lstinline{(default)} -- само класове от същия пакет имат достъп
- \item \lstinline{private} -- само съответния клас има достъп
+ \item \lstinline{public} -- РІСЃРµРєРё РєР»Р°СЃ РѕС‚ РІСЃРµРєРё РїР°РєРµС‚ РёРјР° РґРѕСЃС‚СЉРї
+ \item \lstinline{protected} -- РІСЃРµРєРё РїРѕРґРєР»Р°СЃ (РЅР°СЃР»РµРґРЅРёРє) РёРјР° РґРѕСЃС‚СЉРї
+ \item \lstinline{(default)} -- СЃР°РјРѕ РєР»Р°СЃРѕРІРµ РѕС‚ СЃСЉС‰РёСЏ РїР°РєРµС‚ РёРјР°С‚ РґРѕСЃС‚СЉРї
+ \item \lstinline{private} -- СЃР°РјРѕ СЃСЉРѕС‚РІРµС‚РЅРёСЏ РєР»Р°СЃ РёРјР° РґРѕСЃС‚СЉРї
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Наследяване}
+\begin{frame}[containsverbatim]\frametitle{РќР°СЃР»РµРґСЏРІР°РЅРµ}
 \begin{itemize}
- \item Чрез наследяване даден клас може да придобие функционалност от друг клас
- \item Чрез наследяване може да се постигне абстракция на функционалността и данните
- \item Наследяването позволява да се намали сложността на големи софтуерни системи
+ \item Р§СЂРµР· РЅР°СЃР»РµРґСЏРІР°РЅРµ РґР°РґРµРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° РїСЂРёРґРѕР±РёРµ С„СѓРЅРєС†РёРѕРЅР°Р»РЅРѕСЃС‚ РѕС‚ РґСЂСѓРі РєР»Р°СЃ
+ \item Р§СЂРµР· РЅР°СЃР»РµРґСЏРІР°РЅРµ РјРѕР¶Рµ РґР° СЃРµ РїРѕСЃС‚РёРіРЅРµ Р°Р±СЃС‚СЂР°РєС†РёСЏ РЅР° С„СѓРЅРєС†РёРѕРЅР°Р»РЅРѕСЃС‚С‚Р° Рё РґР°РЅРЅРёС‚Рµ
+ \item РќР°СЃР»РµРґСЏРІР°РЅРµС‚Рѕ РїРѕР·РІРѕР»СЏРІР° РґР° СЃРµ РЅР°РјР°Р»Рё СЃР»РѕР¶РЅРѕСЃС‚С‚Р° РЅР° РіРѕР»РµРјРё СЃРѕС„С‚СѓРµСЂРЅРё СЃРёСЃС‚РµРјРё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Наследяване}
+\begin{frame}[containsverbatim]\frametitle{РќР°СЃР»РµРґСЏРІР°РЅРµ}
 \begin{center}
 \begin{tikzpicture}[grow=down,
     level 1/.style={sibling distance=4.5cm,level distance=3cm},
@@ -325,15 +312,15 @@ public class BankAccount {
 \end{center}
 
 \begin{itemize}
- \item Две отделни идеи с различно поведение, но имат базова функционалност която е обща
+ \item Р”РІРµ РѕС‚РґРµР»РЅРё РёРґРµРё СЃ СЂР°Р·Р»РёС‡РЅРѕ РїРѕРІРµРґРµРЅРёРµ, РЅРѕ РёРјР°С‚ Р±Р°Р·РѕРІР° С„СѓРЅРєС†РёРѕРЅР°Р»РЅРѕСЃС‚ РєРѕСЏС‚Рѕ Рµ РѕР±С‰Р°
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Интерфейси}
+\begin{frame}[containsverbatim]\frametitle{РРЅС‚РµСЂС„РµР№СЃРё}
 \begin{itemize}
- \item Интерфейсът дефинира списък на достъпните методи
- \item В интерефейс се декларират методи, но не се дефинират
- \item Интерфейсите нямат конструктори
+ \item РРЅС‚РµСЂС„РµР№СЃСЉС‚ РґРµС„РёРЅРёСЂР° СЃРїРёСЃСЉРє РЅР° РґРѕСЃС‚СЉРїРЅРёС‚Рµ РјРµС‚РѕРґРё
+ \item Р’ РёРЅС‚РµСЂРµС„РµР№СЃ СЃРµ РґРµРєР»Р°СЂРёСЂР°С‚ РјРµС‚РѕРґРё, РЅРѕ РЅРµ СЃРµ РґРµС„РёРЅРёСЂР°С‚
+ \item РРЅС‚РµСЂС„РµР№СЃРёС‚Рµ РЅСЏРјР°С‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРё
 \end{itemize}
 \begin{lstlisting}
 interface BankAccount {
@@ -343,18 +330,18 @@ interface BankAccount {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Използване на интерфейси}
+\begin{frame}[containsverbatim]\frametitle{РР·РїРѕР»Р·РІР°РЅРµ РЅР° РёРЅС‚РµСЂС„РµР№СЃРё}
 \begin{itemize}
- \item Един клас може да имплементира един или няколко интерфейса
- \item Един интерфейс може да разшири друг интерфейс
- \item Ако един клас имплементира даден интерфейс, то този клас трябва да 
-предостави реализация на всеки метод от интерфейса
- \item Ако един клас имплементира няколко интерфейса то този клас трябва да 
-предостави реализация на всеки метод от всеки интерфейс
+ \item Р•РґРёРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° РёРјРїР»РµРјРµРЅС‚РёСЂР° РµРґРёРЅ РёР»Рё РЅСЏРєРѕР»РєРѕ РёРЅС‚РµСЂС„РµР№СЃР°
+ \item Р•РґРёРЅ РёРЅС‚РµСЂС„РµР№СЃ РјРѕР¶Рµ РґР° СЂР°Р·С€РёСЂРё РґСЂСѓРі РёРЅС‚РµСЂС„РµР№СЃ
+ \item РђРєРѕ РµРґРёРЅ РєР»Р°СЃ РёРјРїР»РµРјРµРЅС‚РёСЂР° РґР°РґРµРЅ РёРЅС‚РµСЂС„РµР№СЃ, С‚Рѕ С‚РѕР·Рё РєР»Р°СЃ С‚СЂСЏР±РІР° РґР° 
+РїСЂРµРґРѕСЃС‚Р°РІРё СЂРµР°Р»РёР·Р°С†РёСЏ РЅР° РІСЃРµРєРё РјРµС‚РѕРґ РѕС‚ РёРЅС‚РµСЂС„РµР№СЃР°
+ \item РђРєРѕ РµРґРёРЅ РєР»Р°СЃ РёРјРїР»РµРјРµРЅС‚РёСЂР° РЅСЏРєРѕР»РєРѕ РёРЅС‚РµСЂС„РµР№СЃР° С‚Рѕ С‚РѕР·Рё РєР»Р°СЃ С‚СЂСЏР±РІР° РґР° 
+РїСЂРµРґРѕСЃС‚Р°РІРё СЂРµР°Р»РёР·Р°С†РёСЏ РЅР° РІСЃРµРєРё РјРµС‚РѕРґ РѕС‚ РІСЃРµРєРё РёРЅС‚РµСЂС„РµР№СЃ
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Употреба на интерфейси}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЈРїРѕС‚СЂРµР±Р° РЅР° РёРЅС‚РµСЂС„РµР№СЃРё}
 \begin{lstlisting}
 public  class CheckingAccount implements BankAccount {
 	private int balance;
@@ -376,21 +363,21 @@ public  class CheckingAccount implements BankAccount {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Абстрактни класове}
+\begin{frame}[containsverbatim]\frametitle{РђР±СЃС‚СЂР°РєС‚РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{itemize}
- \item Абстрактният клас е нещо средно между интерфейс и клас
+ \item РђР±СЃС‚СЂР°РєС‚РЅРёСЏС‚ РєР»Р°СЃ Рµ РЅРµС‰Рѕ СЃСЂРµРґРЅРѕ РјРµР¶РґСѓ РёРЅС‚РµСЂС„РµР№СЃ Рё РєР»Р°СЃ
 \begin{itemize}
- \item може да има дефинирани методи
- \item може да има полета
- \item не могат да се създават обекти
+ \item РјРѕР¶Рµ РґР° РёРјР° РґРµС„РёРЅРёСЂР°РЅРё РјРµС‚РѕРґРё
+ \item РјРѕР¶Рµ РґР° РёРјР° РїРѕР»РµС‚Р°
+ \item РЅРµ РјРѕРіР°С‚ РґР° СЃРµ СЃСЉР·РґР°РІР°С‚ РѕР±РµРєС‚Рё
 \end{itemize}
- \item Помага да се дефинира една идея както като функционалност така и като данни
- \item В един абстрактен клас може да се разположат методи, които имат обща функционалност за всички подкласове
- \item Абстрактен клас се дефинира с ключовата дума abstract
+ \item РџРѕРјР°РіР° РґР° СЃРµ РґРµС„РёРЅРёСЂР° РµРґРЅР° РёРґРµСЏ РєР°РєС‚Рѕ РєР°С‚Рѕ С„СѓРЅРєС†РёРѕРЅР°Р»РЅРѕСЃС‚ С‚Р°РєР° Рё РєР°С‚Рѕ РґР°РЅРЅРё
+ \item Р’ РµРґРёРЅ Р°Р±СЃС‚СЂР°РєС‚РµРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° СЃРµ СЂР°Р·РїРѕР»РѕР¶Р°С‚ РјРµС‚РѕРґРё, РєРѕРёС‚Рѕ РёРјР°С‚ РѕР±С‰Р° С„СѓРЅРєС†РёРѕРЅР°Р»РЅРѕСЃС‚ Р·Р° РІСЃРёС‡РєРё РїРѕРґРєР»Р°СЃРѕРІРµ
+ \item РђР±СЃС‚СЂР°РєС‚РµРЅ РєР»Р°СЃ СЃРµ РґРµС„РёРЅРёСЂР° СЃ РєР»СЋС‡РѕРІР°С‚Р° РґСѓРјР° abstract
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Употреба на абстрактни класове}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЈРїРѕС‚СЂРµР±Р° РЅР° Р°Р±СЃС‚СЂР°РєС‚РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public  abstract class BankAccount {
  	protected int balance;
@@ -408,7 +395,7 @@ public  abstract class BankAccount {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Наследяване на абстрактни класове}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РќР°СЃР»РµРґСЏРІР°РЅРµ РЅР° Р°Р±СЃС‚СЂР°РєС‚РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public  class CheckingAccount extends BankAccount {
  	public CheckingAccount () {
@@ -422,7 +409,7 @@ public  class CheckingAccount extends BankAccount {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Наследяване на абстрактни класове}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РќР°СЃР»РµРґСЏРІР°РЅРµ РЅР° Р°Р±СЃС‚СЂР°РєС‚РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public  class SavingsAccount extends BankAccount {
  	private int numberOfWithdrawals;

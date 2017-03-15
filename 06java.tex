@@ -2,10 +2,10 @@
 \documentclass[ignorenonframetext, hyperref=unicode,compress,pdflatex]{beamer}
 %\documentclass[ignorenonframetext, hyperref=unicode,pdftex]{beamer}
 
-\input{notes.tex}
+\input{jnotes.tex}
 
-\title{Интерфейси, абстрактни класове, изключения и вътрешни класове}
-\lubo
+\title{РРЅС‚РµСЂС„РµР№СЃРё, Р°Р±СЃС‚СЂР°РєС‚РЅРё РєР»Р°СЃРѕРІРµ, РёР·РєР»СЋС‡РµРЅРёСЏ Рё РІСЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ}
+\authors
 \date{\today}
 
 \usetikzlibrary{shapes}
@@ -19,54 +19,40 @@
 
 \begin{frame}
 \small
-{\bf Забележка:} Тази лекция е адаптация на:
+{\bf Р—Р°Р±РµР»РµР¶РєР°:} РўР°Р·Рё Р»РµРєС†РёСЏ Рµ Р°РґР°РїС‚Р°С†РёСЏ РЅР°:
 \begin{itemize}
   \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/13D676CC-7269-4406-A215-53245A12B235/0/lecture4.pdf}{Lucy Mendel: {\em Interfaces, Abstract classes, Exceptions, Inner classes}} from
 \href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
 {\em 6.092: Java for 6.170} (MIT OpenCourseWare:
 Massachusetts Institute of Technology)}\\
-{\bf Лиценз:}
+{\bf Р›РёС†РµРЅР·:}
 \href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
 BY-NC-SA}
 \end{itemize}
-
-\vfill
-
-\begin{columns}
-\column{0.3\textwidth}
-\begin{figure}[h]
-\center
-\scalebox{1}{\includegraphics{eu-logos}}
-\end{figure}
-\column{0.7\textwidth}
-
-Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
-\end{columns}
-
 
 \end{frame}
 
 \begin{frame}
 
-{\bf Допълнителна литература}
+{\bf Р”РѕРїСЉР»РЅРёС‚РµР»РЅР° Р»РёС‚РµСЂР°С‚СѓСЂР°}
 \nocite{*}
 \bibliographystyle{plain}
 \bibliography{learning-java}
 
 \end{frame}
 \begin{frame}
-\frametitle{Съдържание}
+\frametitle{РЎСЉРґСЉСЂР¶Р°РЅРёРµ}
 \tableofcontents %[hideallsubsections]
 \end{frame}
 
 
-\section{Абстрактни класове}
+\section{РђР±СЃС‚СЂР°РєС‚РЅРё РєР»Р°СЃРѕРІРµ}
 
-\begin{frame}[containsverbatim]\frametitle{Абстракни класове}
+\begin{frame}[containsverbatim]\frametitle{РђР±СЃС‚СЂР°РєРЅРё РєР»Р°СЃРѕРІРµ}
 \begin{itemize}
-\item Дефинират се с ключовата дума abstract
-\item Не могат да се създават обекти от абстрактен клас
-\item Използват се, когато част от кода на два класа съвпада
+\item Р”РµС„РёРЅРёСЂР°С‚ СЃРµ СЃ РєР»СЋС‡РѕРІР°С‚Р° РґСѓРјР° abstract
+\item РќРµ РјРѕРіР°С‚ РґР° СЃРµ СЃСЉР·РґР°РІР°С‚ РѕР±РµРєС‚Рё РѕС‚ Р°Р±СЃС‚СЂР°РєС‚РµРЅ РєР»Р°СЃ
+\item РР·РїРѕР»Р·РІР°С‚ СЃРµ, РєРѕРіР°С‚Рѕ С‡Р°СЃС‚ РѕС‚ РєРѕРґР° РЅР° РґРІР° РєР»Р°СЃР° СЃСЉРІРїР°РґР°
 \end{itemize}
 \begin{lstlisting}
 public abstract class Person {
@@ -84,7 +70,7 @@ public abstract class Person {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Абстракни класове}
+\begin{frame}[containsverbatim]\frametitle{РђР±СЃС‚СЂР°РєРЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 class EnglishPerson extends Person { 
  	public String sayGreeting() {
@@ -101,14 +87,14 @@ class SpanishPerson extends Person {
 \end{frame}
 
 
-\section{Интерфейси}
+\section{РРЅС‚РµСЂС„РµР№СЃРё}
 
-\begin{frame}[containsverbatim]\frametitle{Интрефейси}
+\begin{frame}[containsverbatim]\frametitle{РРЅС‚СЂРµС„РµР№СЃРё}
 \begin{itemize}
-\item Интерфейсът дава списък на достъпните методи
-\item Дефинират се с ключовата дума \lstinline{interface}
-\item Реализират се с ключовата дума \lstinline{implements}
-\item Използват се за описание на начина на взаимодействие между различни или неизвестни компоненти
+\item РРЅС‚РµСЂС„РµР№СЃСЉС‚ РґР°РІР° СЃРїРёСЃСЉРє РЅР° РґРѕСЃС‚СЉРїРЅРёС‚Рµ РјРµС‚РѕРґРё
+\item Р”РµС„РёРЅРёСЂР°С‚ СЃРµ СЃ РєР»СЋС‡РѕРІР°С‚Р° РґСѓРјР° \lstinline{interface}
+\item Р РµР°Р»РёР·РёСЂР°С‚ СЃРµ СЃ РєР»СЋС‡РѕРІР°С‚Р° РґСѓРјР° \lstinline{implements}
+\item РР·РїРѕР»Р·РІР°С‚ СЃРµ Р·Р° РѕРїРёСЃР°РЅРёРµ РЅР° РЅР°С‡РёРЅР° РЅР° РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ РјРµР¶РґСѓ СЂР°Р·Р»РёС‡РЅРё РёР»Рё РЅРµРёР·РІРµСЃС‚РЅРё РєРѕРјРїРѕРЅРµРЅС‚Рё
 \end{itemize}
 \begin{lstlisting}
 public interface Dragable { 
@@ -123,9 +109,9 @@ public class Chair implements Dragable {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Реализация на множество интерфейси}
+\begin{frame}[containsverbatim]\frametitle{Р РµР°Р»РёР·Р°С†РёСЏ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕ РёРЅС‚РµСЂС„РµР№СЃРё}
 \begin{itemize}
-\item Всеки един клас може да реализира произволен брой (множество) интерфейси
+\item Р’СЃРµРєРё РµРґРёРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° СЂРµР°Р»РёР·РёСЂР° РїСЂРѕРёР·РІРѕР»РµРЅ Р±СЂРѕР№ (РјРЅРѕР¶РµСЃС‚РІРѕ) РёРЅС‚РµСЂС„РµР№СЃРё
 \end{itemize}
 \begin{lstlisting}
 interface Drawable {
@@ -143,7 +129,7 @@ interface Draggable {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Реализация на множество интерфейси}
+\begin{frame}[containsverbatim]\frametitle{Р РµР°Р»РёР·Р°С†РёСЏ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕ РёРЅС‚РµСЂС„РµР№СЃРё}
 \begin{lstlisting}
 class Icon implements Drawable, Clickable, Draggable {
  	public void draw() {
@@ -161,13 +147,13 @@ class Icon implements Drawable, Clickable, Draggable {
 
 
 
-\section{Наследяване}
+\section{РќР°СЃР»РµРґСЏРІР°РЅРµ}
 
-\begin{frame}[containsverbatim]\frametitle{Единично наследяване}
+\begin{frame}[containsverbatim]\frametitle{Р•РґРёРЅРёС‡РЅРѕ РЅР°СЃР»РµРґСЏРІР°РЅРµ}
 \begin{itemize}
-\item Всеки един клас може да наследява само един клас
-\item Ако той не е указан непосредствено, то родител е \lstinline{java.lang.Object}
-\item Възможно е предефиниране на методи
+\item Р’СЃРµРєРё РµРґРёРЅ РєР»Р°СЃ РјРѕР¶Рµ РґР° РЅР°СЃР»РµРґСЏРІР° СЃР°РјРѕ РµРґРёРЅ РєР»Р°СЃ
+\item РђРєРѕ С‚РѕР№ РЅРµ Рµ СѓРєР°Р·Р°РЅ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРѕ, С‚Рѕ СЂРѕРґРёС‚РµР» Рµ \lstinline{java.lang.Object}
+\item Р’СЉР·РјРѕР¶РЅРѕ Рµ РїСЂРµРґРµС„РёРЅРёСЂР°РЅРµ РЅР° РјРµС‚РѕРґРё
 \end{itemize}
 \begin{lstlisting}
 class Parent { 
@@ -183,7 +169,7 @@ class Child extends Parent {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Подтипове}
+\begin{frame}[containsverbatim]\frametitle{РџРѕРґС‚РёРїРѕРІРµ}
 \begin{lstlisting}
 class Square{ 
 	public int width;
@@ -200,13 +186,13 @@ int calculateCircumference (Rectangle x) {
 }
 \end{lstlisting}
 \begin{itemize}
-\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\item Р”Р°Р»Рё \lstinline{Square} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Rectangle}, РёР»Рё РѕР±СЂР°С‚РЅРѕС‚Рѕ \lstinline{Rectangle} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Square}?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Подтипове: \lstinline{Rectangle} наследява \lstinline{Square}}
+\begin{frame}[containsverbatim]\frametitle{РџРѕРґС‚РёРїРѕРІРµ: \lstinline{Rectangle} РЅР°СЃР»РµРґСЏРІР° \lstinline{Square}}
 \begin{itemize}
-\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\item Р”Р°Р»Рё \lstinline{Square} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Rectangle}, РёР»Рё РѕР±СЂР°С‚РЅРѕС‚Рѕ \lstinline{Rectangle} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Square}?
 \end{itemize}
 \begin{lstlisting}
 class Square {
@@ -226,9 +212,9 @@ calculateArea( rect ) ;     // returns 4, not 6 !
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Подтипове: \lstinline{Square} наследява \lstinline{Rectangle}}
+\begin{frame}[containsverbatim]\frametitle{РџРѕРґС‚РёРїРѕРІРµ: \lstinline{Square} РЅР°СЃР»РµРґСЏРІР° \lstinline{Rectangle}}
 \begin{itemize}
-\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\item Р”Р°Р»Рё \lstinline{Square} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Rectangle}, РёР»Рё РѕР±СЂР°С‚РЅРѕС‚Рѕ \lstinline{Rectangle} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Square}?
 \end{itemize}
 \begin{lstlisting}
 class Rectangle { 
@@ -243,9 +229,9 @@ calculateCircumference( sq ) ; // w.t.f. no height!
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Подтипове: отново \lstinline{Square} наследява \lstinline{Rectangle}}
+\begin{frame}[containsverbatim]\frametitle{РџРѕРґС‚РёРїРѕРІРµ: РѕС‚РЅРѕРІРѕ \lstinline{Square} РЅР°СЃР»РµРґСЏРІР° \lstinline{Rectangle}}
 \begin{itemize}
-\item Дали \lstinline{Square} трябва да наследи \lstinline{Rectangle}, или обратното \lstinline{Rectangle} трябва да наследи \lstinline{Square}?
+\item Р”Р°Р»Рё \lstinline{Square} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Rectangle}, РёР»Рё РѕР±СЂР°С‚РЅРѕС‚Рѕ \lstinline{Rectangle} С‚СЂСЏР±РІР° РґР° РЅР°СЃР»РµРґРё \lstinline{Square}?
 \end{itemize}
 \begin{lstlisting}
 class Rectangle {
@@ -262,15 +248,15 @@ calculateCircumference( sq ) ; // 12, ok
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Подтипове}
+\begin{frame}[containsverbatim]\frametitle{РџРѕРґС‚РёРїРѕРІРµ}
 \begin{itemize}
-\item Наследяването позволява повторно изплозване на кода на родителския клас в класа-наследник
-\item Класът наследник се превръща в подтип на базовия клас. За да бъде истински подтип наследникът трябва да се държи коректно, когато се използва от методи, които очакват екземпляр на базовия клас.
-\item При наследяване винаги трябва да се осигури правилно функциониране на наследника, когато той замества екземпляр на базовия клас
+\item РќР°СЃР»РµРґСЏРІР°РЅРµС‚Рѕ РїРѕР·РІРѕР»СЏРІР° РїРѕРІС‚РѕСЂРЅРѕ РёР·РїР»РѕР·РІР°РЅРµ РЅР° РєРѕРґР° РЅР° СЂРѕРґРёС‚РµР»СЃРєРёСЏ РєР»Р°СЃ РІ РєР»Р°СЃР°-РЅР°СЃР»РµРґРЅРёРє
+\item РљР»Р°СЃСЉС‚ РЅР°СЃР»РµРґРЅРёРє СЃРµ РїСЂРµРІСЂСЉС‰Р° РІ РїРѕРґС‚РёРї РЅР° Р±Р°Р·РѕРІРёСЏ РєР»Р°СЃ. Р—Р° РґР° Р±СЉРґРµ РёСЃС‚РёРЅСЃРєРё РїРѕРґС‚РёРї РЅР°СЃР»РµРґРЅРёРєСЉС‚ С‚СЂСЏР±РІР° РґР° СЃРµ РґСЉСЂР¶Рё РєРѕСЂРµРєС‚РЅРѕ, РєРѕРіР°С‚Рѕ СЃРµ РёР·РїРѕР»Р·РІР° РѕС‚ РјРµС‚РѕРґРё, РєРѕРёС‚Рѕ РѕС‡Р°РєРІР°С‚ РµРєР·РµРјРїР»СЏСЂ РЅР° Р±Р°Р·РѕРІРёСЏ РєР»Р°СЃ.
+\item РџСЂРё РЅР°СЃР»РµРґСЏРІР°РЅРµ РІРёРЅР°РіРё С‚СЂСЏР±РІР° РґР° СЃРµ РѕСЃРёРіСѓСЂРё РїСЂР°РІРёР»РЅРѕ С„СѓРЅРєС†РёРѕРЅРёСЂР°РЅРµ РЅР° РЅР°СЃР»РµРґРЅРёРєР°, РєРѕРіР°С‚Рѕ С‚РѕР№ Р·Р°РјРµСЃС‚РІР° РµРєР·РµРјРїР»СЏСЂ РЅР° Р±Р°Р·РѕРІРёСЏ РєР»Р°СЃ
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Наследяване срещу композиция}
+\begin{frame}[containsverbatim]\frametitle{РќР°СЃР»РµРґСЏРІР°РЅРµ СЃСЂРµС‰Сѓ РєРѕРјРїРѕР·РёС†РёСЏ}
 \begin{lstlisting}
 public class ListSet extends ArrayList { 
 ...
@@ -289,13 +275,13 @@ public class ListSet { // might want to implement Set
 \end{frame}
 
 
-\section{Изключения}
+\section{РР·РєР»СЋС‡РµРЅРёСЏ}
 
-\begin{frame}[containsverbatim]\frametitle{Изключения}
+\begin{frame}[containsverbatim]\frametitle{РР·РєР»СЋС‡РµРЅРёСЏ}
 \begin{itemize}
-\item Помагат за обработката на възникнали изключителни ситуации
-\item Изключението не може просто да бъде изпуснато
-\item При възникване на изключения се прекъсва нормалното изпълнение на програмата и се търси код, който е предназначен за обработка на възникналото изключение
+\item РџРѕРјР°РіР°С‚ Р·Р° РѕР±СЂР°Р±РѕС‚РєР°С‚Р° РЅР° РІСЉР·РЅРёРєРЅР°Р»Рё РёР·РєР»СЋС‡РёС‚РµР»РЅРё СЃРёС‚СѓР°С†РёРё
+\item РР·РєР»СЋС‡РµРЅРёРµС‚Рѕ РЅРµ РјРѕР¶Рµ РїСЂРѕСЃС‚Рѕ РґР° Р±СЉРґРµ РёР·РїСѓСЃРЅР°С‚Рѕ
+\item РџСЂРё РІСЉР·РЅРёРєРІР°РЅРµ РЅР° РёР·РєР»СЋС‡РµРЅРёСЏ СЃРµ РїСЂРµРєСЉСЃРІР° РЅРѕСЂРјР°Р»РЅРѕС‚Рѕ РёР·РїСЉР»РЅРµРЅРёРµ РЅР° РїСЂРѕРіСЂР°РјР°С‚Р° Рё СЃРµ С‚СЉСЂСЃРё РєРѕРґ, РєРѕР№С‚Рѕ Рµ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ Р·Р° РѕР±СЂР°Р±РѕС‚РєР° РЅР° РІСЉР·РЅРёРєРЅР°Р»РѕС‚Рѕ РёР·РєР»СЋС‡РµРЅРёРµ
 \end{itemize}
 \begin{lstlisting}
 	try {
@@ -310,7 +296,7 @@ public class ListSet { // might want to implement Set
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Обработка на изключения}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РћР±СЂР°Р±РѕС‚РєР° РЅР° РёР·РєР»СЋС‡РµРЅРёСЏ}
 \begin{lstlisting}
 class Editor {
 	boolean fileOpen = false;
@@ -318,14 +304,14 @@ class Editor {
  		try {
 			fileOpen = true;
  			File f = new File(filename);
- 			// действия с f
+ 			// РґРµР№СЃС‚РІРёСЏ СЃ f
 			...
  			return true;
  		} catch (FileNotFoundException e) {
- 			// изпълнява се само при генериране на изключение
+ 			// РёР·РїСЉР»РЅСЏРІР° СЃРµ СЃР°РјРѕ РїСЂРё РіРµРЅРµСЂРёСЂР°РЅРµ РЅР° РёР·РєР»СЋС‡РµРЅРёРµ
 			e.printStackTrace();
  			return false;
- 		} finally { // изпълнява се винаги:
+ 		} finally { // РёР·РїСЉР»РЅСЏРІР° СЃРµ РІРёРЅР°РіРё:
  			fileOpen = false;
 		}
 	}
@@ -333,17 +319,17 @@ class Editor {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Генериране на изключения}
+\begin{frame}[containsverbatim]\frametitle{Р“РµРЅРµСЂРёСЂР°РЅРµ РЅР° РёР·РєР»СЋС‡РµРЅРёСЏ}
 \begin{itemize}
-\item Използва се ключовата дума \lstinline{throw}, следвана от обект, който да съхранява информация за причината за възникване
-\item При дефиницията на конструктор или метод се описват изключенията, които могат да възникнат при изпълнение посредством ключовата дума \lstinline{throws}
+\item РР·РїРѕР»Р·РІР° СЃРµ РєР»СЋС‡РѕРІР°С‚Р° РґСѓРјР° \lstinline{throw}, СЃР»РµРґРІР°РЅР° РѕС‚ РѕР±РµРєС‚, РєРѕР№С‚Рѕ РґР° СЃСЉС…СЂР°РЅСЏРІР° РёРЅС„РѕСЂРјР°С†РёСЏ Р·Р° РїСЂРёС‡РёРЅР°С‚Р° Р·Р° РІСЉР·РЅРёРєРІР°РЅРµ
+\item РџСЂРё РґРµС„РёРЅРёС†РёСЏС‚Р° РЅР° РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР»Рё РјРµС‚РѕРґ СЃРµ РѕРїРёСЃРІР°С‚ РёР·РєР»СЋС‡РµРЅРёСЏС‚Р°, РєРѕРёС‚Рѕ РјРѕРіР°С‚ РґР° РІСЉР·РЅРёРєРЅР°С‚ РїСЂРё РёР·РїСЉР»РЅРµРЅРёРµ РїРѕСЃСЂРµРґСЃС‚РІРѕРј РєР»СЋС‡РѕРІР°С‚Р° РґСѓРјР° \lstinline{throws}
 \end{itemize}
 \begin{lstlisting}
 public class File {
  	public File(String filename) 
 				throws FileNotFoundException {
 		...
- 		// файлът не съществува
+ 		// С„Р°Р№Р»СЉС‚ РЅРµ СЃСЉС‰РµСЃС‚РІСѓРІР°
  		if ( /*  file not found */ ) {
  			throw new FileNotFoundException();
 		}
@@ -354,9 +340,9 @@ public class File {
 \end{frame}
 
 
-\section{Вложени класове}
+\section{Р’Р»РѕР¶РµРЅРё РєР»Р°СЃРѕРІРµ}
 
-\begin{frame}[containsverbatim]\frametitle{Вложени класове}
+\begin{frame}[containsverbatim]\frametitle{Р’Р»РѕР¶РµРЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public class EnclosingClass {
 	...
@@ -367,17 +353,17 @@ public class EnclosingClass {
 }
 \end{lstlisting}
 \begin{itemize}
-\item Кога и защо се използват вложени класове?
+\item РљРѕРіР° Рё Р·Р°С‰Рѕ СЃРµ РёР·РїРѕР»Р·РІР°С‚ РІР»РѕР¶РµРЅРё РєР»Р°СЃРѕРІРµ?
 \end{itemize}
 
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Вложени класове}
+\begin{frame}[containsverbatim]\frametitle{Р’Р»РѕР¶РµРЅРё РєР»Р°СЃРѕРІРµ}
 \begin{itemize}
-\item Имат достъп до всички полета на външния клас (дори \lstinline{private} полетата)
-\item Могат да бъдат статични (също така \lstinline{final}, \lstinline{abstract}). Когато вътрешният клас е статичен, той има достъп само до статичните полета на външният клас
-\item Не-статичните вложени класове се наричат още и вътрешни класове (inner classes)
+\item РРјР°С‚ РґРѕСЃС‚СЉРї РґРѕ РІСЃРёС‡РєРё РїРѕР»РµС‚Р° РЅР° РІСЉРЅС€РЅРёСЏ РєР»Р°СЃ (РґРѕСЂРё \lstinline{private} РїРѕР»РµС‚Р°С‚Р°)
+\item РњРѕРіР°С‚ РґР° Р±СЉРґР°С‚ СЃС‚Р°С‚РёС‡РЅРё (СЃСЉС‰Рѕ С‚Р°РєР° \lstinline{final}, \lstinline{abstract}). РљРѕРіР°С‚Рѕ РІСЉС‚СЂРµС€РЅРёСЏС‚ РєР»Р°СЃ Рµ СЃС‚Р°С‚РёС‡РµРЅ, С‚РѕР№ РёРјР° РґРѕСЃС‚СЉРї СЃР°РјРѕ РґРѕ СЃС‚Р°С‚РёС‡РЅРёС‚Рµ РїРѕР»РµС‚Р° РЅР° РІСЉРЅС€РЅРёСЏС‚ РєР»Р°СЃ
+\item РќРµ-СЃС‚Р°С‚РёС‡РЅРёС‚Рµ РІР»РѕР¶РµРЅРё РєР»Р°СЃРѕРІРµ СЃРµ РЅР°СЂРёС‡Р°С‚ РѕС‰Рµ Рё РІСЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ (inner classes)
 \end{itemize}
 \begin{lstlisting}
 class  EnclosingClass {
@@ -391,37 +377,37 @@ class  EnclosingClass {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Вътрешни класове}
+\begin{frame}[containsverbatim]\frametitle{Р’СЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{itemize}
-\item Има достъп до всичките полета на съдържащия го клас
-\item Не могат да имат статични полета
-\item Не може да съществува без екземпляр на съдържащия го клас
+\item РРјР° РґРѕСЃС‚СЉРї РґРѕ РІСЃРёС‡РєРёС‚Рµ РїРѕР»РµС‚Р° РЅР° СЃСЉРґСЉСЂР¶Р°С‰РёСЏ РіРѕ РєР»Р°СЃ
+\item РќРµ РјРѕРіР°С‚ РґР° РёРјР°С‚ СЃС‚Р°С‚РёС‡РЅРё РїРѕР»РµС‚Р°
+\item РќРµ РјРѕР¶Рµ РґР° СЃСЉС‰РµСЃС‚РІСѓРІР° Р±РµР· РµРєР·РµРјРїР»СЏСЂ РЅР° СЃСЉРґСЉСЂР¶Р°С‰РёСЏ РіРѕ РєР»Р°СЃ
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Локални вътрешни класове}
+\begin{frame}[containsverbatim]\frametitle{Р›РѕРєР°Р»РЅРё РІСЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 import  java.util.ArrayList;
 import  java.util.Iterator;
 public class Stack {
  	private ArrayList items;
  	public Iterator iterator() {
-		// клас дефиниран в тялото на метода
+		// РєР»Р°СЃ РґРµС„РёРЅРёСЂР°РЅ РІ С‚СЏР»РѕС‚Рѕ РЅР° РјРµС‚РѕРґР°
  		class StackIterator implements Iterator {
  			int currentItem = items.size() - 1;
  			public boolean hasNext() { /* ... */ }
  			public ArrayList<Object> next() { /* ... */ }
  			public void remove() { /* ... */ }
 		}
-		// видим е само в границите на самата функция
+		// РІРёРґРёРј Рµ СЃР°РјРѕ РІ РіСЂР°РЅРёС†РёС‚Рµ РЅР° СЃР°РјР°С‚Р° С„СѓРЅРєС†РёСЏ
  		return new StackIterator();
 	}
 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Анонимни вътрешни класове}
+\begin{frame}[containsverbatim]\frametitle{РђРЅРѕРЅРёРјРЅРё РІСЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 import  java.util.ArrayList;
 import  java.util.Iterator;
@@ -429,7 +415,7 @@ public class Stack {
  	private ArrayList items;
 
  	public Iterator iterator() {
- 		return new Iterator() {//реализира интерфейса Iterator
+ 		return new Iterator() {//СЂРµР°Р»РёР·РёСЂР° РёРЅС‚РµСЂС„РµР№СЃР° Iterator
  			int currentItem = items.size() - 1;
  			public boolean hasNext() { /* ... */ }
  			public ArrayList<Object> next() { /* ... */ }
@@ -440,9 +426,9 @@ public class Stack {
 \end{lstlisting}
 \end{frame}
 
-\section{Вътрешни класове}
+\section{Р’СЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ}
 
-\begin{frame}[containsverbatim]\frametitle{Вътрешни класове}
+\begin{frame}[containsverbatim]\frametitle{Р’СЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public class Animal {
 	class Brain {
@@ -462,7 +448,7 @@ Animal.Brain monkeyBrain = monkey.new Brain( );
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Вътрешни класове като адаптери}
+\begin{frame}[containsverbatim]\frametitle{Р’СЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ РєР°С‚Рѕ Р°РґР°РїС‚РµСЂРё}
 \begin{lstlisting}
 public class EmployeeList {
 	private Employee[] employees = new Employee[0];
@@ -479,13 +465,13 @@ public interface Iterator {
 	void remove();
 }
 class EmployeeListIterator implements Iterator {
-	// Трябва да познава вътрешното устройство на EmployeeList
+	// РўСЂСЏР±РІР° РґР° РїРѕР·РЅР°РІР° РІСЉС‚СЂРµС€РЅРѕС‚Рѕ СѓСЃС‚СЂРѕР№СЃС‚РІРѕ РЅР° EmployeeList
 	//...
 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Вътрешни класове като адаптери}
+\begin{frame}[containsverbatim]\frametitle{Р’СЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ РєР°С‚Рѕ Р°РґР°РїС‚РµСЂРё}
 \begin{lstlisting}
 public class EmployeeList {
     private Employee[] employees = new Employee[0];
@@ -505,7 +491,7 @@ public class EmployeeList {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Вътрешни класове като адаптери}
+\begin{frame}[containsverbatim]\frametitle{Р’СЉС‚СЂРµС€РЅРё РєР»Р°СЃРѕРІРµ РєР°С‚Рѕ Р°РґР°РїС‚РµСЂРё}
 \begin{lstlisting}
         public void remove( ) {
              throw new UnsupportedOperationException( );
@@ -521,7 +507,7 @@ public class EmployeeList {
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Локални класове}
+\begin{frame}[containsverbatim]\frametitle{Р›РѕРєР°Р»РЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public class Animal {
 	public void performBehavior() {
@@ -534,7 +520,7 @@ public class Animal {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Специфики на локалните класове}
+\begin{frame}[containsverbatim]\frametitle{РЎРїРµС†РёС„РёРєРё РЅР° Р»РѕРєР°Р»РЅРёС‚Рµ РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 public class Animal {
 	public void performBehavior(final boolean nocturnal){
@@ -554,7 +540,7 @@ public class Animal {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Анонимни класове}
+\begin{frame}[containsverbatim]\frametitle{РђРЅРѕРЅРёРјРЅРё РєР»Р°СЃРѕРІРµ}
 \begin{lstlisting}
 Iterator getIterator() {
 	return new Iterator() {
@@ -576,7 +562,7 @@ Iterator getIterator() {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Област на видимост на \lstinline{this}}
+\begin{frame}[containsverbatim]\frametitle{РћР±Р»Р°СЃС‚ РЅР° РІРёРґРёРјРѕСЃС‚ РЅР° \lstinline{this}}
 \begin{lstlisting}
 class Animal {
 	int size;

@@ -1,11 +1,11 @@
 \PassOptionsToPackage{dvipsnames}{xcolor}
 \documentclass[ignorenonframetext, hyperref=unicode,compress]{beamer}
 
-\input{notes.tex}
+\input{jnotes.tex}
 
-\title{Хеширане, колекции и компаратори}
-\lubo
-\date{5 юни 2009}
+\title{РҐРµС€РёСЂР°РЅРµ, РєРѕР»РµРєС†РёРё Рё РєРѕРјРїР°СЂР°С‚РѕСЂРё}
+\authors
+\date{\today}
 
 \usetikzlibrary{shapes}
 
@@ -15,34 +15,21 @@
 
 \begin{frame}
 \small
-{\bf Забележка:} Тази лекция е адаптация на:
+{\bf Р—Р°Р±РµР»РµР¶РєР°:} РўР°Р·Рё Р»РµРєС†РёСЏ Рµ Р°РґР°РїС‚Р°С†РёСЏ РЅР°:
 \begin{itemize}
   \item \href{http://ocw.mit.edu/NR/rdonlyres/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/66BAC837-433E-48A5-BA15-B766E0B7CDEA/0/lecture3.pdf}{Scott Ostler: {\em Hashing, Collections, and Comparators}} from
 \href{http://ocw.mit.edu/OcwWeb/Electrical-Engineering-and-Computer-Science/6-092January--IAP--2006/CourseHome/index.htm}{
 {\em 6.092: Java for 6.170} (MIT OpenCourseWare:
 Massachusetts Institute of Technology)}\\
-{\bf Лиценз:}
+{\bf Р›РёС†РµРЅР·:}
 \href{http://ocw.mit.edu/OcwWeb/web/terms/terms/index.htm\#cc}{Creative commons
 BY-NC-SA}
 
 \end{itemize}
 
-\vfill
-
-\begin{columns}
-\column{0.3\textwidth}
-\begin{figure}[h]
-\center
-\scalebox{1}{\includegraphics{eu-logos}}
-\end{figure}
-\column{0.7\textwidth}
-
-Тези материали са разработени в рамките на проекта ``Софтуерна акадамеия ``Електронни системи'', съфинансиран от Европейския съюз и Европейския социален фонд.
-\end{columns}
-
 \end{frame}
 \begin{frame}
-\frametitle{Съдържание}
+\frametitle{РЎСЉРґСЉСЂР¶Р°РЅРёРµ}
 \tableofcontents %[hideallsubsections]
 \end{frame}
 
@@ -61,17 +48,17 @@ BY-NC-SA}
 % 	\end{tikzpicture}
 % \end{frame}
 
-\section{Хеширане}
+\section{РҐРµС€РёСЂР°РЅРµ}
 
-\begin{frame}[containsverbatim]\frametitle{Хеширане}
+\begin{frame}[containsverbatim]\frametitle{РҐРµС€РёСЂР°РЅРµ}
 \begin{itemize}
- \item Миналият път разгледахме как се предефинира (override) метода \lstinline{equals} на класа \lstinline{java.lang.Object}
- \item Днес ще разгледаме как се предефинира (override) метода \lstinline{hashCode}.
- \item Целта е да разберем защо това е необходимо и как се прави.
+ \item РњРёРЅР°Р»РёСЏС‚ РїСЉС‚ СЂР°Р·РіР»РµРґР°С…РјРµ РєР°Рє СЃРµ РїСЂРµРґРµС„РёРЅРёСЂР° (override) РјРµС‚РѕРґР° \lstinline{equals} РЅР° РєР»Р°СЃР° \lstinline{java.lang.Object}
+ \item Р”РЅРµСЃ С‰Рµ СЂР°Р·РіР»РµРґР°РјРµ РєР°Рє СЃРµ РїСЂРµРґРµС„РёРЅРёСЂР° (override) РјРµС‚РѕРґР° \lstinline{hashCode}.
+ \item Р¦РµР»С‚Р° Рµ РґР° СЂР°Р·Р±РµСЂРµРј Р·Р°С‰Рѕ С‚РѕРІР° Рµ РЅРµРѕР±С…РѕРґРёРјРѕ Рё РєР°Рє СЃРµ РїСЂР°РІРё.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Хеширане}
+\begin{frame}[containsverbatim]\frametitle{РҐРµС€РёСЂР°РЅРµ}
 \begin{figure}[h]
 \center
 \scalebox{0.4}{\includegraphics{pics/hash}}
@@ -79,31 +66,31 @@ BY-NC-SA}
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Хеш-функция}
+\begin{frame}[containsverbatim]\frametitle{РҐРµС€-С„СѓРЅРєС†РёСЏ}
 \begin{itemize}
- \item Хеш-функцията на обект от даден клас съпоставя цяло число, което се наричат хеш-код
- \item За обектите, които са равни (в смисъла на \lstinline{Object.equals()}), хеш-функцията трябва да дава еднакви хеш-кодове.
- \item Когато хеш-функцията връща различни числа за дадени обекти, то тези обекти задължително трябва да са различни (в смисъл на \lstinline{!Object.equals()}).
+ \item РҐРµС€-С„СѓРЅРєС†РёСЏС‚Р° РЅР° РѕР±РµРєС‚ РѕС‚ РґР°РґРµРЅ РєР»Р°СЃ СЃСЉРїРѕСЃС‚Р°РІСЏ С†СЏР»Рѕ С‡РёСЃР»Рѕ, РєРѕРµС‚Рѕ СЃРµ РЅР°СЂРёС‡Р°С‚ С…РµС€-РєРѕРґ
+ \item Р—Р° РѕР±РµРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ СЃР° СЂР°РІРЅРё (РІ СЃРјРёСЃСЉР»Р° РЅР° \lstinline{Object.equals()}), С…РµС€-С„СѓРЅРєС†РёСЏС‚Р° С‚СЂСЏР±РІР° РґР° РґР°РІР° РµРґРЅР°РєРІРё С…РµС€-РєРѕРґРѕРІРµ.
+ \item РљРѕРіР°С‚Рѕ С…РµС€-С„СѓРЅРєС†РёСЏС‚Р° РІСЂСЉС‰Р° СЂР°Р·Р»РёС‡РЅРё С‡РёСЃР»Р° Р·Р° РґР°РґРµРЅРё РѕР±РµРєС‚Рё, С‚Рѕ С‚РµР·Рё РѕР±РµРєС‚Рё Р·Р°РґСЉР»Р¶РёС‚РµР»РЅРѕ С‚СЂСЏР±РІР° РґР° СЃР° СЂР°Р·Р»РёС‡РЅРё (РІ СЃРјРёСЃСЉР» РЅР° \lstinline{!Object.equals()}).
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Методът \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РњРµС‚РѕРґСЉС‚ \lstinline{hashCode}}
 \begin{itemize}
- \item Метод на класа \lstinline{java.lang.Object}, който връща цяло число
- \item Дефиницията на \lstinline{hashCode()} в класа \lstinline{java.lang.Object} връща цяло число, което е практически уникално за дадения екземпляр (на основата на разположението на обекта в паметта).
- \item Всеки клас притежава такъв метод --- или метода, който е наследен от \lstinline{java.lang.Object}, или го предефинира (override)
+ \item РњРµС‚РѕРґ РЅР° РєР»Р°СЃР° \lstinline{java.lang.Object}, РєРѕР№С‚Рѕ РІСЂСЉС‰Р° С†СЏР»Рѕ С‡РёСЃР»Рѕ
+ \item Р”РµС„РёРЅРёС†РёСЏС‚Р° РЅР° \lstinline{hashCode()} РІ РєР»Р°СЃР° \lstinline{java.lang.Object} РІСЂСЉС‰Р° С†СЏР»Рѕ С‡РёСЃР»Рѕ, РєРѕРµС‚Рѕ Рµ РїСЂР°РєС‚РёС‡РµСЃРєРё СѓРЅРёРєР°Р»РЅРѕ Р·Р° РґР°РґРµРЅРёСЏ РµРєР·РµРјРїР»СЏСЂ (РЅР° РѕСЃРЅРѕРІР°С‚Р° РЅР° СЂР°Р·РїРѕР»РѕР¶РµРЅРёРµС‚Рѕ РЅР° РѕР±РµРєС‚Р° РІ РїР°РјРµС‚С‚Р°).
+ \item Р’СЃРµРєРё РєР»Р°СЃ РїСЂРёС‚РµР¶Р°РІР° С‚Р°РєСЉРІ РјРµС‚РѕРґ --- РёР»Рё РјРµС‚РѕРґР°, РєРѕР№С‚Рѕ Рµ РЅР°СЃР»РµРґРµРЅ РѕС‚ \lstinline{java.lang.Object}, РёР»Рё РіРѕ РїСЂРµРґРµС„РёРЅРёСЂР° (override)
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изисквания към \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РР·РёСЃРєРІР°РЅРёСЏ РєСЉРј \lstinline{hashCode}}
 \begin{itemize}
- \item Хеш кодът на обекта не трябва да се променя, докато обектът не се променя.
- \item Два обекта, които са равни (в смисъл на \lstinline{equal}), трябва да имат еднакви хеш кодове
- \item Когато два обекта не са равни би било много добре хеш кодове им да не са еднакви
+ \item РҐРµС€ РєРѕРґСЉС‚ РЅР° РѕР±РµРєС‚Р° РЅРµ С‚СЂСЏР±РІР° РґР° СЃРµ РїСЂРѕРјРµРЅСЏ, РґРѕРєР°С‚Рѕ РѕР±РµРєС‚СЉС‚ РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏ.
+ \item Р”РІР° РѕР±РµРєС‚Р°, РєРѕРёС‚Рѕ СЃР° СЂР°РІРЅРё (РІ СЃРјРёСЃСЉР» РЅР° \lstinline{equal}), С‚СЂСЏР±РІР° РґР° РёРјР°С‚ РµРґРЅР°РєРІРё С…РµС€ РєРѕРґРѕРІРµ
+ \item РљРѕРіР°С‚Рѕ РґРІР° РѕР±РµРєС‚Р° РЅРµ СЃР° СЂР°РІРЅРё Р±Рё Р±РёР»Рѕ РјРЅРѕРіРѕ РґРѕР±СЂРµ С…РµС€ РєРѕРґРѕРІРµ РёРј РґР° РЅРµ СЃР° РµРґРЅР°РєРІРё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: \lstinline{hashCode}}
 \begin{lstlisting}
 String scott = "Scotty";
 String scott2 = "Scotty";
@@ -125,7 +112,7 @@ System.out.println(int2.hashCode());
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Пример: \lstinline{class Name}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: \lstinline{class Name}}
 \begin{lstlisting}
 public  class Name {
  	public String first;
@@ -146,7 +133,7 @@ public  class Name {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: \lstinline{class Name} и \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: \lstinline{class Name} Рё \lstinline{hashCode}}
 \begin{lstlisting}
 Name kyle = new Name("Kyle", "MacLaughlin");
 Name jack = new Name("Jack", "Nance");
@@ -161,26 +148,26 @@ System.out.println(jack2.hashCode());
 \end{lstlisting}
 {\color{blue} false, true, 6718604, 7122755, 14718739}
 \begin{itemize}
-\item Обектите \lstinline{jack} и \lstinline{jack2} са равни, но хеш кодовете им са различни.
+\item РћР±РµРєС‚РёС‚Рµ \lstinline{jack} Рё \lstinline{jack2} СЃР° СЂР°РІРЅРё, РЅРѕ С…РµС€ РєРѕРґРѕРІРµС‚Рµ РёРј СЃР° СЂР°Р·Р»РёС‡РЅРё.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Наистина ли \lstinline{hashCode} е толкова важна?}
+\begin{frame}[containsverbatim]\frametitle{РќР°РёСЃС‚РёРЅР° Р»Рё \lstinline{hashCode} Рµ С‚РѕР»РєРѕРІР° РІР°Р¶РЅР°?}
 \begin{itemize}
- \item Кодът на класът \lstinline{class Name} изглежда работоспособен
- \item Наистина ли е толкова важно функцията \lstinline{hashCode} да спазва изискванията?
- \item Ако не планираме да използваме функцията \lstinline{hashCode} защо трябва да я предефинираме?
+ \item РљРѕРґСЉС‚ РЅР° РєР»Р°СЃСЉС‚ \lstinline{class Name} РёР·РіР»РµР¶РґР° СЂР°Р±РѕС‚РѕСЃРїРѕСЃРѕР±РµРЅ
+ \item РќР°РёСЃС‚РёРЅР° Р»Рё Рµ С‚РѕР»РєРѕРІР° РІР°Р¶РЅРѕ С„СѓРЅРєС†РёСЏС‚Р° \lstinline{hashCode} РґР° СЃРїР°Р·РІР° РёР·РёСЃРєРІР°РЅРёСЏС‚Р°?
+ \item РђРєРѕ РЅРµ РїР»Р°РЅРёСЂР°РјРµ РґР° РёР·РїРѕР»Р·РІР°РјРµ С„СѓРЅРєС†РёСЏС‚Р° \lstinline{hashCode} Р·Р°С‰Рѕ С‚СЂСЏР±РІР° РґР° СЏ РїСЂРµРґРµС„РёРЅРёСЂР°РјРµ?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Наистина ли \lstinline{hashCode} е толкова важна?}
+\begin{frame}[containsverbatim]\frametitle{РќР°РёСЃС‚РёРЅР° Р»Рё \lstinline{hashCode} Рµ С‚РѕР»РєРѕРІР° РІР°Р¶РЅР°?}
 \begin{itemize}
- \item Ако не предефинираме метода \lstinline{hashCode} в \lstinline{class Name}, то дефиницията която наследяваме от класа \lstinline{Object} ще противоречи на изискванията към хеш код на обект
- \item Това може да доведе до неочаквани и странни резултати
+ \item РђРєРѕ РЅРµ РїСЂРµРґРµС„РёРЅРёСЂР°РјРµ РјРµС‚РѕРґР° \lstinline{hashCode} РІ \lstinline{class Name}, С‚Рѕ РґРµС„РёРЅРёС†РёСЏС‚Р° РєРѕСЏС‚Рѕ РЅР°СЃР»РµРґСЏРІР°РјРµ РѕС‚ РєР»Р°СЃР° \lstinline{Object} С‰Рµ РїСЂРѕС‚РёРІРѕСЂРµС‡Рё РЅР° РёР·РёСЃРєРІР°РЅРёСЏС‚Р° РєСЉРј С…РµС€ РєРѕРґ РЅР° РѕР±РµРєС‚
+ \item РўРѕРІР° РјРѕР¶Рµ РґР° РґРѕРІРµРґРµ РґРѕ РЅРµРѕС‡Р°РєРІР°РЅРё Рё СЃС‚СЂР°РЅРЅРё СЂРµР·СѓР»С‚Р°С‚Рё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Неочаквани странни резултати}
+\begin{frame}[containsverbatim]\frametitle{РќРµРѕС‡Р°РєРІР°РЅРё СЃС‚СЂР°РЅРЅРё СЂРµР·СѓР»С‚Р°С‚Рё}
 \begin{lstlisting}
 Set<String> strings = new HashSet<String>();
 strings.add("jack");
@@ -194,17 +181,17 @@ System.out.println(names.contains(
 {\color{blue} true, false}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Предефиниране на \lstinline{hashCode}}
-За да се избегнат неочаквани и странни ефетки е необходимо методът \lstinline{hashCode} да изпълнява следните изисквания:
+\begin{frame}[containsverbatim]\frametitle{РџСЂРµРґРµС„РёРЅРёСЂР°РЅРµ РЅР° \lstinline{hashCode}}
+Р—Р° РґР° СЃРµ РёР·Р±РµРіРЅР°С‚ РЅРµРѕС‡Р°РєРІР°РЅРё Рё СЃС‚СЂР°РЅРЅРё РµС„РµС‚РєРё Рµ РЅРµРѕР±С…РѕРґРёРјРѕ РјРµС‚РѕРґСЉС‚ \lstinline{hashCode} РґР° РёР·РїСЉР»РЅСЏРІР° СЃР»РµРґРЅРёС‚Рµ РёР·РёСЃРєРІР°РЅРёСЏ:
 \begin{itemize}
- \item \lstinline{hashCode} трябва да е еднакъв за обекти, които са равни
- \item \lstinline{hashCode} трябва да не се променя между извиквания на метода при положение, че обектът не се променя.
- \item \lstinline{hashCode} трябва да връща цели числа (\lstinline{int})
- \item препоръчително е \lstinline{hashCode} да връща различни стойности за обекти, които не са равни
+ \item \lstinline{hashCode} С‚СЂСЏР±РІР° РґР° Рµ РµРґРЅР°РєСЉРІ Р·Р° РѕР±РµРєС‚Рё, РєРѕРёС‚Рѕ СЃР° СЂР°РІРЅРё
+ \item \lstinline{hashCode} С‚СЂСЏР±РІР° РґР° РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏ РјРµР¶РґСѓ РёР·РІРёРєРІР°РЅРёСЏ РЅР° РјРµС‚РѕРґР° РїСЂРё РїРѕР»РѕР¶РµРЅРёРµ, С‡Рµ РѕР±РµРєС‚СЉС‚ РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏ.
+ \item \lstinline{hashCode} С‚СЂСЏР±РІР° РґР° РІСЂСЉС‰Р° С†РµР»Рё С‡РёСЃР»Р° (\lstinline{int})
+ \item РїСЂРµРїРѕСЂСЉС‡РёС‚РµР»РЅРѕ Рµ \lstinline{hashCode} РґР° РІСЂСЉС‰Р° СЂР°Р·Р»РёС‡РЅРё СЃС‚РѕР№РЅРѕСЃС‚Рё Р·Р° РѕР±РµРєС‚Рё, РєРѕРёС‚Рѕ РЅРµ СЃР° СЂР°РІРЅРё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Предефиниране на \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РџСЂРµРґРµС„РёРЅРёСЂР°РЅРµ РЅР° \lstinline{hashCode}}
 \begin{lstlisting}
 public class Name {
 	...
@@ -215,7 +202,7 @@ public class Name {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Предефиниране на \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РџСЂРµРґРµС„РёРЅРёСЂР°РЅРµ РЅР° \lstinline{hashCode}}
 \begin{lstlisting}
 public class Name {
 	...
@@ -234,7 +221,7 @@ System.out.println(names.contains(
 {\color{blue} true}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Подобрена реализация на \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РџРѕРґРѕР±СЂРµРЅР° СЂРµР°Р»РёР·Р°С†РёСЏ РЅР° \lstinline{hashCode}}
 \begin{lstlisting}
 public class Name {
 	...
@@ -244,16 +231,16 @@ public class Name {
 }
 \end{lstlisting}
 \begin{itemize}
-\item Защо тази реализация е по-добра?
+\item Р—Р°С‰Рѕ С‚Р°Р·Рё СЂРµР°Р»РёР·Р°С†РёСЏ Рµ РїРѕ-РґРѕР±СЂР°?
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изисквания към \lstinline{hashCode}}
+\begin{frame}[containsverbatim]\frametitle{РР·РёСЃРєРІР°РЅРёСЏ РєСЉРј \lstinline{hashCode}}
 \begin{itemize}
- \item \lstinline{hashCode} трябва да е еднакъв за обекти, които са равни
- \item \lstinline{hashCode} трябва да не се променя между извиквания на метода при положение, че обектът не се променя.
- \item \lstinline{hashCode} трябва да връща цели числа (\lstinline{int})
- \item {\color{red} препоръчително е \lstinline{hashCode} да връща различни стойности за обекти, които не са равни}
+ \item \lstinline{hashCode} С‚СЂСЏР±РІР° РґР° Рµ РµРґРЅР°РєСЉРІ Р·Р° РѕР±РµРєС‚Рё, РєРѕРёС‚Рѕ СЃР° СЂР°РІРЅРё
+ \item \lstinline{hashCode} С‚СЂСЏР±РІР° РґР° РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏ РјРµР¶РґСѓ РёР·РІРёРєРІР°РЅРёСЏ РЅР° РјРµС‚РѕРґР° РїСЂРё РїРѕР»РѕР¶РµРЅРёРµ, С‡Рµ РѕР±РµРєС‚СЉС‚ РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏ.
+ \item \lstinline{hashCode} С‚СЂСЏР±РІР° РґР° РІСЂСЉС‰Р° С†РµР»Рё С‡РёСЃР»Р° (\lstinline{int})
+ \item {\color{red} РїСЂРµРїРѕСЂСЉС‡РёС‚РµР»РЅРѕ Рµ \lstinline{hashCode} РґР° РІСЂСЉС‰Р° СЂР°Р·Р»РёС‡РЅРё СЃС‚РѕР№РЅРѕСЃС‚Рё Р·Р° РѕР±РµРєС‚Рё, РєРѕРёС‚Рѕ РЅРµ СЃР° СЂР°РІРЅРё}
 \end{itemize}
 \begin{lstlisting}
 Name name1=new Name("Jack", "Nance");
@@ -262,26 +249,26 @@ Name name2=new Name("Nance","Jack");
 \lstinline{name1.hashCode()!=name2.hashCode()}
 \end{frame}
 
-\section{Колекции}
+\section{РљРѕР»РµРєС†РёРё}
 
-\begin{frame}[containsverbatim]\frametitle{Колекции}
+\begin{frame}[containsverbatim]\frametitle{РљРѕР»РµРєС†РёРё}
 \begin{itemize}
- \item Служат за съхранение и обработка на данни
- \item Съвкупност от класове и интерфейси служещи за:
+ \item РЎР»СѓР¶Р°С‚ Р·Р° СЃСЉС…СЂР°РЅРµРЅРёРµ Рё РѕР±СЂР°Р±РѕС‚РєР° РЅР° РґР°РЅРЅРё
+ \item РЎСЉРІРєСѓРїРЅРѕСЃС‚ РѕС‚ РєР»Р°СЃРѕРІРµ Рё РёРЅС‚РµСЂС„РµР№СЃРё СЃР»СѓР¶РµС‰Рё Р·Р°:
 \begin{itemize}
-	\item Добавяне на обекти
-	\item Съхранение на обекти
-	\item Сортиране на обекти
-	\item Обхождане на обекти
-	\item Извличане на обекти
+	\item Р”РѕР±Р°РІСЏРЅРµ РЅР° РѕР±РµРєС‚Рё
+	\item РЎСЉС…СЂР°РЅРµРЅРёРµ РЅР° РѕР±РµРєС‚Рё
+	\item РЎРѕСЂС‚РёСЂР°РЅРµ РЅР° РѕР±РµРєС‚Рё
+	\item РћР±С…РѕР¶РґР°РЅРµ РЅР° РѕР±РµРєС‚Рё
+	\item РР·РІР»РёС‡Р°РЅРµ РЅР° РѕР±РµРєС‚Рё
 \end{itemize}
- \item Предоставят сходен интерфей за достъп до различни реализации на колекции
+ \item РџСЂРµРґРѕСЃС‚Р°РІСЏС‚ СЃС…РѕРґРµРЅ РёРЅС‚РµСЂС„РµР№ Р·Р° РґРѕСЃС‚СЉРї РґРѕ СЂР°Р·Р»РёС‡РЅРё СЂРµР°Р»РёР·Р°С†РёРё РЅР° РєРѕР»РµРєС†РёРё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Използване на колекции}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РР·РїРѕР»Р·РІР°РЅРµ РЅР° РєРѕР»РµРєС†РёРё}
 \begin{itemize}
- \item Класовете и интерфейсите са дефинирани в групата пакети java.util.*
+ \item РљР»Р°СЃРѕРІРµС‚Рµ Рё РёРЅС‚РµСЂС„РµР№СЃРёС‚Рµ СЃР° РґРµС„РёРЅРёСЂР°РЅРё РІ РіСЂСѓРїР°С‚Р° РїР°РєРµС‚Рё java.util.*
 \end{itemize}
 \begin{lstlisting}
 package  lab2;
@@ -291,13 +278,13 @@ import  java.util.*;
 public  class CollectionUser {
  	List<String> list = new ArrayList<String>();
 	// ...
- 	// ... останалата част от класа
+ 	// ... РѕСЃС‚Р°РЅР°Р»Р°С‚Р° С‡Р°СЃС‚ РѕС‚ РєР»Р°СЃР°
 	// ...
 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Основни методи на \lstinline{Collection<Foo>}}
+\begin{frame}[containsverbatim]\frametitle{РћСЃРЅРѕРІРЅРё РјРµС‚РѕРґРё РЅР° \lstinline{Collection<Foo>}}
 \begin{itemize}
  \item \lstinline{boolean add(Foo o)}
  \item \lstinline{boolean contains(Foo o)}
@@ -306,7 +293,7 @@ public  class CollectionUser {
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Използване на колекции}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РР·РїРѕР»Р·РІР°РЅРµ РЅР° РєРѕР»РµРєС†РёРё}
 \begin{lstlisting}
 List<Name> nameList = new ArrayList<Name>();
 
@@ -325,18 +312,18 @@ System.out.println(nameList.size()); 			// => 2
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Типизирани колекции}
+\begin{frame}[containsverbatim]\frametitle{РўРёРїРёР·РёСЂР°РЅРё РєРѕР»РµРєС†РёРё}
 \begin{itemize}
- \item Типизираните колекции предоставят възможност да се укаже явно типът на обектите, които ще бъдат съхранявани в колекцията
+ \item РўРёРїРёР·РёСЂР°РЅРёС‚Рµ РєРѕР»РµРєС†РёРё РїСЂРµРґРѕСЃС‚Р°РІСЏС‚ РІСЉР·РјРѕР¶РЅРѕСЃС‚ РґР° СЃРµ СѓРєР°Р¶Рµ СЏРІРЅРѕ С‚РёРїСЉС‚ РЅР° РѕР±РµРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ С‰Рµ Р±СЉРґР°С‚ СЃСЉС…СЂР°РЅСЏРІР°РЅРё РІ РєРѕР»РµРєС†РёСЏС‚Р°
 \begin{lstlisting}
 List<String> stringList;
 \end{lstlisting}
- \item По този начин се гарантира, че в колекцията може да има само обекти от даден тип
- \item Не е задължително да се указва типът, но е препоръчително и много удобно
+ \item РџРѕ С‚РѕР·Рё РЅР°С‡РёРЅ СЃРµ РіР°СЂР°РЅС‚РёСЂР°, С‡Рµ РІ РєРѕР»РµРєС†РёСЏС‚Р° РјРѕР¶Рµ РґР° РёРјР° СЃР°РјРѕ РѕР±РµРєС‚Рё РѕС‚ РґР°РґРµРЅ С‚РёРї
+ \item РќРµ Рµ Р·Р°РґСЉР»Р¶РёС‚РµР»РЅРѕ РґР° СЃРµ СѓРєР°Р·РІР° С‚РёРїСЉС‚, РЅРѕ Рµ РїСЂРµРїРѕСЂСЉС‡РёС‚РµР»РЅРѕ Рё РјРЅРѕРіРѕ СѓРґРѕР±РЅРѕ
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Използване на типизирани колекции}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РР·РїРѕР»Р·РІР°РЅРµ РЅР° С‚РёРїРёР·РёСЂР°РЅРё РєРѕР»РµРєС†РёРё}
 \begin{lstlisting}
 List untyped = new ArrayList();
 
@@ -350,29 +337,29 @@ String smartString = typed.get(0);
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Обхождане на елементите на колекция}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РћР±С…РѕР¶РґР°РЅРµ РЅР° РµР»РµРјРµРЅС‚РёС‚Рµ РЅР° РєРѕР»РµРєС†РёСЏ}
 \begin{lstlisting}
 Collection<Foo> coll;
 ...
 Iterator<Foo> it = coll.iterator();
 while (it.hasNext()) {
 	Foo obj = it.next();
-	// действия с обекта obj
+	// РґРµР№СЃС‚РІРёСЏ СЃ РѕР±РµРєС‚Р° obj
 }
 \end{lstlisting}
 \begin{lstlisting}
 Collection<Foo> coll;
 ...
 for (Foo obj : coll) {
-	// действия с обекта obj
+	// РґРµР№СЃС‚РІРёСЏ СЃ РѕР±РµРєС‚Р° obj
 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изтриване на елементи от колекция}
+\begin{frame}[containsverbatim]\frametitle{РР·С‚СЂРёРІР°РЅРµ РЅР° РµР»РµРјРµРЅС‚Рё РѕС‚ РєРѕР»РµРєС†РёСЏ}
 \begin{itemize}
-\item Елементи не могат да бъдат изваждани от колекция
-докато тя се обхожда. Методът \lstinline{remove()} на колекцията ще генерира изключение {\color{blue}\lstinline{ConcurrentModificationException}}
+\item Р•Р»РµРјРµРЅС‚Рё РЅРµ РјРѕРіР°С‚ РґР° Р±СЉРґР°С‚ РёР·РІР°Р¶РґР°РЅРё РѕС‚ РєРѕР»РµРєС†РёСЏ
+РґРѕРєР°С‚Рѕ С‚СЏ СЃРµ РѕР±С…РѕР¶РґР°. РњРµС‚РѕРґСЉС‚ \lstinline{remove()} РЅР° РєРѕР»РµРєС†РёСЏС‚Р° С‰Рµ РіРµРЅРµСЂРёСЂР° РёР·РєР»СЋС‡РµРЅРёРµ {\color{blue}\lstinline{ConcurrentModificationException}}
 \begin{lstlisting}
 for (Foo obj : coll) {
 	coll.remove(obj); // throws
@@ -381,36 +368,36 @@ for (Foo obj : coll) {
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изтриване на елементи от колекция}
+\begin{frame}[containsverbatim]\frametitle{РР·С‚СЂРёРІР°РЅРµ РЅР° РµР»РµРјРµРЅС‚Рё РѕС‚ РєРѕР»РµРєС†РёСЏ}
 \begin{itemize}
-\item Елементите могат да бъдат изтривани от колекция по време на обхождане
-посредством итератора:
+\item Р•Р»РµРјРµРЅС‚РёС‚Рµ РјРѕРіР°С‚ РґР° Р±СЉРґР°С‚ РёР·С‚СЂРёРІР°РЅРё РѕС‚ РєРѕР»РµРєС†РёСЏ РїРѕ РІСЂРµРјРµ РЅР° РѕР±С…РѕР¶РґР°РЅРµ
+РїРѕСЃСЂРµРґСЃС‚РІРѕРј РёС‚РµСЂР°С‚РѕСЂР°:
 \begin{lstlisting}
 Iterator<Foo> it = coll.iterator();
 while (it.hasNext()) {
 	Foo obj = it.next();
-	it.remove(); // ВМЕСТО coll.remove(obj);
+	it.remove(); // Р’РњР•РЎРўРћ coll.remove(obj);
 }
 \end{lstlisting}
-\item Методът remove() не е задължителен и не всеки итератор
- го поддържа. Ако итераторът не притежава този метод, опита да го извикате генерира  {\color{blue}\lstinline{UnsupportedOperationException}}
+\item РњРµС‚РѕРґСЉС‚ remove() РЅРµ Рµ Р·Р°РґСЉР»Р¶РёС‚РµР»РµРЅ Рё РЅРµ РІСЃРµРєРё РёС‚РµСЂР°С‚РѕСЂ
+ РіРѕ РїРѕРґРґСЉСЂР¶Р°. РђРєРѕ РёС‚РµСЂР°С‚РѕСЂСЉС‚ РЅРµ РїСЂРёС‚РµР¶Р°РІР° С‚РѕР·Рё РјРµС‚РѕРґ, РѕРїРёС‚Р° РґР° РіРѕ РёР·РІРёРєР°С‚Рµ РіРµРЅРµСЂРёСЂР°  {\color{blue}\lstinline{UnsupportedOperationException}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Основни типове колекция}
+\begin{frame}[containsverbatim]\frametitle{РћСЃРЅРѕРІРЅРё С‚РёРїРѕРІРµ РєРѕР»РµРєС†РёСЏ}
 \begin{itemize}
-\item Списък -- \lstinline{List}, \lstinline{ArrayList}
-\item Множество -- \lstinline{Set}, \lstinline{HashSet}, \lstinline{TreeSet}
-\item Асоциативен контейнер -- \lstinline{Map}, \lstinline{HashMap}
+\item РЎРїРёСЃСЉРє -- \lstinline{List}, \lstinline{ArrayList}
+\item РњРЅРѕР¶РµСЃС‚РІРѕ -- \lstinline{Set}, \lstinline{HashSet}, \lstinline{TreeSet}
+\item РђСЃРѕС†РёР°С‚РёРІРµРЅ РєРѕРЅС‚РµР№РЅРµСЂ -- \lstinline{Map}, \lstinline{HashMap}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Списък}
+\begin{frame}[containsverbatim]\frametitle{РЎРїРёСЃСЉРє}
 \begin{itemize}
-\item Контейнер за данни (съхранява данни)
-\item Подредено, линейно множество от елементи
-\item Списъкът е динамична колекция -- размерът на списъка е променлива
-\item Редът на елементите съвпада с реда на вмъкването им
+\item РљРѕРЅС‚РµР№РЅРµСЂ Р·Р° РґР°РЅРЅРё (СЃСЉС…СЂР°РЅСЏРІР° РґР°РЅРЅРё)
+\item РџРѕРґСЂРµРґРµРЅРѕ, Р»РёРЅРµР№РЅРѕ РјРЅРѕР¶РµСЃС‚РІРѕ РѕС‚ РµР»РµРјРµРЅС‚Рё
+\item РЎРїРёСЃСЉРєСЉС‚ Рµ РґРёРЅР°РјРёС‡РЅР° РєРѕР»РµРєС†РёСЏ -- СЂР°Р·РјРµСЂСЉС‚ РЅР° СЃРїРёСЃСЉРєР° Рµ РїСЂРѕРјРµРЅР»РёРІР°
+\item Р РµРґСЉС‚ РЅР° РµР»РµРјРµРЅС‚РёС‚Рµ СЃСЉРІРїР°РґР° СЃ СЂРµРґР° РЅР° РІРјСЉРєРІР°РЅРµС‚Рѕ РёРј
 \end{itemize}
 \begin{lstlisting}
 List<String> strings = new ArrayList<String>();
@@ -418,35 +405,35 @@ strings.add("one");
 strings.add("two");
 strings.add("three");
 
-// strings = [ “one”, “two”, “three”]
+// strings = [ вЂњoneвЂќ, вЂњtwoвЂќ, вЂњthreeвЂќ]
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Списък: други операции}
+\begin{frame}[containsverbatim]\frametitle{РЎРїРёСЃСЉРє: РґСЂСѓРіРё РѕРїРµСЂР°С†РёРё}
 \begin{lstlisting}
 List<String> strings = new ArrayList<String>();
 
-// Вмъкване след последния елемент
+// Р’РјСЉРєРІР°РЅРµ СЃР»РµРґ РїРѕСЃР»РµРґРЅРёСЏ РµР»РµРјРµРЅС‚
 strings.add("one");
 strings.add("three");
 
-// Вмъкване на определена позиция
+// Р’РјСЉРєРІР°РЅРµ РЅР° РѕРїСЂРµРґРµР»РµРЅР° РїРѕР·РёС†РёСЏ
 strings.add(1, "two");
 
-// strings = [ “one”, “two”, “three”]
+// strings = [ вЂњoneвЂќ, вЂњtwoвЂќ, вЂњthreeвЂќ]
 
-// Достигане до елемент на определена позиция:
-System.out.println(strings.get(0)); 		  // => “one”
+// Р”РѕСЃС‚РёРіР°РЅРµ РґРѕ РµР»РµРјРµРЅС‚ РЅР° РѕРїСЂРµРґРµР»РµРЅР° РїРѕР·РёС†РёСЏ:
+System.out.println(strings.get(0)); 		  // => вЂњoneвЂќ
 System.out.println(strings.indexOf("one")); // => 0
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Множество}
+\begin{frame}[containsverbatim]\frametitle{РњРЅРѕР¶РµСЃС‚РІРѕ}
 \begin{itemize}
-\item Колекция от данни
-\item Реализира математическата абстракция множество (set)
-\item Редът на вмъкване на елементите не влияе на редът им в множеството
-\item Не позволява вмъкването на два еднакви елемента (add() връща false):
+\item РљРѕР»РµРєС†РёСЏ РѕС‚ РґР°РЅРЅРё
+\item Р РµР°Р»РёР·РёСЂР° РјР°С‚РµРјР°С‚РёС‡РµСЃРєР°С‚Р° Р°Р±СЃС‚СЂР°РєС†РёСЏ РјРЅРѕР¶РµСЃС‚РІРѕ (set)
+\item Р РµРґСЉС‚ РЅР° РІРјСЉРєРІР°РЅРµ РЅР° РµР»РµРјРµРЅС‚РёС‚Рµ РЅРµ РІР»РёСЏРµ РЅР° СЂРµРґСЉС‚ РёРј РІ РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ
+\item РќРµ РїРѕР·РІРѕР»СЏРІР° РІРјСЉРєРІР°РЅРµС‚Рѕ РЅР° РґРІР° РµРґРЅР°РєРІРё РµР»РµРјРµРЅС‚Р° (add() РІСЂСЉС‰Р° false):
 \end{itemize}
 \begin{lstlisting}
 Set<Name> names = new HashSet<Name>();
@@ -456,10 +443,10 @@ names.add(new Name("Jack", "Nance"));
 System.out.println(names.size()); // => 1\end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изисквания към елементите на множеството}
+\begin{frame}[containsverbatim]\frametitle{РР·РёСЃРєРІР°РЅРёСЏ РєСЉРј РµР»РµРјРµРЅС‚РёС‚Рµ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ}
 \begin{itemize}
-\item След като даден елемент се вмъкне в множеството той не би следвало да бъде ползван по никакъв начин, който би го променило (неговия хеш код и данните за equal())
-\item Промяната на елемент от множеството би могло да доведе до неочаквани резултати:
+\item РЎР»РµРґ РєР°С‚Рѕ РґР°РґРµРЅ РµР»РµРјРµРЅС‚ СЃРµ РІРјСЉРєРЅРµ РІ РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ С‚РѕР№ РЅРµ Р±Рё СЃР»РµРґРІР°Р»Рѕ РґР° Р±СЉРґРµ РїРѕР»Р·РІР°РЅ РїРѕ РЅРёРєР°РєСЉРІ РЅР°С‡РёРЅ, РєРѕР№С‚Рѕ Р±Рё РіРѕ РїСЂРѕРјРµРЅРёР»Рѕ (РЅРµРіРѕРІРёСЏ С…РµС€ РєРѕРґ Рё РґР°РЅРЅРёС‚Рµ Р·Р° equal())
+\item РџСЂРѕРјСЏРЅР°С‚Р° РЅР° РµР»РµРјРµРЅС‚ РѕС‚ РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ Р±Рё РјРѕРіР»Рѕ РґР° РґРѕРІРµРґРµ РґРѕ РЅРµРѕС‡Р°РєРІР°РЅРё СЂРµР·СѓР»С‚Р°С‚Рё:
 \end{itemize}
 \begin{lstlisting}
 Set<Name> names = new HashSet<Name>();
@@ -475,29 +462,29 @@ System.out.println(names.size()); 			 // => 1
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Какво е решението на този проблем?}
+\begin{frame}[containsverbatim]\frametitle{РљР°РєРІРѕ Рµ СЂРµС€РµРЅРёРµС‚Рѕ РЅР° С‚РѕР·Рё РїСЂРѕР±Р»РµРј?}
 \begin{itemize}
-\item Няма решение!
-\item Единственият начин да се спасите от този проблем е да не променяте състоянието на обекта след като го добавите в някое множество
-\item Най-добрият подход е обектите, които се съхраняват в множества или служат за ключове в асоциативни контейнери да бъдат непроменяеми (immutable)
-\item Ако все пак се налага да промените състоянието на обект, който е елемент на множество, първо трябва да го изтриете от множеството (за да се избегнат неочаквани резултати) и след като го промените да го добавите отново
+\item РќСЏРјР° СЂРµС€РµРЅРёРµ!
+\item Р•РґРёРЅСЃС‚РІРµРЅРёСЏС‚ РЅР°С‡РёРЅ РґР° СЃРµ СЃРїР°СЃРёС‚Рµ РѕС‚ С‚РѕР·Рё РїСЂРѕР±Р»РµРј Рµ РґР° РЅРµ РїСЂРѕРјРµРЅСЏС‚Рµ СЃСЉСЃС‚РѕСЏРЅРёРµС‚Рѕ РЅР° РѕР±РµРєС‚Р° СЃР»РµРґ РєР°С‚Рѕ РіРѕ РґРѕР±Р°РІРёС‚Рµ РІ РЅСЏРєРѕРµ РјРЅРѕР¶РµСЃС‚РІРѕ
+\item РќР°Р№-РґРѕР±СЂРёСЏС‚ РїРѕРґС…РѕРґ Рµ РѕР±РµРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ СЃРµ СЃСЉС…СЂР°РЅСЏРІР°С‚ РІ РјРЅРѕР¶РµСЃС‚РІР° РёР»Рё СЃР»СѓР¶Р°С‚ Р·Р° РєР»СЋС‡РѕРІРµ РІ Р°СЃРѕС†РёР°С‚РёРІРЅРё РєРѕРЅС‚РµР№РЅРµСЂРё РґР° Р±СЉРґР°С‚ РЅРµРїСЂРѕРјРµРЅСЏРµРјРё (immutable)
+\item РђРєРѕ РІСЃРµ РїР°Рє СЃРµ РЅР°Р»Р°РіР° РґР° РїСЂРѕРјРµРЅРёС‚Рµ СЃСЉСЃС‚РѕСЏРЅРёРµС‚Рѕ РЅР° РѕР±РµРєС‚, РєРѕР№С‚Рѕ Рµ РµР»РµРјРµРЅС‚ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕ, РїСЉСЂРІРѕ С‚СЂСЏР±РІР° РґР° РіРѕ РёР·С‚СЂРёРµС‚Рµ РѕС‚ РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ (Р·Р° РґР° СЃРµ РёР·Р±РµРіРЅР°С‚ РЅРµРѕС‡Р°РєРІР°РЅРё СЂРµР·СѓР»С‚Р°С‚Рё) Рё СЃР»РµРґ РєР°С‚Рѕ РіРѕ РїСЂРѕРјРµРЅРёС‚Рµ РґР° РіРѕ РґРѕР±Р°РІРёС‚Рµ РѕС‚РЅРѕРІРѕ
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Асоциативни контейнери (Map)}
+\begin{frame}[containsverbatim]\frametitle{РђСЃРѕС†РёР°С‚РёРІРЅРё РєРѕРЅС‚РµР№РЅРµСЂРё (Map)}
 \begin{itemize}
-\item Служи за съхранение на връзка между ключ и стойност
-\item На всеки ключ съответства стойност
-\item Удобно, когато трябва да се осъществи връзка между два обекта и по единия от тях да може бързо да се намери другия
-\item Ключовете трябва да са уникални
-\item Стойностите не е задължително да са уникални
+\item РЎР»СѓР¶Рё Р·Р° СЃСЉС…СЂР°РЅРµРЅРёРµ РЅР° РІСЂСЉР·РєР° РјРµР¶РґСѓ РєР»СЋС‡ Рё СЃС‚РѕР№РЅРѕСЃС‚
+\item РќР° РІСЃРµРєРё РєР»СЋС‡ СЃСЉРѕС‚РІРµС‚СЃС‚РІР° СЃС‚РѕР№РЅРѕСЃС‚
+\item РЈРґРѕР±РЅРѕ, РєРѕРіР°С‚Рѕ С‚СЂСЏР±РІР° РґР° СЃРµ РѕСЃСЉС‰РµСЃС‚РІРё РІСЂСЉР·РєР° РјРµР¶РґСѓ РґРІР° РѕР±РµРєС‚Р° Рё РїРѕ РµРґРёРЅРёСЏ РѕС‚ С‚СЏС… РґР° РјРѕР¶Рµ Р±СЉСЂР·Рѕ РґР° СЃРµ РЅР°РјРµСЂРё РґСЂСѓРіРёСЏ
+\item РљР»СЋС‡РѕРІРµС‚Рµ С‚СЂСЏР±РІР° РґР° СЃР° СѓРЅРёРєР°Р»РЅРё
+\item РЎС‚РѕР№РЅРѕСЃС‚РёС‚Рµ РЅРµ Рµ Р·Р°РґСЉР»Р¶РёС‚РµР»РЅРѕ РґР° СЃР° СѓРЅРёРєР°Р»РЅРё
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Асоциативните контейнери не са колекции}
+\begin{frame}[containsverbatim]\frametitle{РђСЃРѕС†РёР°С‚РёРІРЅРёС‚Рµ РєРѕРЅС‚РµР№РЅРµСЂРё РЅРµ СЃР° РєРѕР»РµРєС†РёРё}
 \begin{itemize}
-\item Асоциативният контейнер не поддържа методите на колекцията --- \lstinline{boolean add(Foo o)}, \lstinline{boolean contains(Object obj); }
-\item Вместо тях асоциатвният контейнер разполага със следните операции:
+\item РђСЃРѕС†РёР°С‚РёРІРЅРёСЏС‚ РєРѕРЅС‚РµР№РЅРµСЂ РЅРµ РїРѕРґРґСЉСЂР¶Р° РјРµС‚РѕРґРёС‚Рµ РЅР° РєРѕР»РµРєС†РёСЏС‚Р° --- \lstinline{boolean add(Foo o)}, \lstinline{boolean contains(Object obj); }
+\item Р’РјРµСЃС‚Рѕ С‚СЏС… Р°СЃРѕС†РёР°С‚РІРЅРёСЏС‚ РєРѕРЅС‚РµР№РЅРµСЂ СЂР°Р·РїРѕР»Р°РіР° СЃСЉСЃ СЃР»РµРґРЅРёС‚Рµ РѕРїРµСЂР°С†РёРё:
 \begin{lstlisting}
 boolean put(Foo key, Bar value);
 boolean containsKey(Foo key);
@@ -506,14 +493,14 @@ boolean containsValue(Bar value);
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Използване на асоциативни контейнери}
+\begin{frame}[containsverbatim]\frametitle{РР·РїРѕР»Р·РІР°РЅРµ РЅР° Р°СЃРѕС†РёР°С‚РёРІРЅРё РєРѕРЅС‚РµР№РЅРµСЂРё}
 \begin{itemize}
 \item 
 \begin{lstlisting}
 Map<String, String> dns = 
 		new HashMap<String, String>();
 \end{lstlisting}
-\item Вмъкване на ключ \lstinline{"lubo.elsys-bg.org"} със стойност \lstinline{"82.147.133.129"}
+\item Р’РјСЉРєРІР°РЅРµ РЅР° РєР»СЋС‡ \lstinline{"lubo.elsys-bg.org"} СЃСЉСЃ СЃС‚РѕР№РЅРѕСЃС‚ \lstinline{"82.147.133.129"}
 \begin{lstlisting}
 dns.put("lubo.elsys-bg.org", 
 		"82.147.133.129");
@@ -531,9 +518,9 @@ System.out.println(
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Използване на асоциативни контейнери}
+\begin{frame}[containsverbatim]\frametitle{РР·РїРѕР»Р·РІР°РЅРµ РЅР° Р°СЃРѕС†РёР°С‚РёРІРЅРё РєРѕРЅС‚РµР№РЅРµСЂРё}
 \begin{itemize}
-\item Изтриване на елемент по ключ "lubo.elsys-bg.org"
+\item РР·С‚СЂРёРІР°РЅРµ РЅР° РµР»РµРјРµРЅС‚ РїРѕ РєР»СЋС‡ "lubo.elsys-bg.org"
 \begin{lstlisting}
 dns.remove("lubo.elsys-bg.org");
 System.out.println(
@@ -543,69 +530,69 @@ System.out.println(
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Полезни методи на асоциативен контейнер}
+\begin{frame}[containsverbatim]\frametitle{РџРѕР»РµР·РЅРё РјРµС‚РѕРґРё РЅР° Р°СЃРѕС†РёР°С‚РёРІРµРЅ РєРѕРЅС‚РµР№РЅРµСЂ}
 \begin{itemize}
 \item \lstinline{keySet()} ---
-Връща множество (set, т.е. не може да има повторения) от всички ключове
+Р’СЂСЉС‰Р° РјРЅРѕР¶РµСЃС‚РІРѕ (set, С‚.Рµ. РЅРµ РјРѕР¶Рµ РґР° РёРјР° РїРѕРІС‚РѕСЂРµРЅРёСЏ) РѕС‚ РІСЃРёС‡РєРё РєР»СЋС‡РѕРІРµ
 \item \lstinline{values()} ---
-Връща колекция (може да има повторения) от всички стойности
+Р’СЂСЉС‰Р° РєРѕР»РµРєС†РёСЏ (РјРѕР¶Рµ РґР° РёРјР° РїРѕРІС‚РѕСЂРµРЅРёСЏ) РѕС‚ РІСЃРёС‡РєРё СЃС‚РѕР№РЅРѕСЃС‚Рё
 \item \lstinline{entrySet()} ---
-Връща множество (set, т.е. не може да има повторения) от двойките ключ-стойност на асоциативния контейнер.
-Всяка двойка е обект от тип Map.Entry, който
-поддържа методи за достъп до ключа и стойността getKey(), getValue(), setValue()
+Р’СЂСЉС‰Р° РјРЅРѕР¶РµСЃС‚РІРѕ (set, С‚.Рµ. РЅРµ РјРѕР¶Рµ РґР° РёРјР° РїРѕРІС‚РѕСЂРµРЅРёСЏ) РѕС‚ РґРІРѕР№РєРёС‚Рµ РєР»СЋС‡-СЃС‚РѕР№РЅРѕСЃС‚ РЅР° Р°СЃРѕС†РёР°С‚РёРІРЅРёСЏ РєРѕРЅС‚РµР№РЅРµСЂ.
+Р’СЃСЏРєР° РґРІРѕР№РєР° Рµ РѕР±РµРєС‚ РѕС‚ С‚РёРї Map.Entry, РєРѕР№С‚Рѕ
+РїРѕРґРґСЉСЂР¶Р° РјРµС‚РѕРґРё Р·Р° РґРѕСЃС‚СЉРї РґРѕ РєР»СЋС‡Р° Рё СЃС‚РѕР№РЅРѕСЃС‚С‚Р° getKey(), getValue(), setValue()
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Проблеми при промяна на ключа}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРѕР±Р»РµРјРё РїСЂРё РїСЂРѕРјСЏРЅР° РЅР° РєР»СЋС‡Р°}
 \begin{itemize}
-\item Не трябва да се променя състоянието на обект, който се използва като ключ в асоциативен контейнер
-\item Проблемът е напълно аналогичен на разглежданият при множествата
-\item Ако ключът бъде променен, ключът и съответстващата му стойност могат да се загубят
+\item РќРµ С‚СЂСЏР±РІР° РґР° СЃРµ РїСЂРѕРјРµРЅСЏ СЃСЉСЃС‚РѕСЏРЅРёРµС‚Рѕ РЅР° РѕР±РµРєС‚, РєРѕР№С‚Рѕ СЃРµ РёР·РїРѕР»Р·РІР° РєР°С‚Рѕ РєР»СЋС‡ РІ Р°СЃРѕС†РёР°С‚РёРІРµРЅ РєРѕРЅС‚РµР№РЅРµСЂ
+\item РџСЂРѕР±Р»РµРјСЉС‚ Рµ РЅР°РїСЉР»РЅРѕ Р°РЅР°Р»РѕРіРёС‡РµРЅ РЅР° СЂР°Р·РіР»РµР¶РґР°РЅРёСЏС‚ РїСЂРё РјРЅРѕР¶РµСЃС‚РІР°С‚Р°
+\item РђРєРѕ РєР»СЋС‡СЉС‚ Р±СЉРґРµ РїСЂРѕРјРµРЅРµРЅ, РєР»СЋС‡СЉС‚ Рё СЃСЉРѕС‚РІРµС‚СЃС‚РІР°С‰Р°С‚Р° РјСѓ СЃС‚РѕР№РЅРѕСЃС‚ РјРѕРіР°С‚ РґР° СЃРµ Р·Р°РіСѓР±СЏС‚
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Проблеми при промяна на ключа}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРѕР±Р»РµРјРё РїСЂРё РїСЂРѕРјСЏРЅР° РЅР° РєР»СЋС‡Р°}
 \begin{lstlisting}
 Name isabella = new Name("Isabella", "Rosellini");
 Map<Name, String> directory = 
 		new HashMap<Name, String>();
-directory.put(isabella, "123-456-7890"); // добавяме
+directory.put(isabella, "123-456-7890"); // РґРѕР±Р°РІСЏРјРµ
 System.out.println(directory.get(isabella));
 
-isabella.first = "Dennis"; // променяме ключа
+isabella.first = "Dennis"; // РїСЂРѕРјРµРЅСЏРјРµ РєР»СЋС‡Р°
 System.out.println(directory.get(isabella));
 
-// добавяме още един обект със стойност като оригиналния
+// РґРѕР±Р°РІСЏРјРµ РѕС‰Рµ РµРґРёРЅ РѕР±РµРєС‚ СЃСЉСЃ СЃС‚РѕР№РЅРѕСЃС‚ РєР°С‚Рѕ РѕСЂРёРіРёРЅР°Р»РЅРёСЏ
 directory.put(new Name("Isabella", "Rosellini"), 
 		"555-555-1234");
-// връщаме стойността на оригиналния
+// РІСЂСЉС‰Р°РјРµ СЃС‚РѕР№РЅРѕСЃС‚С‚Р° РЅР° РѕСЂРёРіРёРЅР°Р»РЅРёСЏ
 isabella.first = "Isabella"; 
 
 System.out.println(directory.get(isabella));
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Решение чрез копиране на ключа}
+\begin{frame}[containsverbatim]\frametitle{Р РµС€РµРЅРёРµ С‡СЂРµР· РєРѕРїРёСЂР°РЅРµ РЅР° РєР»СЋС‡Р°}
 \begin{lstlisting}
 Name dennis = new Name("Dennis", "Hopper");
 
-// копиране на ключа:
+// РєРѕРїРёСЂР°РЅРµ РЅР° РєР»СЋС‡Р°:
 Name copy = new Name(dennis.first, dennis.last);
-map.put(copy, "555-555-1234"); // използва се копието
+map.put(copy, "555-555-1234"); // РёР·РїРѕР»Р·РІР° СЃРµ РєРѕРїРёРµС‚Рѕ
 
-// промяната на dennis не би попречила
+// РїСЂРѕРјСЏРЅР°С‚Р° РЅР° dennis РЅРµ Р±Рё РїРѕРїСЂРµС‡РёР»Р°
 
-// но въпреки това остава опасност от промяна на ключа:
+// РЅРѕ РІСЉРїСЂРµРєРё С‚РѕРІР° РѕСЃС‚Р°РІР° РѕРїР°СЃРЅРѕСЃС‚ РѕС‚ РїСЂРѕРјСЏРЅР° РЅР° РєР»СЋС‡Р°:
 for (Name name : map.keySet()) {
-	name.first = "u r wrecked"; // ГРОЗНО!
+	name.first = "u r wrecked"; // Р“Р РћР—РќРћ!
 }
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Решение чрез непроменяем ключ}
+\begin{frame}[containsverbatim]\frametitle{Р РµС€РµРЅРёРµ С‡СЂРµР· РЅРµРїСЂРѕРјРµРЅСЏРµРј РєР»СЋС‡}
 \begin{lstlisting}
 public  class Name {
- 	public final String first; // т.е. не може да се променя
+ 	public final String first; // С‚.Рµ. РЅРµ РјРѕР¶Рµ РґР° СЃРµ РїСЂРѕРјРµРЅСЏ
  	public final String last;
 
  	public Name(String first, String last) {
@@ -622,7 +609,7 @@ public  class Name {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Решение чрез непроменяем делегат}
+\begin{frame}[containsverbatim]\frametitle{Р РµС€РµРЅРёРµ С‡СЂРµР· РЅРµРїСЂРѕРјРµРЅСЏРµРј РґРµР»РµРіР°С‚}
 \begin{lstlisting}
 Map<String, String> dir = 
 		new HashMap<String, String>();
@@ -632,12 +619,12 @@ String key = naomi.first + "," + naomi.last;
 dir.put(key, "888-444-1212");
 \end{lstlisting}
 \begin{itemize}
-\item Обектите от типа \lstinline{String} не могат да бъдат променяни.
+\item РћР±РµРєС‚РёС‚Рµ РѕС‚ С‚РёРїР° \lstinline{String} РЅРµ РјРѕРіР°С‚ РґР° Р±СЉРґР°С‚ РїСЂРѕРјРµРЅСЏРЅРё.
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Решение чрез замразяване на ключа}
+\begin{frame}[containsverbatim]\frametitle{Р РµС€РµРЅРёРµ С‡СЂРµР· Р·Р°РјСЂР°Р·СЏРІР°РЅРµ РЅР° РєР»СЋС‡Р°}
 \begin{lstlisting}
 public  class Name {
  	private String first;
@@ -648,9 +635,9 @@ public  class Name {
  		if (!frozen) 
  			first = s;
 	}
- 	// аналогично за setLast()
+ 	// Р°РЅР°Р»РѕРіРёС‡РЅРѕ Р·Р° setLast()
 
- 	// „замразяваме“ обекта
+ 	// вЂћР·Р°РјСЂР°Р·СЏРІР°РјРµвЂњ РѕР±РµРєС‚Р°
  	public void freeze() {
  		frozen = true;
 	}
@@ -658,38 +645,38 @@ public  class Name {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Променяеми ключове}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРѕРјРµРЅСЏРµРјРё РєР»СЋС‡РѕРІРµ}
 \begin{itemize}
-\item Всеки подход за решавне на проблемът с променяемите ключове има своите предимства и недостатъци
-\item Винаги използвайте възможно най-простото решение, което е подходящо за ситуацията
-\item Ако ключът не може да се променя, то няма да имате никакви проблеми
+\item Р’СЃРµРєРё РїРѕРґС…РѕРґ Р·Р° СЂРµС€Р°РІРЅРµ РЅР° РїСЂРѕР±Р»РµРјСЉС‚ СЃ РїСЂРѕРјРµРЅСЏРµРјРёС‚Рµ РєР»СЋС‡РѕРІРµ РёРјР° СЃРІРѕРёС‚Рµ РїСЂРµРґРёРјСЃС‚РІР° Рё РЅРµРґРѕСЃС‚Р°С‚СЉС†Рё
+\item Р’РёРЅР°РіРё РёР·РїРѕР»Р·РІР°Р№С‚Рµ РІСЉР·РјРѕР¶РЅРѕ РЅР°Р№-РїСЂРѕСЃС‚РѕС‚Рѕ СЂРµС€РµРЅРёРµ, РєРѕРµС‚Рѕ Рµ РїРѕРґС…РѕРґСЏС‰Рѕ Р·Р° СЃРёС‚СѓР°С†РёСЏС‚Р°
+\item РђРєРѕ РєР»СЋС‡СЉС‚ РЅРµ РјРѕР¶Рµ РґР° СЃРµ РїСЂРѕРјРµРЅСЏ, С‚Рѕ РЅСЏРјР° РґР° РёРјР°С‚Рµ РЅРёРєР°РєРІРё РїСЂРѕР±Р»РµРјРё
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Чести грешки при работа с колекции}
+\begin{frame}[containsverbatim]\frametitle{Р§РµСЃС‚Рё РіСЂРµС€РєРё РїСЂРё СЂР°Р±РѕС‚Р° СЃ РєРѕР»РµРєС†РёРё}
 \begin{itemize}
-\item Изтриване на елемент от списък докато го обхождаме
-\item Промяна на елемент в множество
-\item Промяна на ключ в асоциативен контейнер
+\item РР·С‚СЂРёРІР°РЅРµ РЅР° РµР»РµРјРµРЅС‚ РѕС‚ СЃРїРёСЃСЉРє РґРѕРєР°С‚Рѕ РіРѕ РѕР±С…РѕР¶РґР°РјРµ
+\item РџСЂРѕРјСЏРЅР° РЅР° РµР»РµРјРµРЅС‚ РІ РјРЅРѕР¶РµСЃС‚РІРѕ
+\item РџСЂРѕРјСЏРЅР° РЅР° РєР»СЋС‡ РІ Р°СЃРѕС†РёР°С‚РёРІРµРЅ РєРѕРЅС‚РµР№РЅРµСЂ
 \end{itemize}
 \end{frame}
 
-\section{Сравняване и сортиране}
+\section{РЎСЂР°РІРЅСЏРІР°РЅРµ Рё СЃРѕСЂС‚РёСЂР°РЅРµ}
 
-\begin{frame}[containsverbatim]\frametitle{Сравняване и сортиране}
+\begin{frame}[containsverbatim]\frametitle{РЎСЂР°РІРЅСЏРІР°РЅРµ Рё СЃРѕСЂС‚РёСЂР°РЅРµ}
 \begin{itemize}
-\item Използва се за да се прецени кой от два обекта е по-голям или двата обекта са равни
-\item Изразът \lstinline{a.compareTo(b)} връща следните стойности:
+\item РР·РїРѕР»Р·РІР° СЃРµ Р·Р° РґР° СЃРµ РїСЂРµС†РµРЅРё РєРѕР№ РѕС‚ РґРІР° РѕР±РµРєС‚Р° Рµ РїРѕ-РіРѕР»СЏРј РёР»Рё РґРІР°С‚Р° РѕР±РµРєС‚Р° СЃР° СЂР°РІРЅРё
+\item РР·СЂР°Р·СЉС‚ \lstinline{a.compareTo(b)} РІСЂСЉС‰Р° СЃР»РµРґРЅРёС‚Рµ СЃС‚РѕР№РЅРѕСЃС‚Рё:
 \begin{itemize}
-\item \lstinline{<0} ако \lstinline{a<b}
-\item \lstinline{==0} ако \lstinline{a==b}
-\item \lstinline{>0} ако \lstinline{a>b}
+\item \lstinline{<0} Р°РєРѕ \lstinline{a<b}
+\item \lstinline{==0} Р°РєРѕ \lstinline{a==b}
+\item \lstinline{>0} Р°РєРѕ \lstinline{a>b}
 \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Сравнения}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎСЂР°РІРЅРµРЅРёСЏ}
 \begin{lstlisting}
 Integer one = 1;
 System.out.println(one.compareTo(3)); 		// => -1
@@ -701,40 +688,40 @@ System.out.println(frank.compareTo("Hopper")); // => -2
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Азбучно сортиране на списък}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РђР·Р±СѓС‡РЅРѕ СЃРѕСЂС‚РёСЂР°РЅРµ РЅР° СЃРїРёСЃСЉРє}
 \begin{lstlisting}
 List<String> names = new ArrayList<String>();
-// добавяне на елементи към списъка
+// РґРѕР±Р°РІСЏРЅРµ РЅР° РµР»РµРјРµРЅС‚Рё РєСЉРј СЃРїРёСЃСЉРєР°
 names.add("Sailor");
 names.add("Lula");
 names.add("Bobby");
 names.add("Santos");
 names.add("Dell");
 
-// сортиране на списъка
+// СЃРѕСЂС‚РёСЂР°РЅРµ РЅР° СЃРїРёСЃСЉРєР°
 Collections.sort(names);
 	
 // names => [ "Bobby", "Dell", "Lula", "Sailor", "Santos" ]
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Интерфейсът \lstinline{Comparable}}
+\begin{frame}[containsverbatim]\frametitle{РРЅС‚РµСЂС„РµР№СЃСЉС‚ \lstinline{Comparable}}
 \begin{itemize}
-\item За да се сортират елементите на списъка трябва да имплементират интерфейса Comparable
-\item Методът, който трябва да бъде реализиран е:
+\item Р—Р° РґР° СЃРµ СЃРѕСЂС‚РёСЂР°С‚ РµР»РµРјРµРЅС‚РёС‚Рµ РЅР° СЃРїРёСЃСЉРєР° С‚СЂСЏР±РІР° РґР° РёРјРїР»РµРјРµРЅС‚РёСЂР°С‚ РёРЅС‚РµСЂС„РµР№СЃР° Comparable
+\item РњРµС‚РѕРґСЉС‚, РєРѕР№С‚Рѕ С‚СЂСЏР±РІР° РґР° Р±СЉРґРµ СЂРµР°Р»РёР·РёСЂР°РЅ Рµ:
 \begin{lstlisting}
 int compareTo(Object obj); 
 \end{lstlisting}
-\item Класът \lstinline{String} имплементира интерфейсът \lstinline{Comparable} и поради това списък от низове може да бъде сортиран
+\item РљР»Р°СЃСЉС‚ \lstinline{String} РёРјРїР»РµРјРµРЅС‚РёСЂР° РёРЅС‚РµСЂС„РµР№СЃСЉС‚ \lstinline{Comparable} Рё РїРѕСЂР°РґРё С‚РѕРІР° СЃРїРёСЃСЉРє РѕС‚ РЅРёР·РѕРІРµ РјРѕР¶Рµ РґР° Р±СЉРґРµ СЃРѕСЂС‚РёСЂР°РЅ
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Сортиране на класът \lstinline{Name}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎРѕСЂС‚РёСЂР°РЅРµ РЅР° РєР»Р°СЃСЉС‚ \lstinline{Name}}
 \begin{lstlisting}
 public  class Name implements Comparable<Name> {
 	// ...
 
- 	// сортиране по фамилия
+ 	// СЃРѕСЂС‚РёСЂР°РЅРµ РїРѕ С„Р°РјРёР»РёСЏ
  	public int compareTo(Name o) {
  		int compare = this.last.compareTo(o.last);
  		if (compare != 0)
@@ -746,7 +733,7 @@ public  class Name implements Comparable<Name> {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Сортиране на класът \lstinline{Name}}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎРѕСЂС‚РёСЂР°РЅРµ РЅР° РєР»Р°СЃСЉС‚ \lstinline{Name}}
 \begin{lstlisting}
 List<Name> names = new ArrayList<Name>();
 names.add(new Name("Nicolas", "Cage"));
@@ -767,11 +754,11 @@ System.out.println(names);
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Интерфейсът \lstinline{Comparator}}
+\begin{frame}[containsverbatim]\frametitle{РРЅС‚РµСЂС„РµР№СЃСЉС‚ \lstinline{Comparator}}
 \begin{itemize}
-\item Позволява едни и същи данни да бъдат сортирани по различни критерии
-\item Сравнява два обекта
-\item Методът, който трябва да се реализира е:
+\item РџРѕР·РІРѕР»СЏРІР° РµРґРЅРё Рё СЃСЉС‰Рё РґР°РЅРЅРё РґР° Р±СЉРґР°С‚ СЃРѕСЂС‚РёСЂР°РЅРё РїРѕ СЂР°Р·Р»РёС‡РЅРё РєСЂРёС‚РµСЂРёРё
+\item РЎСЂР°РІРЅСЏРІР° РґРІР° РѕР±РµРєС‚Р°
+\item РњРµС‚РѕРґСЉС‚, РєРѕР№С‚Рѕ С‚СЂСЏР±РІР° РґР° СЃРµ СЂРµР°Р»РёР·РёСЂР° Рµ:
 \begin{lstlisting}
 int compare(Object o1, Object o2); 
 \end{lstlisting}
@@ -779,13 +766,13 @@ int compare(Object o1, Object o2);
 \end{frame}
 
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Сортиране на класът \lstinline{Name} по първо име}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎРѕСЂС‚РёСЂР°РЅРµ РЅР° РєР»Р°СЃСЉС‚ \lstinline{Name} РїРѕ РїСЉСЂРІРѕ РёРјРµ}
 \begin{lstlisting}
 import java.util.Comparator;
 
 public class FirstNameFirst 
 			implements Comparator<Name> {
- 	//сортиране по първо име
+ 	//СЃРѕСЂС‚РёСЂР°РЅРµ РїРѕ РїСЉСЂРІРѕ РёРјРµ
  	public int compare(Name n1, Name n2) {
  		int ret = n1.first.compareTo(n2.first);
  		if (ret != 0)
@@ -797,13 +784,13 @@ public class FirstNameFirst
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Пример: Сортиране на класът \lstinline{Name} по първо име}
+\begin{frame}[containsverbatim]\frametitle{РџСЂРёРјРµСЂ: РЎРѕСЂС‚РёСЂР°РЅРµ РЅР° РєР»Р°СЃСЉС‚ \lstinline{Name} РїРѕ РїСЉСЂРІРѕ РёРјРµ}
 \begin{lstlisting}
 List<Name> names = new ArrayList<Name>();
 // ...
 
-// създаваме обект, чрез който ще
-// извършваме сравненията по време на сортиране
+// СЃСЉР·РґР°РІР°РјРµ РѕР±РµРєС‚, С‡СЂРµР· РєРѕР№С‚Рѕ С‰Рµ
+// РёР·РІСЉСЂС€РІР°РјРµ СЃСЂР°РІРЅРµРЅРёСЏС‚Р° РїРѕ РІСЂРµРјРµ РЅР° СЃРѕСЂС‚РёСЂР°РЅРµ
 Comparator<Name> first = new FirstNameFirst();
 Collections.sort(names, first);
 
@@ -814,18 +801,18 @@ System.out.println(names);
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Изисквания към сравняване}
+\begin{frame}[containsverbatim]\frametitle{РР·РёСЃРєРІР°РЅРёСЏ РєСЉРј СЃСЂР°РІРЅСЏРІР°РЅРµ}
 \begin{itemize}
-\item Резултатът при сравнението на два обекта винаги не трябва да се променя (ако обектите не се променят)!
-\item Особено внимание трябва да се обръща на ситуациите \lstinline{(compare(e1, e2)==0) != e1.equals(e2)}. Такива ситуации трябва да се избягват.
-\item Такива случаи биха довели до неопределени резултати при сортирането на колекции като \lstinline{SortedSet}, \lstinline{SortedMap} и т.н.
+\item Р РµР·СѓР»С‚Р°С‚СЉС‚ РїСЂРё СЃСЂР°РІРЅРµРЅРёРµС‚Рѕ РЅР° РґРІР° РѕР±РµРєС‚Р° РІРёРЅР°РіРё РЅРµ С‚СЂСЏР±РІР° РґР° СЃРµ РїСЂРѕРјРµРЅСЏ (Р°РєРѕ РѕР±РµРєС‚РёС‚Рµ РЅРµ СЃРµ РїСЂРѕРјРµРЅСЏС‚)!
+\item РћСЃРѕР±РµРЅРѕ РІРЅРёРјР°РЅРёРµ С‚СЂСЏР±РІР° РґР° СЃРµ РѕР±СЂСЉС‰Р° РЅР° СЃРёС‚СѓР°С†РёРёС‚Рµ \lstinline{(compare(e1, e2)==0) != e1.equals(e2)}. РўР°РєРёРІР° СЃРёС‚СѓР°С†РёРё С‚СЂСЏР±РІР° РґР° СЃРµ РёР·Р±СЏРіРІР°С‚.
+\item РўР°РєРёРІР° СЃР»СѓС‡Р°Рё Р±РёС…Р° РґРѕРІРµР»Рё РґРѕ РЅРµРѕРїСЂРµРґРµР»РµРЅРё СЂРµР·СѓР»С‚Р°С‚Рё РїСЂРё СЃРѕСЂС‚РёСЂР°РЅРµС‚Рѕ РЅР° РєРѕР»РµРєС†РёРё РєР°С‚Рѕ \lstinline{SortedSet}, \lstinline{SortedMap} Рё С‚.РЅ.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[containsverbatim]\frametitle{Сортирани множества}
+\begin{frame}[containsverbatim]\frametitle{РЎРѕСЂС‚РёСЂР°РЅРё РјРЅРѕР¶РµСЃС‚РІР°}
 \begin{itemize}
-\item Ако искаме елементите в множеството да бъдат сортирани, можем да използваме имплементацията \lstinline{TreeSet}.
-\item Елементите на множеството \lstinline{TreeSet} трябва да имплементират интрефейсът \lstinline{Comparable} или при създаване на множеството \lstinline{TreeSet} трябва да подадете допълнителен обект, който имплементира интерфейсът \lstinline{Comparator}
+\item РђРєРѕ РёСЃРєР°РјРµ РµР»РµРјРµРЅС‚РёС‚Рµ РІ РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ РґР° Р±СЉРґР°С‚ СЃРѕСЂС‚РёСЂР°РЅРё, РјРѕР¶РµРј РґР° РёР·РїРѕР»Р·РІР°РјРµ РёРјРїР»РµРјРµРЅС‚Р°С†РёСЏС‚Р° \lstinline{TreeSet}.
+\item Р•Р»РµРјРµРЅС‚РёС‚Рµ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ \lstinline{TreeSet} С‚СЂСЏР±РІР° РґР° РёРјРїР»РµРјРµРЅС‚РёСЂР°С‚ РёРЅС‚СЂРµС„РµР№СЃСЉС‚ \lstinline{Comparable} РёР»Рё РїСЂРё СЃСЉР·РґР°РІР°РЅРµ РЅР° РјРЅРѕР¶РµСЃС‚РІРѕС‚Рѕ \lstinline{TreeSet} С‚СЂСЏР±РІР° РґР° РїРѕРґР°РґРµС‚Рµ РґРѕРїСЉР»РЅРёС‚РµР»РµРЅ РѕР±РµРєС‚, РєРѕР№С‚Рѕ РёРјРїР»РµРјРµРЅС‚РёСЂР° РёРЅС‚РµСЂС„РµР№СЃСЉС‚ \lstinline{Comparator}
 \end{itemize}
 \begin{lstlisting}
 SortedSet<Name> names = new TreeSet<Name>(
