@@ -9,12 +9,3 @@ script:
 before_deploy:
 - mkdir build
 - cp */*.pdf build/
-deploy:
-  provider: releases
-  api_key:
-    secure: A
-  file_glob: true
-  file: '*/*.pdf'
-  on:
-    repo: elsys/java-notes
-    tags: true
