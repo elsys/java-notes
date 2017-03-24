@@ -1,0 +1,233 @@
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\documentclass[ignorenonframetext, hyperref=unicode,compress,pdflatex]{beamer}
+%\documentclass[ignorenonframetext, hyperref=unicode,pdftex]{beamer}
+
+\input{jnotes.tex}
+
+\title{Java 8: ламбда функции и Stream API}
+\authors
+\date{\today}
+
+\usetikzlibrary{shapes}
+
+\bibstyle{plain}
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\begin{frame}
+\frametitle{Съдържание}
+\tableofcontents %[hideallsubsections]
+\end{frame}
+
+
+\section{Ламбда функции}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: филтриране на списък от хора}
+\begin{itemize}
+\item Дефиниция на класа \lstinline{Person}:
+\end{itemize}
+\begin{lstlisting}
+public class Person {
+
+	private String names;
+
+	private Gender gender;
+
+	private int age;
+
+    // all args constructor \& getters...
+}
+\end{lstlisting}
+\begin{itemize}
+\item Как ще изглежда функция, която филтрира в един списък хората на възраст
+под 25 години?
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]\frametitle{Пример: филтриране на списък от хора}
+\begin{itemize}
+\item Функция, която филтрира в един списък хората, които са под определена
+възраст:
+\end{itemize}
+\begin{lstlisting}
+public static List<Person> filterByAgeLessThan(List<Person> people, int age) {
+	List<Person> result = new ArrayList<>();
+	for (Person person : people) {
+		if (person.getAge() < age) {
+			result.add(person);
+		}
+	}
+	return result;
+}
+\end{lstlisting}
+\begin{itemize}
+\item А как ще изглежда функция, която филтрира хората на определена възраст и
+от определен пол?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: филтриране на списък от хора}
+\begin{itemize}
+  \item Функция филтрираща по още един критерий:
+\end{itemize}
+\begin{lstlisting}
+public static List<Person> filterByAgeAndGender(List<Person> people, int age, Gender gender) {
+	List<Person> result = new ArrayList<>();
+	for (Person person : people) {
+		if (person.getAge() == age && person.getGender() == gender) {
+			result.add(person);
+		}
+	}
+	return result;
+}
+\end{lstlisting}
+\begin{itemize}
+  \item Какви са разликите с предишната функция? Как може еднаквите части да се
+  изнесат на едно място?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Решение преди Java 8}
+\begin{itemize}
+  \item Добавя се параметър на филтриращата функция от абстрактен тип, в чиито
+  абстрактни методи да се дефинира при извикване поведението, което искаме да се
+  променя динамично
+\end{itemize}
+\begin{lstlisting}
+public interface Filter {
+	boolean matches(Person person);
+}
+\end{lstlisting}
+\begin{lstlisting}
+public static List<Person> filter(List<Person> people,
+		Filter filter) {
+	List<Person> result = new ArrayList<>();
+	for (Person person : people) {
+		if (filter.matches(person)) {
+			result.add(person);
+		}
+	}
+	return result;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Решение преди Java 8}
+\begin{itemize}
+  \item Извикването на функцията обикновено (но не задължително) става с
+  инстанциирането на анонимен клас:
+\end{itemize}
+\begin{lstlisting}
+List<Person> people = Arrays.asList(
+		new Person("Ivan", Gender.MALE, 22),
+		new Person("Ivanka", Gender.FEMALE, 34));
+
+List<Person> result = filter(people, new Filter() {
+
+	public boolean matches(Person person) {
+		return person.getAge() > 12 && person.getAge() < 65
+				&& person.getGender() == Gender.FEMALE;
+	}
+}); // ще съдържа само инстанцията с име "Ivanka"
+\end{lstlisting}
+\begin{itemize}
+  \item Но този синтаксис е неудобен, дълъг и по-трудно четим\ldots
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Java 8 синтаксис}
+\begin{itemize}
+  \item Затова в Java 8 той е опростен чрез т. нар. ламбда функции - функции
+  подадени като аргумент на други функции.
+\end{itemize}
+\begin{lstlisting}
+List<Person> result = filter(people,
+		person -> person.getAge() > 12
+				&& person.getAge() < 65
+				&& person.getGender() == Gender.FEMALE)
+}); // ще съдържа само инстанцията с име "Ivanka"
+\end{lstlisting}
+\begin{itemize}
+  \item Декларацията на функцията \lstinline{filter} от примера остава същата
+  \item Резултатът от операцията в ламбда функцията се връща като резултат при
+  извикването на \lstinline{matches} (върху параметъра от тип
+  \lstinline{Filter}) в имплементацията на \lstinline{filter}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Функционални интерфейси}
+\begin{itemize}
+  \item Интерфейсът \lstinline{Filter} наричаме функционален
+  \item Функционален интерфейс е този, в който има точно един абстрактен метод
+  \item За да може да се прилага този синтаксис, аргументът, на който се подава
+  ламбда функцията, трябва да бъде инстанция на "функционален интерфейс"
+  \item При абстрактни класове (дори и само с един абстрактен метод) или
+  интерфейси с повече от един абстрактен метод, този синтаксис не може да се
+  използва (в тези случаи могат да се използват анонимни класове)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Функционални интерфейси}
+\begin{itemize}
+  \item В стандартната библиотека в пакета \lstinline{java.util.function} има
+  дефинирани множество шаблонни функционални интерфейси, които се използват както в самата библиотеката, така
+  и могат да се използват от всеки програмист.
+  \item \lstinline{Function} - дефинира метод, който приема един шаблонен
+  аргумент и връща шаблонен резултат
+  \item \lstinline{Consumer} - метод с един шаблонен
+  аргумент и връщащ \lstinline{void}
+  \item \lstinline{Supplier} - метод без аргументи и връщащ
+  шаблонен резултат
+  \item \lstinline{Predicate} - метод с един шаблонен
+  аргумент и връщащ резултат от тип \lstinline{boolean}
+  \item Съществуват вариации на тези функционални методи, които дефинират същите
+  методи, но с два аргумента и се казват съответно \lstinline{BiFunction},
+  \lstinline{BiConsumer} и т.н.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Пример: сортиране на списък с
+\lstinline{Comparator}}
+\begin{itemize}
+  \item В \lstinline{java.util.List} има метод \lstinline{sort} с единствен
+  аргумент от тип \lstinline{Comparator}, който е функционален интерфейс
+\end{itemize}
+\begin{lstlisting}
+public interface Comparator<T> {
+	int compare(T o1, T o2);
+}
+\end{lstlisting}
+\begin{lstlisting}
+List<Person> people = Arrays.asList(
+		new Person("Ivan", Gender.MALE, 22),
+		new Person("Ivanka", Gender.FEMALE, 34),
+		new Person("Peter", Gender.FEMALE, 11));
+people.sort((p1, p2) -> p1.getAge() - p2.getAge());
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ламбда функция на много редове}
+\begin{itemize}
+  \item В предишните примери ламбда функциите се състояха от само един израз
+  \item Следващият пример използва метода \lstinline{forEach} в
+  \lstinline{java.util.List}, за да принтира всички елементи по определен начин
+  като използва ламбда функция на много редове
+\end{itemize}
+\begin{lstlisting}
+people.forEach(person -> {
+	if (person.getAge() > 65) {
+		System.out.printf("%s, 65+\n", person.getNames());
+	} else {
+		System.out.printf("%s, %d\n", person.getNames(),
+				person.getAge());
+	}
+});
+\end{lstlisting}
+\end{frame}
+
+
+\end{document}
