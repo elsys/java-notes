@@ -26,6 +26,11 @@ public class PersonUtils {
 
 		people.sort((p1, p2) -> p1.getAge() - p2.getAge());
 
+		// lambda functions on many rows
+		people.sort((p1, p2) -> {
+			int delta = p1.getAge() - p2.getAge();
+			return delta;
+		});
 		people.forEach(person -> {
 			if (person.getAge() > 65) {
 				System.out.printf("%s, 65+\n", person.getNames());
@@ -33,6 +38,7 @@ public class PersonUtils {
 				System.out.printf("%s, %d\n", person.getNames(), person.getAge());
 			}
 		});
+
 	}
 
 	public static List<Person> filterByAgeLessThan(List<Person> people, int age) {

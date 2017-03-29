@@ -50,11 +50,11 @@ public class Person {
 
 \begin{frame}[containsverbatim]\frametitle{Пример: филтриране на списък от хора}
 \begin{itemize}
-\item Функция, която филтрира в един списък хората, които са под определена
-възраст:
+\item Решение:
 \end{itemize}
 \begin{lstlisting}
-public static List<Person> filterByAgeLessThan(List<Person> people, int age) {
+public static List<Person> filterByAgeLessThan(
+		List<Person> people, int age) {
 	List<Person> result = new ArrayList<>();
 	for (Person person : people) {
 		if (person.getAge() < age) {
@@ -75,10 +75,12 @@ public static List<Person> filterByAgeLessThan(List<Person> people, int age) {
   \item Функция филтрираща по още един критерий:
 \end{itemize}
 \begin{lstlisting}
-public static List<Person> filterByAgeAndGender(List<Person> people, int age, Gender gender) {
+public static List<Person> filterByAgeAndGender(
+		List<Person> people, int age, Gender gender) {
 	List<Person> result = new ArrayList<>();
 	for (Person person : people) {
-		if (person.getAge() == age && person.getGender() == gender) {
+		if (person.getAge() == age
+				&& person.getGender() == gender) {
 			result.add(person);
 		}
 	}
@@ -118,7 +120,7 @@ public static List<Person> filter(List<Person> people,
 
 \begin{frame}[containsverbatim]\frametitle{Решение преди Java 8}
 \begin{itemize}
-  \item Извикването на функцията обикновено (но не задължително) става с
+  \item Извикването на функцията обикновено става с
   инстанциирането на анонимен клас:
 \end{itemize}
 \begin{lstlisting}
@@ -154,8 +156,8 @@ List<Person> result = filter(people,
 \begin{itemize}
   \item Декларацията на функцията \lstinline{filter} от примера остава същата
   \item Резултатът от операцията в ламбда функцията се връща като резултат при
-  извикването на \lstinline{matches} (върху параметъра от тип
-  \lstinline{Filter}) в имплементацията на \lstinline{filter}
+  извикването на \lstinline{Filter::matches} в имплементацията на
+  \lstinline{filter}
 \end{itemize}
 \end{frame}
 
@@ -163,8 +165,8 @@ List<Person> result = filter(people,
 \begin{itemize}
   \item Интерфейсът \lstinline{Filter} наричаме функционален
   \item Функционален интерфейс е този, в който има точно един абстрактен метод
-  \item За да може да се прилага този синтаксис, аргументът, на който се подава
-  ламбда функцията, трябва да бъде инстанция на "функционален интерфейс"
+  \item За да може да се прилага ламбда синтаксисът, типът на аргумента, на
+  който се подава ламбда функцията, трябва да бъде "функционален интерфейс"
   \item При абстрактни класове (дори и само с един абстрактен метод) или
   интерфейси с повече от един абстрактен метод, този синтаксис не може да се
   използва (в тези случаи могат да се използват анонимни класове)
@@ -213,9 +215,27 @@ people.sort((p1, p2) -> p1.getAge() - p2.getAge());
 \begin{frame}[containsverbatim]\frametitle{Ламбда функция на много редове}
 \begin{itemize}
   \item В предишните примери ламбда функциите се състояха от само един израз
-  \item Следващият пример използва метода \lstinline{forEach} в
-  \lstinline{java.util.List}, за да принтира всички елементи по определен начин
-  като използва ламбда функция на много редове
+  \item Понякога обаче е необходимо да се извършат няколко операции в тях преди
+  да се върне резултат
+  \item Тогава тялото на ламбда функцията е оградено с
+  \lstinline[mathescape]!{}! и задължително има \lstinline{return} израз, когато
+  се очаква функцията да върне резултат
+  \item Следващият пример е еквивалентен на предишния:
+\end{itemize}
+\begin{lstlisting}
+people.sort((p1, p2) -> {
+	int delta = p1.getAge() - p2.getAge();
+	return delta;
+});
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ламбда функция на много редове}
+\begin{itemize}
+  \item Методът \lstinline{forEach} в \lstinline{java.util.List} може да се
+  използва за обхождане на всички елементи
+  \item Той приема като аргумент \lstinline{Consumer} и затова не очаква
+  \lstinline{return} израз, дори и когато ламбда функцията е на много редове
 \end{itemize}
 \begin{lstlisting}
 people.forEach(person -> {
@@ -228,6 +248,4 @@ people.forEach(person -> {
 });
 \end{lstlisting}
 \end{frame}
-
-
 \end{document}
