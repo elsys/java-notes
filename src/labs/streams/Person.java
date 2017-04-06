@@ -1,5 +1,7 @@
 package labs.streams;
 
+import java.util.List;
+
 public class Person {
 
 	private String names;
@@ -7,6 +9,8 @@ public class Person {
 	private Gender gender;
 
 	private int age;
+
+	private List<Person> friends;
 
 	public Person(String names, Gender gender, int age) {
 		this.names = names;
@@ -24,5 +28,13 @@ public class Person {
 
 	public int getAge() {
 		return age;
+	}
+
+	public List<Person> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<Person> friends) {
+		this.friends = friends;
 	}
 }

@@ -9,9 +9,7 @@ public class PersonUtils {
 	public static void main(String[] args) {
 
 		// prior to Java 8 approach
-		List<Person> people = Arrays.asList(new Person("Ivan", Gender.MALE, 22),
-				new Person("Ivanka", Gender.FEMALE, 34),
-				new Person("Peter", Gender.OTHER, 66));
+		List<Person> people = generatePeople();
 		filter(people, new Filter() {
 
 			@Override
@@ -39,6 +37,12 @@ public class PersonUtils {
 			}
 		});
 
+	}
+
+	public static List<Person> generatePeople() {
+		return Arrays.asList(new Person("Ivan", Gender.MALE, 22),
+				new Person("Ivanka", Gender.FEMALE, 34),
+				new Person("Peter", Gender.OTHER, 66));
 	}
 
 	public static List<Person> filterByAgeLessThan(List<Person> people, int age) {

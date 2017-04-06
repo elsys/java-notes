@@ -19,7 +19,7 @@
 
 \begin{frame}
 \frametitle{Съдържание}
-\tableofcontents %[hideallsubsections]
+\tableofcontents
 \end{frame}
 
 
@@ -248,4 +248,432 @@ people.forEach(person -> {
 });
 \end{lstlisting}
 \end{frame}
+
+\section{Stream API}
+
+\begin{frame}[containsverbatim]\frametitle{Необходимостта от Stream API}
+\begin{itemize}
+  \item Как ще изглежда код, който намира списък с имената на всички жени под
+  25 години, подреден по възрастта им?
+\end{itemize}
+\begin{lstlisting}
+List<Person> womenUnder25 = new ArrayList<>();
+for (Person person : people) {
+	if (person.getGender() == Gender.FEMALE
+			&& person.getAge() < 25) {
+		womenUnder25.add(person);
+	}
+}
+Collections.sort(womenUnder25,
+		(p1, p2) -> p1.getAge() - p2.getAge());
+List<String> womenUnder25Names = new ArrayList<>();
+for (Person person : people) {
+	womenUnder25Names.add(person.getNames());
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Необходимостта от Stream API}
+\begin{itemize}
+  \item Решенията на различни задачи за филтриране, трансформиране на списък с
+  обекти, редуцирането му до единствена стойност и други са с много подобен код
+  \item Установяването на целите му, от човек, който не го е виждал, няма да е
+  лесно и бързо
+  \item Не можем ли просто да декларираме какво искаме да се случи и итерациите
+  по списъка да бъдат скрити като имплементационен детайл, който не ни
+  интересува?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Необходимостта от Stream API}
+\begin{itemize}
+  \item Решение, използвайки добавения в Java 8 Stream API:
+\end{itemize}
+\begin{lstlisting}
+List<String> womenUnder25Names = people.stream()
+	.filter(person -> person.getGender() == Gender.FEMALE)
+	.filter(person -> person.getAge() < 25)
+	.sorted((p1, p2) -> p1.getAge() - p2.getAge())
+	.map(person -> person.getNames())
+	.collect(Collectors.toList());
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Какво е Stream? Stream vs Collection}
+\begin{itemize}
+  \item \textbf{Поредица от елементи} - подобно на колекцията, потокът
+  предоставя интерфейс към поредица от елементи от определен тип, но за
+  разлика от нея не се фокусира върху запазването и достъпа им от паметта, а
+  върху изчисленията, които трябва се извършат с тях
+  \item \textbf{Базиран на източник на данни} - често това е колекция, масив или
+  I/O ресурс, като този източник може да бъде безкраен
+  \item \textbf{Композиращ операции върху данните} - поддържат се различни
+  операции като \lstinline{filter}, \lstinline{map}, \lstinline{reduce},
+  \lstinline{sort} и други, които могат да се композират в различен ред
+  взависимост от целта
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Крайни и междинни операции}
+\begin{lstlisting}
+people.stream()
+		.filter(person -> person.getAge() < 25)
+		.map(person -> person.getNames())
+		.collect(Collectors.toList());
+\end{lstlisting}
+\begin{itemize}
+  \item Извиквайки новият за \lstinline{List} метод \lstinline{stream} създаваме
+  от списъка обект от тип \lstinline{Stream}
+  \item Операциите \lstinline{filter} и \lstinline{map} са \textbf{междинни}
+  \item Всяка от междинните операции връща нов обект от тип \lstinline{Stream} и
+  това позволява лесното им композиране една след друга
+  \item Когато композираме междинни операции, никоя от тях не се изпълнява,
+  докато не извикаме накрая \textbf{терминална} операция
+  \item Операцията \lstinline{collect} е \textbf{крайна} и трансформира потока в
+  списък
+  \item Крайна операция върху поток може да се изпълни само веднъж и нейното
+  извикване кара всички междинни операции да се изпълнят
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Крайни и междинни операции (примери)}
+\begin{itemize}
+  \item Следният код няма да доведе до изпълнение на операциите
+  \lstinline{filter} и \lstinline{map} върху данните от списъка
+  \lstinline{people}, тъй като липсва крайна операция
+\end{itemize}
+\begin{lstlisting}
+Stream<String> stream = people.stream()
+		.filter(person -> person.getAge() < 25)
+		.map(person -> person.getNames());
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Крайни и междинни операции (примери)}
+\begin{itemize}
+  \item Следният пример ще доведе до
+  \lstinline{java.lang.IllegalStateException}, защото върху един поток са
+  изпълнени две крайни операции - \lstinline{collect} и \lstinline{forEach}
+\end{itemize}
+\begin{lstlisting}
+Stream<String> stream = people.stream()
+		.filter(person -> person.getAge() < 25)
+		.map(person -> person.getNames());
+stream.collect(Collectors.toList());
+stream.forEach(name -> System.out.println(name));\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{filter}}
+\begin{itemize}
+  \item \lstinline{filter} оставя в потока само елементи, за които условието се
+  изчислява до \lstinline{true}
+\end{itemize}
+\begin{lstlisting}
+List<Person> youngPeople = people.stream()
+		.filter(person -> person.getAge() < 25)
+		.collect(Collectors.toList());
+// в youngPeople ще останат само хора под 25 години
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{map}}
+\begin{itemize}
+  \item \lstinline{map} трансформира всеки обект в един поток до друг обект
+  посредством правилото подадено като ламбда функция
+  \item Потокът, който се връща, е от тип \lstinline{Stream<T>}, където
+  \lstinline{T} е типът на върнатия от ламбда функцията обект (в случая -
+  \lstinline{String})
+\end{itemize}
+\begin{lstlisting}
+List<String> names = people.stream()
+		.map(person -> person.getNames())
+		.collect(Collectors.toList());
+// в names ще останат само имената на хората от people
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{flatMap}}
+\begin{itemize}
+  \item За следващия пример, нека добавим в класа \lstinline{Person} поле, което
+  да съдържа списък с всички приятели на дадения човек
+\end{itemize}
+\begin{lstlisting}
+class Person {
+	private List<Person> friends;
+	...
+}
+\end{lstlisting}
+\begin{itemize}
+  \item \lstinline{flatMap} се използва, за да трансформираме един поток от
+  списъци от елементи в поток от елементи
+  \item Задължително е ламбда функцията, подадена на \lstinline{flatMap}, да
+  връща поток
+\end{itemize}
+\begin{lstlisting}
+List<Person> friends = people.stream()
+		.flatMap(person -> person.getFriends().stream())
+		.collect(Collectors.toList());
+// friends ще съдържа всички приятели на хората в people
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{distinct}}
+\begin{itemize}
+  \item \lstinline{distinct} премахва повтарящите се елементи от потока 
+\end{itemize}
+\begin{lstlisting}
+long uniqueCount = people.stream()
+		.map(person -> person.getNames().split(" ")[0])
+		.distinct()
+		.count();
+// uniqueCount ще съдържа броят на уникалните първи имена
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{sorted}}
+\begin{itemize}
+  \item \lstinline{sorted} има две версии - тази без аргументи очаква елементите
+  в потока да имплементират интерфейса \lstinline{Comparable}
+  \item Другата версия приема като аргумент \lstinline{Comparator}
+\end{itemize}
+\begin{lstlisting}
+List<String> names = people.stream()
+		.sorted((p1, p2) -> p1.getAge() - p2.getAge())
+		.map(person -> person.getNames())
+		.collect(Collectors.toList());
+// подрежда хората по възраст и връща само имената им
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{limit} и \lstinline{skip}}
+\begin{itemize}
+  \item \lstinline{limit} лимитира елементите до подаденото число
+  \item \lstinline{skip} премахна първите n елемента от потока 
+\end{itemize}
+\begin{lstlisting}
+List<Person> result = people.stream()
+		.skip(1)
+		.limit(5)
+		.collect(Collectors.toList());
+// ще пропусне първия елемент и след това ще добави максимум 
+// следващите 5 елемента в result
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Mеждинни операции:
+\lstinline{peek}}
+\begin{itemize}
+  \item \lstinline{peek} не променя потока, но позволява да се извършват някакви
+  операции с елементите в него
+  \item Това го прави удобен за ``debug'' цели
+\end{itemize}
+\begin{lstlisting}
+people.stream()
+		.map(person -> person.getNames())
+		.peek(names -> System.out.println(names))
+		.disctinct()
+		.count();
+// ще изброи хората с уникални имена, като ще изпринтира
+// имената на всички хора
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Крайни операции:
+\lstinline{count} и \lstinline{forEach}}
+\begin{itemize}
+  \item \lstinline{count} ще върне броя на елементите в потока
+\end{itemize}
+\begin{lstlisting}
+long count = people.stream()
+		.filter(person -> person.getAge() % 2 == 0)
+		.count();
+\end{lstlisting}
+\begin{itemize}
+  \item \lstinline{forEach} ще изпълни подадената ламбда функция за всеки
+  елемент в потока
+\end{itemize}
+\begin{lstlisting}
+people.stream()
+		.map(person -> person.getNames())
+		.forEach(name -> System.out.println(name));
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Крайни операции:
+\lstinline{reduce}}
+\begin{itemize}
+  \item \lstinline{reduce} ще комбинира елементите чрез подадената ламбда
+  функция, докато не остане само един
+  \item Като първи аргумент се подава първоначалната стойност, от която да
+  започне комбинирането на елементи
+\end{itemize}
+\begin{lstlisting}
+long ageSum = people.stream()
+		.map(person -> person.getAge())
+		.reduce(0, (l, r) -> l + r);
+\end{lstlisting}
+\begin{lstlisting}
+String namesSeparatedByComma = people.stream()
+		.map(person -> person.getNames())
+		.reduce("", (l, r) -> l + ", " + r);
+\end{lstlisting}
+\begin{itemize}
+  \item Забележка: \lstinline{reduce} има и още две версии с различни аргументи
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Крайни операции:
+\lstinline{collect}}
+\begin{itemize}
+  \item \lstinline{collect} приема като аргумент имплементация на интерфейса
+  \lstinline{java.util.stream.Collector}
+  \item В класа \lstinline{java.util.stream.Collectors} има дефинирани няколко
+  статични метода, които връщат различни имплементации на \lstinline{Collector}
+  интерфейса
+  \item Всеки програмист може и сам да дефинира своя имплементация, но това е
+  извън обхвата на тази лекция
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{\lstinline{collect}: трансформиране
+в колекция}
+\begin{itemize}
+  \item \lstinline{Collectors.toList()} записва елементите от потока в
+  списък
+\end{itemize}
+\begin{lstlisting}
+List<String> nameList = people.stream()
+		.map(person -> person.getNames())
+		.collect(Collectors.toList());
+\end{lstlisting}
+\begin{itemize}
+  \item \lstinline{Collectors.toSet()} записва елементите от потока в множество
+\end{itemize}
+\begin{lstlisting}
+Set<String> nameSet = people.stream()
+		.map(person -> person.getNames())
+		.collect(Collectors.toSet());
+\end{lstlisting}
+\begin{itemize}
+  \item \lstinline{Collectors.toCollection(Supplier<C>)} записва елементите в
+  колекцията, която се създава от ламбда функцията
+\end{itemize}
+\begin{lstlisting}
+Queue<String> nameQueue = people.stream()
+		.map(person -> person.getNames())
+		.collect(Collectors.toCollection(() ->
+				new SynchronousQueue<>()));
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{\lstinline{collect}: трансформиране
+в \lstinline{java.util.Map}}
+\begin{itemize}
+  \item Чрез \lstinline{Collectors.toMap()} можем да трансформираме елементите
+  от потока в двойки ключ-стойност
+  \item Първият аргумент е ламбда функция, която връща ключ за всеки обект
+  \item Вторият аргумент е ламбда функция, която връща стойност за всеки обект
+  \item Третият аргумент е опционален и се използва за разрешаване на конфликти
+  (когато има повторение на ключове)
+\end{itemize}
+\begin{lstlisting}
+Map<String, Gender> genderByPerson = people.stream()
+		.collect(Collectors.toMap(
+				person -> person.getNames(),
+				person -> person.getGender(),
+				(g1, g2) -> g1));
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{\lstinline{collect}: групиране на
+елементите}
+\begin{itemize}
+  \item \lstinline{Collectors.groupingBy()} може да се използва за групиране на
+  елементите по даден критерий
+\end{itemize}
+\begin{lstlisting}
+Map<Gender, List<Person>> byGender = people.stream()
+		.collect(Collectors.groupingBy(
+				person -> person.getGender()));
+\end{lstlisting}
+\begin{itemize}
+  \item Подобен на този колектор е и \lstinline{Collectors.partitioningBy()},
+  който групира елементите в 2 групи - в зависимост от това дали изпълняват, или
+  не дадено условие
+\end{itemize}
+\begin{lstlisting}
+Map<Boolean, List<Person>> byAgeLt25 = people.stream()
+		.collect(Collectors.partitioningBy(
+				person -> person.getAge() < 25));
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{\lstinline{collect}: комбиниране на
+колектори}
+\begin{itemize}
+  \item Проблем: как може да се групират имената на хората по пол? 
+  \item За целта \lstinline{Collectors.groupingBy()} и
+  \lstinline{Collectors.partitioningBy()} имат версии, които приемат следващ
+  колектор като параметър
+  \item За решение на проблема използваме колектора
+  \lstinline{Collectors.mapping()}, който приема като аргумент ламбда
+  функция, която да вземе имената на всички хора, и колектор, който да
+  трансформира потокът от имена
+\end{itemize}
+\begin{lstlisting}
+Map<Gender, List<String>> byGender = people.stream()
+		.collect(Collectors.groupingBy(
+				person -> person.getGender(),
+				Collectors.mapping(person -> person.getNames(),
+						Collectors.toList())));
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Други методи от
+\lstinline{Collectors}}
+\begin{itemize}
+  \item \lstinline{collectingAndThen(Collector, Function)} - 
+  адаптира подадения колектор да изпълнява допълнителна операция за
+  трансформиране на елементите
+  \item \lstinline{counting()} - връща колектор, който изброява елементите в
+  потока
+  \item \lstinline{minBy(Comparator)} и \lstinline{maxBy(Comparator)} -
+  колекторът намира съответно най-малкия и най-големия елемент в потока,
+  използвайки за сравнение подадения \lstinline{Comparator}
+  \item \lstinline{summingInt(ToIntFunction)} - колекторът, използвайки
+  подадената ламбда функция, трансформира елементите в \lstinline{int} и ги
+  събира; има аналогични колектори за \lstinline{long} и \lstinline{double}
+  \item \lstinline{averagingInt(ToIntFunction)} - аналогичен колектор, но
+  смята средното аритметично; също има за \lstinline{long} и \lstinline{double}
+\end{itemize}
+\end{frame}
+
+\section{Задачи за упражнение}
+
+\begin{frame}[containsverbatim]\frametitle{Задачи за упражнение}
+\begin{itemize}
+  \item За всички задачи приемете, че имате списък с хора
+  \item Трансформирайте списъка в стринг, в следния формат: ``<names> (<age>),
+  \ldots''
+  \item Филтрирайте хората, които нямат приятели и пресметнете за останалите
+  средната възраст на приятелите им; запишете резултата в масив с ключ имената
+  на човека и стойност средната възраст на приятелите му
+  \item Пресметнете средната възраст по пол на хората
+  \item Пресметнете броят на хората от всеки пол
+  \item Групирайте хората първо по пол, а след това по това дали са на повече
+  или по-малко от 25 години
+  \item Групирайте хората по възраст над/под 25 години, като върнете
+  само множество от имената им (тип на резултата:
+  \lstinline{Map<Boolean, Set<String>>})
+\end{itemize}
+\end{frame}
+
+
 \end{document}
